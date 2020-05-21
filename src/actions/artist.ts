@@ -1,10 +1,6 @@
 import Artist from '../model/Artist';
 import { CREATE_ARTIST, READ_ARTIST, UPDATE_ARTIST, DELETE_ARTIST } from "./types";
 
-import { Dispatch } from "redux";
-import { AppState } from "../store/configureStore";
-
-
 export interface CreateArtistAction {
     type: typeof CREATE_ARTIST,
     payload: Artist
@@ -50,5 +46,3 @@ export type ArtistActionTypes =
     | ReadArtistAction
     | UpdateArtistAction
     | DeleteArtistAction;
-
-export type AppActions = ArtistActionTypes; // | AlbumActionTypes ...

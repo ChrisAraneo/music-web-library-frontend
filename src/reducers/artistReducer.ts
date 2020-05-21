@@ -1,11 +1,11 @@
 import { CREATE_ARTIST, READ_ARTIST, UPDATE_ARTIST, DELETE_ARTIST } from "../actions/types";
-import { ArtistActionTypes, AppActions } from "../actions/actions";
+import { ArtistActionTypes } from "../actions/artist";
 import Artist from "../model/Artist";
 
-const expensesReducerDefaultState: Artist[] = [];
+const defaultState: Artist[] = [];
 
 const artistReducer = (
-    state = expensesReducerDefaultState,
+    state = defaultState,
     action: ArtistActionTypes
 ): Artist[] => {
     switch (action.type) {
