@@ -4,7 +4,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 import { Provider } from "react-redux";
-import { store } from "./store/configureStore";
+import { store } from "./store/index";
 import AppRouter from "./router";
 
 export const App: React.FC = () => {
