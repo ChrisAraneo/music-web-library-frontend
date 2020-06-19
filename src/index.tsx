@@ -5,12 +5,30 @@ import * as serviceWorker from './serviceWorker';
 
 import { Provider } from "react-redux";
 import { store } from "./store/index";
-import AppRouter from "./router";
+// import AppRouter from "./router";
+
+import { ConnectedRouter } from 'connected-react-router'
+
+import { Router, Route, Switch, Link, NavLink } from "react-router-dom";
+
+import { history } from "./store/index";
+
+import HomePage from "./view/pages/HomePage";
+import ArtistListPage from './view/pages/ArtistListPage';
+import { ThemeProvider } from '@material-ui/core';
+import theme from "./view/theme/theme";
 
 export const App: React.FC = () => {
     return (
         <Provider store={store}>
-            <AppRouter />
+            <ConnectedRouter history={history}>
+                <ThemeProvider theme={theme}>
+                    <Switch>
+                        <Route path="/artists" component={ArtistListPage} />
+                        <Route path="/" component={HomePage} />
+                    </Switch>
+                </ThemeProvider>
+            </ConnectedRouter>
         </Provider>
     );
 };

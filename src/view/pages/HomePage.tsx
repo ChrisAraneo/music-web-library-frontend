@@ -1,12 +1,9 @@
 import React from "react";
 import { Provider, connect } from "react-redux";
 import { store, AppState } from "../../store/index";
-import AppRouter from "../../router";
 import Artist from "../../model/Artist";
 import { ThunkDispatch } from "redux-thunk";
-// import { AppActions } from "../../actions/merge";
 import { bindActionCreators } from "redux";
-// import { createArtist, readArtist, deleteArtist, updateArtist } from "../../actions/artist";
 import { getArtistsList, getArtist } from "../../store/artists";
 
 import Page from '../components/Page';
@@ -24,8 +21,8 @@ type Props = HomePageProps & LinkStateProps;
 class HomePage extends React.Component<Props, IState> {
 
     render = () => {
-        const { isPending } = this.props.fetching;
 
+        const { isPending } = this.props.fetching;
         const { artists } = this.props;
 
         return (

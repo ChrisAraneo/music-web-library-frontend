@@ -1,9 +1,9 @@
 import Artist from "../model/Artist";
-import { requestGet, requestPut, requestDelete } from "../service/operations";
+import { requestGet, requestPut, requestDelete } from "../service/requests";
 import { store } from './index';
 
 // DEFAULT STATE
-const defaultState: Array<Artist> = []
+const defaultState: Array<Artist> = [];
 
 // ACTION TYPES
 const SET_ARTIST = "SET_ARTIST";

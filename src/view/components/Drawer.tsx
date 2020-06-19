@@ -9,6 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import { history } from "../../store/index";
 
 export const DRAWER_WIDTH = 240;
 
@@ -81,21 +82,17 @@ const DrawerContent: React.FC = () => {
             <div className={classes.toolbar} />
             <Divider />
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                <ListItem button onClick={() => history.push("/")}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary="Strona główna" />
+                </ListItem>
             </List>
             <Divider />
             <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                <ListItem button onClick={() => history.push("/artists")}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary="Wykonawcy" />
+                </ListItem>
             </List>
         </div>
     );
