@@ -26,7 +26,7 @@ class HomePage extends React.Component<Props, IState> {
         const { artists } = this.props;
 
         return (
-            <Page title="Witam">
+            <>
                 {
                     isPending ?
                         (
@@ -60,7 +60,7 @@ class HomePage extends React.Component<Props, IState> {
                 <br />
                 <br />
                 <p>{JSON.stringify(this.props)}</p>
-            </Page >
+            </>
         );
     }
 };

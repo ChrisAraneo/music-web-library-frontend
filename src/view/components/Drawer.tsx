@@ -93,6 +93,25 @@ const DrawerContent: React.FC = () => {
                     <ListItemIcon><InboxIcon /></ListItemIcon>
                     <ListItemText primary="Wykonawcy" />
                 </ListItem>
+                <ListItem button onClick={() => history.push("/albums")}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary="Albumy" />
+                </ListItem>
+                <ListItem button onClick={() => history.push("/songs")}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary="Utwory" />
+                </ListItem>
+                <ListItem button onClick={() => history.push("/playlists")}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary="Twoje playlisty" />
+                </ListItem>
+            </List>
+            <Divider />
+            <List>
+                <ListItem button onClick={() => history.push("/playlists")}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary="Wyloguj się" />
+                </ListItem>
             </List>
         </div>
     );

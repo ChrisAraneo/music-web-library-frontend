@@ -17,16 +17,25 @@ import HomePage from "./view/pages/HomePage";
 import ArtistListPage from './view/pages/ArtistListPage';
 import { ThemeProvider } from '@material-ui/core';
 import theme from "./view/theme/theme";
+import SongListPage from './view/pages/SongListPage';
+import Page from './view/components/Page';
+import AlbumListPage from './view/pages/AlbumListPage';
+import ArtistPage from './view/pages/ArtistPage';
 
 export const App: React.FC = () => {
     return (
         <Provider store={store}>
             <ConnectedRouter history={history}>
                 <ThemeProvider theme={theme}>
-                    <Switch>
-                        <Route path="/artists" component={ArtistListPage} />
-                        <Route path="/" component={HomePage} />
-                    </Switch>
+                    <Page title="Internetowy katalog muzyczny">
+                        <Switch>
+                            <Route path="/artists" exact component={ArtistListPage} />
+                            <Route path="/artists/:artistID?" component={ArtistPage} />
+                            <Route path="/songs" component={SongListPage} />
+                            <Route path="/albums" component={AlbumListPage} />
+                            <Route path="/" component={HomePage} />
+                        </Switch>
+                    </Page>
                 </ThemeProvider>
             </ConnectedRouter>
         </Provider>

@@ -10,12 +10,21 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function LinearIndeterminate() {
+interface IProps {
+    isPending: boolean
+}
+
+const Progress: React.FC<IProps> = (props: IProps) => {
+    const { isPending } = props;
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
-            <LinearProgress color="secondary" />
+            <LinearProgress
+                color="secondary"
+                variant={isPending ? 'indeterminate' : 'determinate'}
+                value={isPending ? 0 : 100} />
         </div>
     );
 }
+export default Progress;

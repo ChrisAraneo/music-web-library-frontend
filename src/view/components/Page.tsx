@@ -9,30 +9,6 @@ import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/sty
 
 import { DRAWER_WIDTH, Drawer } from './Drawer';
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-        },
-        appBar: {
-            [theme.breakpoints.up('sm')]: {
-                width: `calc(100% - ${DRAWER_WIDTH}px)`,
-                marginLeft: DRAWER_WIDTH,
-            },
-        },
-        menuButton: {
-            marginRight: theme.spacing(2),
-            [theme.breakpoints.up('sm')]: {
-                display: 'none',
-            },
-        },
-        toolbar: theme.mixins.toolbar,
-        content: {
-            flexGrow: 1,
-            padding: theme.spacing(3),
-        },
-    }),
-);
 
 interface IProps {
     title: string,
@@ -73,10 +49,40 @@ export const Page: React.FC<IProps> = (props: IProps) => {
                 handleDrawerToggle={handleDrawerToggle} />
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                {children}
+                <div className={classes.content}>
+                    {children}
+                </div>
             </main>
         </div>
     );
 }
 
 export default Page;
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+        },
+        appBar: {
+            [theme.breakpoints.up('sm')]: {
+                width: `calc(100% - ${DRAWER_WIDTH}px)`,
+                marginLeft: DRAWER_WIDTH,
+            },
+        },
+        menuButton: {
+            marginRight: theme.spacing(2),
+            [theme.breakpoints.up('sm')]: {
+                display: 'none',
+            },
+        },
+        toolbar: theme.mixins.toolbar,
+        content: {
+            width: "100%",
+            margin: "auto auto",
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            maxWidth: theme.breakpoints.width("lg"),
+        },
+    }),
+);

@@ -1,6 +1,7 @@
 import Artist from "../model/Artist";
 import { requestGet, requestPut, requestDelete } from "../service/requests";
 import { store } from './index';
+import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 
 // DEFAULT STATE
 const defaultState: Array<Artist> = [];
@@ -31,33 +32,15 @@ export default function reducer(
 ) {
     switch (action.type) {
         case SET_ARTIST: {
-            const artist = action.artist;
-            const { artistID } = artist;
-            if (state[artistID]) {
-                state[artistID] = { ...state[artistID], ...artist };
-            } else {
-                state[artistID] = { ...artist };
-            }
-            return [...state];
+            const { artist } = action;
+            return setSingleObject(state, artist, artist.artistID);
         }
         case SET_ARTISTS: {
-            const artists = action.artists;
-            artists.forEach((artist: Artist) => {
-                const { artistID } = artist;
-                if (state[artistID]) {
-                    state[artistID] = { ...state[artistID], ...artist };
-                } else {
-                    state[artistID] = { ...artist };
-                }
-            });
-            return [...state];
+            const { artists } = action;
+            return setMultipleObjects(state, artists, "artistID");
         }
         case DELETE_ARTIST: {
-            const id = action.id;
-            if (state[id]) {
-                delete state[id];
-            }
-            return [...state];
+            return deleteSingleObject(state, action.id);
         }
         default: {
             return state;

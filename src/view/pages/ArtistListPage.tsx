@@ -12,6 +12,7 @@ import Link from '@material-ui/core/Link';
 import Page from '../components/Page';
 import Card from "../components/Card";
 import Table from "../components/Table";
+import Error from "../components/Error";
 
 interface IProps {
 
@@ -33,27 +34,30 @@ class ArtistListPage extends React.Component<Props, IState> {
         const data: any[] = [];
         artists.forEach(artist => {
             if (artist) {
-                const item = {
-                    "Nazwa wykonawcy": (<Link component={RouterLink} to={`/artist/${artist.artistID}`}>
-                        {artist.artistName}
-                    </Link>)
-                };
-                data.push(item);
+                data.push({
+                    "Nazwa wykonawcy": (<Link component={RouterLink} to={`/artists/${artist.artistID}`}>{artist.artistName}</Link>)
+                });
             }
         });
         return data;
     }
 
     render = () => {
-        const { isPending } = this.props.fetching;
+        const { isPending, hasError, error } = this.props.fetching;
         const { artists } = this.props;
 
         const data = this.processData(artists);
 
         return (
-            <Page title="Wykonawcy">
-                <Table title="Wykonawcy" data={data} pending={isPending} />
-            </Page >
+            <>
+                {
+                    hasError ?
+                        (<Error title="Błąd pobierania danych" error={error} />)
+                        :
+                        null
+                }
+                <Table title="Wykonawcy" data={data} isPending={isPending} />
+            </>
         );
     }
 };

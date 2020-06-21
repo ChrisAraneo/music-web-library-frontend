@@ -5,6 +5,8 @@ import thunk, { ThunkMiddleware } from "redux-thunk";
 
 import fetchingReducer from "./fetching";
 import artistReducer from "./artists";
+import songReducer from "./songs";
+import albumReducer from "./albums";
 
 // CREATING ROUTING HISTORY
 export const history = createBrowserHistory();
@@ -13,7 +15,9 @@ export const history = createBrowserHistory();
 export const rootReducer = combineReducers({
     router: connectRouter(history),
     fetching: fetchingReducer,
-    artists: artistReducer
+    artists: artistReducer,
+    songs: songReducer,
+    albums: albumReducer
 });
 
 // CREATING STORE

@@ -2,7 +2,7 @@
 const defaultState = {
     isPending: false,
     hasError: false,
-    errorMessage: ""
+    error: null
 }
 
 // ACTION TYPES
@@ -17,9 +17,9 @@ export const actionFetchPending = () => ({
 export const actionFetchSuccess = () => ({
     type: FETCH_SUCCESS
 });
-export const actionFetchError = (message: string) => ({
+export const actionFetchError = (error: Error) => ({
     type: FETCH_ERROR,
-    message
+    error
 });
 
 // REDUCER
@@ -32,22 +32,22 @@ export default function reducer(
             return {
                 isPending: true,
                 hasError: false,
-                errorMessage: ""
+                error: null
             };
         }
         case FETCH_SUCCESS: {
             return {
                 isPending: false,
                 hasError: false,
-                errorMessage: ""
+                error: null
             };
         }
         case FETCH_ERROR: {
-            const { message } = action;
+            const { error } = action;
             return {
                 isPending: false,
                 hasError: true,
-                errorMessage: message
+                error
             };
         }
         default: {
