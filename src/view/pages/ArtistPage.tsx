@@ -91,7 +91,7 @@ class ArtistListPage extends React.Component<Props, IState> {
 
         return (
             <>
-                <Title>{artist?.artistName}</Title>
+                <Title title={artist?.artistName} />
                 <div>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>

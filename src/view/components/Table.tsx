@@ -20,7 +20,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { Link } from 'react-router-dom';
 import Progress from "./Progress";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from './CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import DividerGradient from './DividerGradient';
 
@@ -164,12 +164,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
                     {title}
                 </Typography>
-                {
-                    isPending ?
-                        (<CircularProgress className={classes.progress} color="secondary" size={18} />)
-                        :
-                        null
-                }
+                <CircularProgress enabled={isPending} />
                 <Tooltip title="Filter list">
                     <IconButton aria-label="filter list">
                         <FilterListIcon />

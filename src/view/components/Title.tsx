@@ -3,6 +3,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 interface IProps {
+    title: string | undefined,
     children?: any
 }
 
@@ -10,7 +11,8 @@ const Title: React.FC<IProps> = (props: IProps) => {
     const classes = useStyles();
 
     return (
-        <Typography className={classes.root} variant="h2" component="h2">
+        <Typography className={classes.root} variant="h6" component="h2">
+            {props.title}
             {props.children}
         </Typography>
     );
@@ -21,8 +23,12 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: '100%',
+            minHeight: '56px',
             padding: 0,
-            marginBottom: theme.spacing(2)
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            margin: theme.spacing(0, 2, 0, 2)
         }
     }),
 );

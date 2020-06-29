@@ -1,11 +1,16 @@
 import { actionFetchPending, actionFetchSuccess, actionFetchError } from "../store/fetching";
+import { store } from "../store/index";
 
 function request(
     url: string,
-    options: Object,
+    options: any,
     successCallback: (arg: any) => { type: string },
     errorCallback?: (arg: any) => { type: string }
 ) {
+    const { auth } = store.getState();
+    if (options && (options.headers && auth.token)) {
+        options.headers = { ...options.headers, "Authentication": auth.token }
+    }
     return (dispatch: any) => {
         dispatch(actionFetchPending());
         fetch(url, options)
@@ -34,41 +39,44 @@ export function requestGet(
     actionSuccess: (arg: any) => { type: string },
     actionError?: (arg: any) => { type: string }
 ) {
-    const options = {
-        method: "GET"
-    }
-    return request(url, options, actionSuccess, actionError);
+    return request(url, { method: "GET" }, actionSuccess, actionError);
 }
 
 export function requestPost(
     url: string,
+    options: object,
     actionSuccess: (arg: any) => { type: string },
     actionError?: (arg: any) => { type: string }
 ) {
-    const options = {
-        method: "POST"
-    }
-    return request(url, options, actionSuccess, actionError);
+    return request(url, {
+        ...options,
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;",
+        }
+    }, actionSuccess, actionError);
 }
 
 export function requestPut(
     url: string,
+    options: object,
     actionSuccess: (arg: any) => { type: string },
     actionError?: (arg: any) => { type: string }
 ) {
-    const options = {
-        method: "PUT"
-    }
-    return request(url, options, actionSuccess, actionError);
+    return request(url, {
+        ...options,
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json;",
+        }
+    }, actionSuccess, actionError);
 }
 
 export function requestDelete(
     url: string,
+    options: object,
     actionSuccess: (arg: any) => { type: string },
     actionError?: (arg: any) => { type: string }
 ) {
-    const options = {
-        method: "DELETE"
-    }
-    return request(url, options, actionSuccess, actionError);
+    return request(url, { ...options, method: "DELETE" }, actionSuccess, actionError);
 }

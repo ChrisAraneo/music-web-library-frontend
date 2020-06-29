@@ -5,36 +5,30 @@ import { Paper, Typography } from '@material-ui/core';
 
 interface IProps {
     title: string,
-    error: Error
+    message?: string,
+    children?: any
 }
 
-const Error: React.FC<IProps> = (props: IProps) => {
-    const { title, error } = props;
-    let message = error.message;
-    let stack = error.stack;
+const Success: React.FC<IProps> = (props: IProps) => {
+    const { title, message, children } = props;
     const classes = useStyles();
 
     return (
         <Paper className={classes.root} elevation={2}>
-            <Alert className={classes.alert} severity="error">
+            <Alert className={classes.alert} severity="success">
                 <AlertTitle>{title}</AlertTitle>
-                <Typography>
-                    {
-                        message ? message : (error ? String(error) : '')
-                    }
-                </Typography>
                 {
-                    stack ?
-                        (<Typography color="textSecondary">{stack}</Typography>)
+                    message ?
+                        (<Typography>{message}</Typography>)
                         :
                         null
                 }
-
+                {children}
             </Alert>
         </Paper>
     );
 }
-export default Error;
+export default Success;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -21,6 +21,8 @@ import SongListPage from './view/pages/SongListPage';
 import Page from './view/components/Page';
 import AlbumListPage from './view/pages/AlbumListPage';
 import ArtistPage from './view/pages/ArtistPage';
+import SignUpPage from './view/pages/SignUpPage';
+import SignInPage from './view/pages/SignInPage';
 
 export const App: React.FC = () => {
     return (
@@ -29,6 +31,8 @@ export const App: React.FC = () => {
                 <ThemeProvider theme={theme}>
                     <Page title="Internetowy katalog muzyczny">
                         <Switch>
+                            <Route path="/signup" component={SignUpPage} />
+                            <Route path="/signin" component={SignInPage} />
                             <Route path="/artists" exact component={ArtistListPage} />
                             <Route path="/artists/:artistID?" component={ArtistPage} />
                             <Route path="/songs" component={SongListPage} />

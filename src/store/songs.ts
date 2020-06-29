@@ -56,8 +56,8 @@ export function getSong(id: number) {
     store.dispatch(requestGet(`http://localhost:8080/api/songs/${id}`, actionSetSong));
 }
 export function updateSong(id: number) {
-    store.dispatch(requestPut(`http://localhost:8080/api/songs/${id}`, actionSetSong));
+    store.dispatch(requestPut(`http://localhost:8080/api/songs/${id}`, {}, actionSetSong));
 }
 export function deleteSong(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/songs/${id}`, actionDeleteSong));
+    store.dispatch(requestDelete(`http://localhost:8080/api/songs/${id}`, {}, actionDeleteSong));
 }

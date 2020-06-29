@@ -56,8 +56,8 @@ export function getAlbum(id: number) {
     store.dispatch(requestGet(`http://localhost:8080/api/albums/${id}`, actionSetAlbum));
 }
 export function updateAlbum(id: number) {
-    store.dispatch(requestPut(`http://localhost:8080/api/albums/${id}`, actionSetAlbum));
+    store.dispatch(requestPut(`http://localhost:8080/api/albums/${id}`, {}, actionSetAlbum));
 }
 export function deleteAlbum(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/albums/${id}`, actionDeleteAlbum));
+    store.dispatch(requestDelete(`http://localhost:8080/api/albums/${id}`, {}, actionDeleteAlbum));
 }

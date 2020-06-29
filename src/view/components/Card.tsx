@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { Paper } from '@material-ui/core';
+import DividerGradient from './DividerGradient';
+import Title from './Title';
 
 interface IProps {
     title: string,
@@ -19,13 +21,15 @@ const Card: React.FC<IProps> = (props: IProps) => {
 
     return (
         <Paper className={styles.root} elevation={2}>
-            <Typography className={styles.title} variant="h5" component="h5">
+            <Title title={title} />
+            {/* <Typography className={styles.title} variant="h5" component="h5">
                 {title}
-            </Typography>
+            </Typography> */}
+            <DividerGradient />
             <div>
                 {props.children}
             </div>
-        </Paper >
+        </Paper>
     );
 }
 export default Card;
@@ -36,8 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
             minWidth: 275,
         },
         title: {
-            margin: theme.spacing(0, 4, 2, 0),
+            padding: theme.spacing(2),
         },
-    }
-    )
+    })
 );

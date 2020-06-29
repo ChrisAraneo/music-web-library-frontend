@@ -9,7 +9,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
-import { history } from "../../store/index";
+import { history, AppState } from "../../store/index";
+import { connect } from 'react-redux';
+
+import { ROLE_ADMIN } from '../../model/Role';
+
+import { signOut } from "../../store/auth";
+import { isRegExp } from 'util';
 
 export const DRAWER_WIDTH = 240;
 
@@ -35,10 +41,15 @@ interface IProps {
     handleDrawerToggle: () => void
 }
 
-export const Drawer: React.FC<IProps> = (props: IProps) => {
-    const { window, mobileOpen, handleDrawerToggle } = props;
+type Props = IProps & LinkStateProps;
+
+const Drawer: React.FC<Props> = (props: Props) => {
+    const { window, mobileOpen, handleDrawerToggle, auth } = props;
+    const { usernameOrEmail, token, roles } = auth;
     const classes = useStyles();
     const theme = useTheme();
+
+    const isLogged = (usernameOrEmail || token ? true : false);
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -57,7 +68,7 @@ export const Drawer: React.FC<IProps> = (props: IProps) => {
                     ModalProps={{
                         keepMounted: true,
                     }}>
-                    <DrawerContent />
+                    <DrawerContent isLogged={isLogged} userRoles={roles} />
                 </DrawerMaterial>
             </Hidden>
             <Hidden xsDown implementation="css">
@@ -67,14 +78,32 @@ export const Drawer: React.FC<IProps> = (props: IProps) => {
                     }}
                     variant="permanent"
                     open>
-                    <DrawerContent />
+                    <DrawerContent isLogged={isLogged} userRoles={roles} />
                 </DrawerMaterial>
             </Hidden>
         </nav>
     );
 }
 
-const DrawerContent: React.FC = () => {
+function isAdmin(roles: Array<any>) {
+    for (let i = 0; i < roles.length; ++i) {
+        const role = roles[i];
+        if (role && role.name) {
+            if (role.name === ROLE_ADMIN) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+interface IPropsContent {
+    isLogged: boolean,
+    userRoles: Array<any>
+}
+
+const DrawerContent: React.FC<IPropsContent> = (props: IPropsContent) => {
+    const { isLogged, userRoles } = props;
     const classes = useStyles();
 
     return (
@@ -101,18 +130,59 @@ const DrawerContent: React.FC = () => {
                     <ListItemIcon><InboxIcon /></ListItemIcon>
                     <ListItemText primary="Utwory" />
                 </ListItem>
-                <ListItem button onClick={() => history.push("/playlists")}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                    <ListItemText primary="Twoje playlisty" />
-                </ListItem>
+
             </List>
             <Divider />
+            {
+                isAdmin(userRoles) ?
+                    <>
+                        <List>
+                            <ListItem button onClick={() => history.push("/admin")}>
+                                <ListItemIcon><InboxIcon /></ListItemIcon>
+                                <ListItemText primary="Panel admina" />
+                            </ListItem>
+                        </List>
+                        <Divider />
+                    </>
+                    :
+                    null
+            }
             <List>
-                <ListItem button onClick={() => history.push("/playlists")}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                    <ListItemText primary="Wyloguj się" />
-                </ListItem>
+                {
+                    isLogged ?
+                        (
+                            <>
+                                <ListItem button onClick={() => history.push("/playlists")}>
+                                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                                    <ListItemText primary="Twoje playlisty" />
+                                </ListItem>
+                                <ListItem button onClick={() => signOut()}>
+                                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                                    <ListItemText primary="Wyloguj się" />
+                                </ListItem>
+                            </>
+                        )
+                        :
+                        (<ListItem button onClick={() => history.push("/signin")}>
+                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemText primary="Zaloguj się" />
+                        </ListItem>)
+                }
+
             </List>
         </div>
     );
 }
+
+
+interface LinkStateProps {
+    auth?: any
+}
+const mapStateToProps = (
+    state: AppState,
+    ownProps: IProps
+): LinkStateProps => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, null)(Drawer);

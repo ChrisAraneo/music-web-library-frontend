@@ -7,8 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 
-import { DRAWER_WIDTH, Drawer } from './Drawer';
-
+import { DRAWER_WIDTH } from './Drawer';
+import Drawer from './Drawer';
 
 interface IProps {
     title: string,
@@ -81,8 +81,8 @@ const useStyles = makeStyles((theme: Theme) =>
             width: "100%",
             margin: "auto auto",
             flexGrow: 1,
-            padding: theme.spacing(3),
-            maxWidth: theme.breakpoints.width("lg"),
+            padding: theme.spacing(3, 1, 3, 1),
+            maxWidth: theme.breakpoints.width("md"),
         },
     }),
 );

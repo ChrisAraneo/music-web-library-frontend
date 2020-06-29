@@ -56,8 +56,8 @@ export function getArtist(id: number) {
     store.dispatch(requestGet(`http://localhost:8080/api/artists/${id}`, actionSetArtist));
 }
 export function updateArtist(id: number) {
-    store.dispatch(requestPut(`http://localhost:8080/api/artists/${id}`, actionSetArtist));
+    store.dispatch(requestPut(`http://localhost:8080/api/artists/${id}`, {}, actionSetArtist));
 }
 export function deleteArtist(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/artists/${id}`, actionDeleteArtist));
+    store.dispatch(requestDelete(`http://localhost:8080/api/artists/${id}`, {}, actionDeleteArtist));
 }
