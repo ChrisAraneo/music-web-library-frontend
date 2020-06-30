@@ -18,7 +18,7 @@ import Table from "../components/Table";
 import TableDetails from "../components/TableDetails";
 import Grid from "@material-ui/core/Grid";
 import Album from "../../model/Album";
-import Song from "../../model/Song";
+import Song, { SongInAlbum } from "../../model/Song";
 import { getAlbumsList } from "../../store/albums";
 
 interface IProps {
@@ -31,7 +31,7 @@ interface IState {
 
 type Props = IProps & LinkStateProps;
 
-class ArtistListPage extends React.Component<Props, IState> {
+class ArtistPage extends React.Component<Props, IState> {
 
     componentDidMount() {
         getAlbumsList();
@@ -62,7 +62,8 @@ class ArtistListPage extends React.Component<Props, IState> {
                 let added = false;
                 if (!added && album && album.songs) {
                     const { songs } = album;
-                    songs.forEach(song => {
+                    songs.forEach((item: SongInAlbum) => {
+                        const song: Song = item.song;
                         if (!added && song && song.artists) {
                             const { artists } = song;
                             if (artists) {
@@ -131,4 +132,4 @@ const mapStateToProps = (
     albums: state.albums,
 });
 
-export default connect(mapStateToProps, null)(ArtistListPage);
+export default connect(mapStateToProps, null)(ArtistPage);

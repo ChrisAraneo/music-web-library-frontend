@@ -214,7 +214,7 @@ const EnhancedTable = (props: IProps) => {
     const { title, data, isPending } = props;
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<string>('calories');
+    const [orderBy, setOrderBy] = React.useState<string>('title');
     const [selected, setSelected] = React.useState<string[]>([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);

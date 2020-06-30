@@ -18,3 +18,8 @@ export default interface Song {
     albums?: any[],
     artists?: Artist[]
 }
+
+export interface SongInAlbum {
+    id: { trackNumber: number },
+    song: Song
+}

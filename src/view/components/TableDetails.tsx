@@ -128,7 +128,12 @@ const TableDetails = (props: IProps) => {
                                                 <strong>{p}</strong>
                                             </TableCell>
                                             <TableCell>
-                                                {v}
+                                                {
+                                                    v instanceof Object ?
+                                                        JSON.stringify(v)
+                                                        :
+                                                        v
+                                                }
                                             </TableCell>
                                         </TableRow>
                                     );

@@ -8,7 +8,7 @@ import Page from '../components/Page';
 import Table from "../components/Table";
 import Error from "../components/Error";
 import { getSongsList } from "../../store/songs";
-import Song from "../../model/Song";
+import Song, { SongInAlbum } from "../../model/Song";
 import { getAlbumsList } from "../../store/albums";
 import Album from "../../model/Album";
 
@@ -28,35 +28,16 @@ class AlbumListPage extends React.Component<Props, IState> {
         getAlbumsList();
     }
 
-    processSongsArray = (songs: Song[]) => {
-        const artists: Artist[] = [];
-        songs.forEach((song: Song) => {
-            if (song.artists instanceof Array) {
-                song.artists.forEach((artist: Artist) => {
-                    const ID = artist.artistID;
-                    if (!artists.find((item: Artist) => item.artistID == ID)) {
-                        artists.push(artist);
-                    }
-                });
-            }
-        })
-
-        artists.sort((a: Artist, b: Artist) => {
-            if (a.artistName < b.artistName) { return -1; }
-            if (a.artistName > b.artistName) { return 1; }
-            return 0;
-        });
-
-        return artists.map((artist: Artist, index: number, array: Array<any>) => <><Link component={RouterLink} to={`/artists/${artist.artistID}`}>{artist.artistName}</Link>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>);
-    }
-
     processData = (albums: Array<Album>) => {
         const data: any[] = [];
-        albums.forEach((album) => {
+        albums.forEach((album: Album) => {
             if (album) {
                 const title = (<Link component={RouterLink} to={`/albums/${album.albumID}`}>{album.title}</Link>);
-                const artists = (<div>{album.songs ? this.processSongsArray(album.songs) : null}</div>);
+
+                const artists = album.artists?.map((artist: Artist, index: number, array: Array<any>) => <><Link component={RouterLink} to={`/artists/${artist.artistID}`}>{artist.artistName}</Link>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>);
+
                 const year = album.year;
+
                 data.push({
                     "Tytuł albumu": title,
                     "Wykonawcy": artists,

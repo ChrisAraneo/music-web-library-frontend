@@ -50,6 +50,17 @@ const Drawer: React.FC<Props> = (props: Props) => {
     const theme = useTheme();
 
     const isLogged = (usernameOrEmail || token ? true : false);
+    const isAdmin = ((roles: Array<any>) => {
+        for (let i = 0; i < roles.length; ++i) {
+            const role = roles[i];
+            if (role && role.name) {
+                if (role.name === ROLE_ADMIN) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    })(roles);
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -68,7 +79,7 @@ const Drawer: React.FC<Props> = (props: Props) => {
                     ModalProps={{
                         keepMounted: true,
                     }}>
-                    <DrawerContent isLogged={isLogged} userRoles={roles} />
+                    <DrawerContent isLogged={isLogged} isAdmin={isAdmin} />
                 </DrawerMaterial>
             </Hidden>
             <Hidden xsDown implementation="css">
@@ -78,32 +89,22 @@ const Drawer: React.FC<Props> = (props: Props) => {
                     }}
                     variant="permanent"
                     open>
-                    <DrawerContent isLogged={isLogged} userRoles={roles} />
+                    <DrawerContent isLogged={isLogged} isAdmin={isAdmin} />
                 </DrawerMaterial>
             </Hidden>
         </nav>
     );
 }
 
-function isAdmin(roles: Array<any>) {
-    for (let i = 0; i < roles.length; ++i) {
-        const role = roles[i];
-        if (role && role.name) {
-            if (role.name === ROLE_ADMIN) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+
 
 interface IPropsContent {
     isLogged: boolean,
-    userRoles: Array<any>
+    isAdmin: boolean
 }
 
 const DrawerContent: React.FC<IPropsContent> = (props: IPropsContent) => {
-    const { isLogged, userRoles } = props;
+    const { isLogged, isAdmin } = props;
     const classes = useStyles();
 
     return (
@@ -134,7 +135,7 @@ const DrawerContent: React.FC<IPropsContent> = (props: IPropsContent) => {
             </List>
             <Divider />
             {
-                isAdmin(userRoles) ?
+                isAdmin ?
                     <>
                         <List>
                             <ListItem button onClick={() => history.push("/admin")}>

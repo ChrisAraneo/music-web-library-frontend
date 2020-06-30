@@ -8,12 +8,18 @@ function request(
     errorCallback?: (arg: any) => { type: string }
 ) {
     const { auth } = store.getState();
-    if (options && (options.headers && auth.token)) {
-        options.headers = { ...options.headers, "Authentication": auth.token }
-    }
+
     return (dispatch: any) => {
         dispatch(actionFetchPending());
-        fetch(url, options)
+        fetch(url,
+            {
+                ...options,
+                headers: {
+                    "Authorization": `Bearer ${auth.token}`,
+                    "Content-Type": "application/json;",
+                    ...options.headers
+                }
+            })
             .then(result => result.json())
             .then(result => {
                 if (result.error) {
@@ -50,10 +56,7 @@ export function requestPost(
 ) {
     return request(url, {
         ...options,
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json;",
-        }
+        method: "POST"
     }, actionSuccess, actionError);
 }
 
@@ -65,10 +68,7 @@ export function requestPut(
 ) {
     return request(url, {
         ...options,
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json;",
-        }
+        method: "PUT"
     }, actionSuccess, actionError);
 }
 

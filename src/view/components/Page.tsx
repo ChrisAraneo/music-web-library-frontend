@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: "auto auto",
             flexGrow: 1,
             padding: theme.spacing(3, 1, 3, 1),
-            maxWidth: theme.breakpoints.width("md"),
+            maxWidth: theme.breakpoints.width("lg"),
         },
     }),
 );

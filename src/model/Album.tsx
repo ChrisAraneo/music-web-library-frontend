@@ -1,6 +1,7 @@
 import Cover from "./Cover";
 import Review from "./Review";
-import Song from "./Song";
+import Song, { SongInAlbum } from "./Song";
+import Artist from "./Artist";
 
 export default interface Album {
     albumID: number,
@@ -8,5 +9,6 @@ export default interface Album {
     year?: number,
     cover: Cover,
     reviews?: Review[],
-    songs?: Song[]
+    songs?: SongInAlbum[],
+    artists?: Artist[]
 }
