@@ -16,6 +16,7 @@ import { history } from "../../store/index";
 import Link from "@material-ui/core/Link";
 
 import { signOut } from "../../store/auth";
+import PageHeader from "../components/PageHeader";
 
 interface IProps {
 
@@ -34,7 +35,7 @@ const HomePage: React.FC<Props> = (props: Props) => {
     return (
         <>
             <Typography variant="subtitle1" component="p">Internetowy Katalog Muzyczny</Typography>
-            <Title title="Tysiące utworów w jednym miejscu" />
+            <PageHeader title="Tysiące utworów w jednym miejscu" />
 
             {
                 token && usernameOrEmail ?

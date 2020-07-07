@@ -14,7 +14,7 @@ import Card from "../components/Card";
 import Error from "../components/Error";
 import Title from "../components/Title";
 import Paper from "@material-ui/core/Paper";
-import Table from "../components/Table";
+import Table from "../components/TableDepr";
 import TableDetails from "../components/TableDetails";
 import Grid from "@material-ui/core/Grid";
 import Album from "../../model/Album";

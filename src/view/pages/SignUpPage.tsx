@@ -36,15 +36,6 @@ interface IState {
     password2: string
 }
 
-// interface IProps {
-//     title: string,
-//     children?: any
-// }
-
-// const Card: React.FC<IProps> = (props: IProps) => {
-//     const { title } = props;
-
-
 type Props = IProps & LinkStateProps;
 
 class SignUpPage extends React.Component<Props, IState> {

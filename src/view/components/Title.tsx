@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: '100%',
-            minHeight: '56px',
+            minHeight: '64px',
             padding: 0,
             display: 'flex',
             flexDirection: 'row',

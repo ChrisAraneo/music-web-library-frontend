@@ -1,28 +1,24 @@
 import React from "react";
-import { Provider, connect } from "react-redux";
-import { store, AppState } from "../../store/index";
+import { connect } from "react-redux";
+import { AppState } from "../../store/index";
 import Artist from "../../model/Artist";
-import { ThunkDispatch } from "redux-thunk";
-import { bindActionCreators } from "redux";
-import { getArtistsList, getArtist } from "../../store/artists";
 
-import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 
-import Page from '../components/Page';
-import Card from "../components/Card";
-import Error from "../components/Error";
-import Title from "../components/Title";
-import Paper from "@material-ui/core/Paper";
 import Table from "../components/Table";
-import TableDetails from "../components/TableDetails";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import Album from "../../model/Album";
-import Song, { SongInAlbum } from "../../model/Song";
-import { getAlbumsList, getAlbum } from "../../store/albums";
+import { SongInAlbum } from "../../model/Song";
+import { getAlbum } from "../../store/albums";
+import PageHeader from "../components/PageHeader";
+import Review from "../../model/Review";
+import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 
 interface IProps {
     match: { params: { albumID: number } },
+    classes: any
 }
 
 interface IState {
@@ -58,7 +54,7 @@ class AlbumPage extends React.Component<Props, IState> {
         }
     }
 
-    processSongs = (songs: Array<SongInAlbum> | undefined,) => {
+    processSongs = (songs: Array<SongInAlbum> | undefined) => {
         const data: any[] = [];
 
         songs?.forEach((item: SongInAlbum) => {
@@ -82,54 +78,73 @@ class AlbumPage extends React.Component<Props, IState> {
         });
 
         data.sort((A, B) => A['#'] - B['#']);
-        console.log("PROCESSED", data);
+        return data;
+    }
+
+    processReviews = (reviews: Array<Review> | undefined) => {
+        const { classes } = this.props;
+        const data: object[] = [];
+
+        reviews?.forEach((review: Review) => {
+            const { reviewID } = review;
+            const row = (<>
+                <Link href="#" variant="body1" className={classes.reviewShort} component={RouterLink} to={`/reviews/${reviewID}`}>
+                    {review.title}
+                </Link>
+                <Typography className={classes.reviewShort} variant="body2" component="p">
+                    {`${String(review.content).substring(0, 380)}...`}
+                </Typography>
+                <Link href="#" variant="body2" component={RouterLink} to={`/reviews/${reviewID}`}>
+                    {` Czytaj więcej`}
+                </Link>
+            </>);
+            data.push({
+                "Recenzja": row
+            });
+        });
+
         return data;
     }
 
     render = () => {
         const { fetching, albums, match } = this.props;
-        const { isPending, hasError, error } = fetching;
+        const { isPending } = fetching;
         const { albumID } = match.params;
 
         const album = albums.find((album: Album) => (album ? album.albumID == albumID : undefined));
-        // let songs = [];
-        // if (album && album.songs) {
-        //     songs = album.songs;
-        // }
-        // const albums = this.processAlbums(artist, this.props.albums);
+        const reviews = album?.reviews;
 
         return (
             <>
-                {/* <Title title={album?.title} /> */}
-                <div>
-                    <Table title={`${album?.title}`} data={this.processSongs(album?.songs)} isPending={isPending} />
-                    {/* <TableDetails object={this.processAlbum(album)} /> */}
-                </div>
-
+                <PageHeader title={album?.title} />
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={12}>
+                        <Table title={`Utwory w albumie muzycznym`} objects={this.processSongs(album?.songs)} isPending={isPending} />
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <Table title="Recenzje albumu" objects={this.processReviews(reviews)} isPending={isPending} />
+                    </Grid>
+                </Grid>
             </>
         );
-
-        // return {
-        //     "Nazwa wykonawcy": artist.artistName,
-        //     "Data urodzenia": artist.birthDate,
-        //     "Kraj": artist.country,
-        //     "Imię": artist.firstName,
-        //     "Nazwisko": artist.lastName,
-        //     "Rodzaj działalności muzycznej": artist.artistType,
-        // };
     }
 };
+
+const styles = (theme: Theme) => createStyles({
+    reviewShort: {
+        margin: theme.spacing(1, 0, 1, 0)
+    }
+});
 
 interface LinkStateProps {
     fetching: any,
     albums: Album[],
 }
 const mapStateToProps = (
-    state: AppState,
-    ownProps: IProps
-): LinkStateProps => ({
-    fetching: state.fetching,
-    albums: state.albums,
-});
+    state: AppState): LinkStateProps => ({
+        fetching: state.fetching,
+        albums: state.albums,
+    });
 
-export default connect(mapStateToProps, null)(AlbumPage);
+export default connect(mapStateToProps, null)(withStyles(styles, { withTheme: true })(AlbumPage));
+// export default connect(mapStateToProps, null)(AlbumPage);

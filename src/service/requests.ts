@@ -26,7 +26,7 @@ function request(
                     dispatch(actionFetchError(result.error))
                     throw (result.error);
                 }
-                console.log(result);
+                // console.log(result); // TESTING PURPOSES
                 dispatch(actionFetchSuccess());
                 dispatch(successCallback(result));
                 return result;

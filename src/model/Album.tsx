@@ -6,9 +6,10 @@ import Artist from "./Artist";
 export default interface Album {
     albumID: number,
     title: string,
-    year?: number,
-    cover: Cover,
+    year: number,
+    artists?: Artist[],
+
+    cover?: Cover,
     reviews?: Review[],
-    songs?: SongInAlbum[],
-    artists?: Artist[]
+    songs?: SongInAlbum[]
 }

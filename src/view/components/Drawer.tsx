@@ -17,7 +17,7 @@ import { ROLE_ADMIN } from '../../model/Role';
 import { signOut } from "../../store/auth";
 import { isRegExp } from 'util';
 
-export const DRAWER_WIDTH = 240;
+export const DRAWER_WIDTH = 255;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -140,7 +140,7 @@ const DrawerContent: React.FC<IPropsContent> = (props: IPropsContent) => {
                         <List>
                             <ListItem button onClick={() => history.push("/admin")}>
                                 <ListItemIcon><InboxIcon /></ListItemIcon>
-                                <ListItemText primary="Panel admina" />
+                                <ListItemText primary="Panel administratora" />
                             </ListItem>
                         </List>
                         <Divider />
@@ -155,9 +155,9 @@ const DrawerContent: React.FC<IPropsContent> = (props: IPropsContent) => {
                             <>
                                 <ListItem button onClick={() => history.push("/playlists")}>
                                     <ListItemIcon><InboxIcon /></ListItemIcon>
-                                    <ListItemText primary="Twoje playlisty" />
+                                    <ListItemText primary="Twoje listy utworów" />
                                 </ListItem>
-                                <ListItem button onClick={() => signOut()}>
+                                <ListItem button onClick={() => { signOut(); history.push("/"); }}>
                                     <ListItemIcon><InboxIcon /></ListItemIcon>
                                     <ListItemText primary="Wyloguj się" />
                                 </ListItem>

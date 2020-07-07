@@ -1,25 +1,20 @@
 import React from "react";
-import { Provider, connect } from "react-redux";
-import { store, AppState } from "../../store/index";
+import { connect } from "react-redux";
+import { AppState } from "../../store/index";
 import Artist from "../../model/Artist";
-import { ThunkDispatch } from "redux-thunk";
-import { bindActionCreators } from "redux";
-import { getArtistsList, getArtist } from "../../store/artists";
+import { getArtist } from "../../store/artists";
 
-import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 
-import Page from '../components/Page';
-import Card from "../components/Card";
-import Error from "../components/Error";
-import Title from "../components/Title";
-import Paper from "@material-ui/core/Paper";
 import Table from "../components/Table";
 import TableDetails from "../components/TableDetails";
 import Grid from "@material-ui/core/Grid";
 import Album from "../../model/Album";
-import Song, { SongInAlbum } from "../../model/Song";
-import { getAlbumsList } from "../../store/albums";
+import PageHeader from "../components/PageHeader";
+import TableList from "../components/TableList";
+
+import ArtistURL from "../../model/ArtistURL";
 
 interface IProps {
     match: { params: { artistID: number } },
@@ -34,13 +29,11 @@ type Props = IProps & LinkStateProps;
 class ArtistPage extends React.Component<Props, IState> {
 
     componentDidMount() {
-        getAlbumsList();
-
         const { artistID } = this.props.match.params;
         getArtist(artistID);
     }
 
-    processArtist = (artist: Artist | undefined) => {
+    processArtist = (artist: Artist | undefined): object => {
         if (artist) {
             return {
                 "Nazwa/pseudonim": artist.artistName,
@@ -51,85 +44,62 @@ class ArtistPage extends React.Component<Props, IState> {
                 "Rodzaj działalności muzycznej": artist.artistType?.name
             }
         }
-        return undefined;
+        return ({});
     }
 
-    processAlbums = (artist: Artist | undefined, albums: Array<Album>) => {
-        const ID = artist?.artistID;
-        if (ID) {
-            const selected: any[] = [];
-            albums.forEach((album: Album) => {
-                let added = false;
-                if (!added && album && album.songs) {
-                    const { songs } = album;
-                    songs.forEach((item: SongInAlbum) => {
-                        const song: Song = item.song;
-                        if (!added && song && song.artists) {
-                            const { artists } = song;
-                            if (artists) {
-                                selected.push({
-                                    "Tytuł albumu": (<Link component={RouterLink} to={`/albums/${album.albumID}`}>{album.title}</Link>)
-                                });
-                                added = true;
-                            }
-                        }
-                    });
-                }
-            });
-            return selected;
+    processAlbums = (artist: Artist | undefined): object[] => {
+        if (artist && artist.albums) {
+            const { albums } = artist;
+            return albums.map((album: Album) => ({
+                "Tytuł albumu": (<Link component={RouterLink} to={`/albums/${album.albumID}`}>{album.title}</Link>)
+            }));
         }
         return [];
     }
 
+    processURLs = (artistURLs: ArtistURL[] | undefined) => {
+        return artistURLs?.map((url: ArtistURL, index: number, array: Array<any>) => <><a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary" href={`${url.url}`} target="_blank">{url.url}</a>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>);
+    }
+
     render = () => {
-        const { isPending, hasError, error } = this.props.fetching;
+        const { isPending } = this.props.fetching;
         const { artists } = this.props;
         const { artistID } = this.props.match.params;
 
         const artist = artists.find((artist: Artist) => (artist ? artist.artistID == artistID : undefined));
 
-        const albums = this.processAlbums(artist, this.props.albums);
+        const albums = this.processAlbums(artist);
 
         return (
             <>
-                <Title title={artist?.artistName} />
-                <div>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={6}>
-                            <Table title="Albumy" data={albums} isPending={isPending} />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
+                <PageHeader title={artist?.artistName} />
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <Table title="Albumy" objects={albums} isPending={isPending} />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={12}>
                             <TableDetails object={this.processArtist(artist)} />
                         </Grid>
+                        <Grid item xs={12} md={12}>
+                            <TableList array={this.processURLs(artist?.urls)} />
+                        </Grid>
                     </Grid>
-                </div>
-
+                </Grid>
             </>
         );
 
-        // return {
-        //     "Nazwa wykonawcy": artist.artistName,
-        //     "Data urodzenia": artist.birthDate,
-        //     "Kraj": artist.country,
-        //     "Imię": artist.firstName,
-        //     "Nazwisko": artist.lastName,
-        //     "Rodzaj działalności muzycznej": artist.artistType,
-        // };
     }
 };
 
 interface LinkStateProps {
     fetching: any,
-    artists: Artist[],
-    albums: Album[],
+    artists: Artist[]
 }
 const mapStateToProps = (
-    state: AppState,
-    ownProps: IProps
-): LinkStateProps => ({
-    fetching: state.fetching,
-    artists: state.artists,
-    albums: state.albums,
-});
+    state: AppState): LinkStateProps => ({
+        fetching: state.fetching,
+        artists: state.artists
+    });
 
 export default connect(mapStateToProps, null)(ArtistPage);

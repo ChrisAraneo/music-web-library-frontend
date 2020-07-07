@@ -2,9 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { AppState } from "../../store/index";
 import Artist from "../../model/Artist";
-import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
-import Page from '../components/Page';
 import Table from "../components/Table";
 import Error from "../components/Error";
 import { getSongsList } from "../../store/songs";
@@ -64,7 +63,7 @@ class SongListPage extends React.Component<Props, IState> {
                         :
                         null
                 }
-                <Table title="Utwory muzyczne" data={data} isPending={isPending} />
+                <Table title="Utwory muzyczne" objects={data} isPending={isPending} />
             </>
         );
     }
@@ -75,11 +74,9 @@ interface LinkStateProps {
     songs: Song[]
 }
 const mapStateToProps = (
-    state: AppState,
-    ownProps: IProps
-): LinkStateProps => ({
-    fetching: state.fetching,
-    songs: state.songs
-});
+    state: AppState): LinkStateProps => ({
+        fetching: state.fetching,
+        songs: state.songs
+    });
 
 export default connect(mapStateToProps, null)(SongListPage);

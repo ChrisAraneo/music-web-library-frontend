@@ -56,7 +56,7 @@ class ArtistListPage extends React.Component<Props, IState> {
                         :
                         null
                 }
-                <Table title="Wykonawcy" data={data} isPending={isPending} />
+                <Table title="Wykonawcy" objects={data} isPending={isPending} />
             </>
         );
     }

@@ -1,4 +1,5 @@
 import Artist from "./Artist";
+import SongURL from "./SongURL";
 
 export default interface Song {
     songID: number,
@@ -16,10 +17,16 @@ export default interface Song {
     year?: number,
 
     albums?: any[],
-    artists?: Artist[]
+    artists?: Artist[],
+    songURLs?: SongURL[]
 }
 
 export interface SongInAlbum {
+    id: { trackNumber: number },
+    song: Song
+}
+
+export interface SongInPlaylist {
     id: { trackNumber: number },
     song: Song
 }
