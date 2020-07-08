@@ -6,6 +6,7 @@ export function setSingleObject<T>(state: T[], object: T, index: number): T[] {
             state[index] = { ...object };
         }
     }
+    console.log("SET !!!")
     return [...state];
 }
 

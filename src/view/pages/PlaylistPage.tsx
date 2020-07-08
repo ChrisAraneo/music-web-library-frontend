@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Album from "../../model/Album";
 import Song, { SongInAlbum, SongInPlaylist } from "../../model/Song";
-import { getPlaylist } from "../../store/playlists";
+import { getPlaylist, deleteRecordFromPlaylist } from "../../store/playlists";
 import PageHeader from "../components/PageHeader";
 import Playlist from "../../model/Playlist";
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
@@ -76,6 +76,11 @@ class PlaylistPage extends React.Component<Props, IState> {
         return data;
     }
 
+    handleSongRemove = (data: any, playlistID: number) => {
+        const track = data["#"];
+        deleteRecordFromPlaylist(playlistID, track);
+    }
+
     render = () => {
         const { fetching, playlists, match } = this.props;
         const { isPending } = fetching;
@@ -84,14 +89,16 @@ class PlaylistPage extends React.Component<Props, IState> {
         const playlist = playlists.find((playlist: Playlist) => (playlist ? playlist.playlistID == playlistID : undefined));
 
         const songs = this.processSongs(playlist?.songs);
-        // const reviews = album?.reviews;
 
         return (
             <>
                 <PageHeader title={playlist?.title} />
-                {/* <Table title={`Utwory na liście`} data={songs} isPending={isPending} /> */}
-                {/* <h1>{JSON.stringify(playlist)}</h1> */}
-                <Table title={playlist?.title} objects={songs} isPending={isPending} />
+                <Table
+                    title={playlist?.title}
+                    objects={songs}
+                    isPending={isPending}
+                    deleteRow={(data: any) => this.handleSongRemove(data, playlistID)}
+                />
             </>
         );
     }
