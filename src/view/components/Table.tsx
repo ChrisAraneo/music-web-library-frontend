@@ -45,19 +45,17 @@ const TableCore: React.FC<ITableCoreProps> = (props: ITableCoreProps) => {
     const styles = useStyles();
 
     const actions = [];
-    if (data.length > 0) {
-        if (updateRow && typeof updateRow == "function") {
-            actions.push({
-                icon: 'update',
-                onClick: (event: any, data: any) => updateRow(data)
-            });
-        }
-        if (deleteRow && typeof deleteRow == "function") {
-            actions.push({
-                icon: 'delete',
-                onClick: (event: any, data: any) => deleteRow(data)
-            });
-        }
+    if (updateRow && typeof updateRow == "function") {
+        actions.push({
+            icon: 'update',
+            onClick: (event: any, data: any) => updateRow(data)
+        });
+    }
+    if (deleteRow && typeof deleteRow == "function") {
+        actions.push({
+            icon: 'delete',
+            onClick: (event: any, data: any) => deleteRow(data)
+        });
     }
 
     return (
@@ -85,6 +83,7 @@ const TableCore: React.FC<ITableCoreProps> = (props: ITableCoreProps) => {
                     return (
                         <IconButton
                             onClick={(event: any) => onClick(event, data)}
+                            disabled={isLoading}
                             aria-label={icon}>
                             {Icon}
                         </IconButton>

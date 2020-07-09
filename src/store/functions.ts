@@ -6,7 +6,6 @@ export function setSingleObject<T>(state: T[], object: T, index: number): T[] {
             state[index] = { ...object };
         }
     }
-    console.log("SET !!!")
     return [...state];
 }
 
@@ -26,7 +25,7 @@ export function setMultipleObjects<T>(state: T[], array: T[], IDName: string): T
     return [...state];
 }
 
-export function deleteSingleObject<T>(state: T[], ID: number): T[] {
+export function deleteSingleObject<T>(state: any[], ID: number): T[] {
     if (state[ID]) {
         delete state[ID];
     }

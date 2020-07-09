@@ -20,16 +20,21 @@ function request(
                     ...options.headers
                 }
             })
-            .then(result => result.json())
             .then(result => {
-                if (result.error) {
-                    dispatch(actionFetchError(result.error))
-                    throw (result.error);
+                console.log("STATUS", result.status);
+                const json = result.json();
+                return json;
+            })
+            .then(json => {
+                console.log("JSON", json);
+                if (json.error) {
+                    dispatch(actionFetchError(json.error))
+                    throw (json.error);
                 }
                 // console.log(result); // TESTING PURPOSES
                 dispatch(actionFetchSuccess());
-                dispatch(successCallback(result));
-                return result;
+                dispatch(successCallback(json));
+                return json;
             })
             .catch(error => {
                 dispatch(actionFetchError(error));

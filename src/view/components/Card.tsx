@@ -21,11 +21,15 @@ const Card: React.FC<IProps> = (props: IProps) => {
 
     return (
         <Paper className={styles.root} elevation={2}>
-            <Title title={title} />
-            {/* <Typography className={styles.title} variant="h5" component="h5">
-                {title}
-            </Typography> */}
-            <DividerGradient />
+            {
+                title ?
+                    <>
+                        <Title title={title} />
+                        <DividerGradient />
+                    </>
+                    :
+                    null
+            }
             <div>
                 {props.children}
             </div>

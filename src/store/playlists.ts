@@ -2,7 +2,6 @@ import Playlist from "../model/Playlist";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
-import { constants } from "buffer";
 
 // DEFAULT STATE
 const defaultState: Array<Playlist> = [];
@@ -87,7 +86,8 @@ export function updatePlaylist(id: number) {
     store.dispatch(requestPut(`http://localhost:8080/api/playlists/${id}`, {}, actionSetPlaylist));
 }
 export function deletePlaylist(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${id}`, {}, actionDeletePlaylist));
+    store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${id}`, {},
+        () => actionDeletePlaylist(id)));
 }
 export function deleteRecordFromPlaylist(id: number, track: number) {
     store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${id}/${track}`, {}, (playlist: Playlist) => actionSetPlaylist(playlist)));
