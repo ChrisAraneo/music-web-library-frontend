@@ -2,10 +2,8 @@ import React from 'react';
 import MaterialTable, { MTableToolbar } from "material-table";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import DividerGradient from './DividerGradient';
-import Button from '@material-ui/core/Button/Button';
 import IconButton from '@material-ui/core/IconButton/IconButton';
-import UpdateIcon from '@material-ui/icons/Update';
-import DeleteIcon from '@material-ui/icons/HighlightOff';
+
 
 
 const Toolbar: React.FC = (props) => {
@@ -35,28 +33,16 @@ interface ITableCoreProps {
     data: object[],
     columns: object[],
 
-    deleteRow?: (data: any) => void,
-    updateRow?: (data: any) => void,
+    actions?: Array<{
+        icon: string,
+        element: JSX.Element,
+        onClick: (event: any, data: any) => void
+    }>
 }
 
 const TableCore: React.FC<ITableCoreProps> = (props: ITableCoreProps) => {
-    const { title, isLoading, columns, data } = props;
-    const { updateRow, deleteRow } = props;
+    const { title, isLoading, columns, data, actions } = props;
     const styles = useStyles();
-
-    const actions = [];
-    if (updateRow && typeof updateRow == "function") {
-        actions.push({
-            icon: 'update',
-            onClick: (event: any, data: any) => updateRow(data)
-        });
-    }
-    if (deleteRow && typeof deleteRow == "function") {
-        actions.push({
-            icon: 'delete',
-            onClick: (event: any, data: any) => deleteRow(data)
-        });
-    }
 
     return (
         <MaterialTable
@@ -71,21 +57,14 @@ const TableCore: React.FC<ITableCoreProps> = (props: ITableCoreProps) => {
                 Toolbar: (props: object) => (<Toolbar {...props} />),
                 Action: (props: any) => {
                     const { action, data } = props;
-                    const { icon, onClick } = action;
-
-                    let Icon = <></>;
-                    if (icon == "delete") {
-                        Icon = <DeleteIcon />
-                    } else if (icon == "update") {
-                        Icon = <UpdateIcon />
-                    }
+                    const { icon, element, onClick } = action;
 
                     return (
                         <IconButton
                             onClick={(event: any) => onClick(event, data)}
                             disabled={isLoading}
                             aria-label={icon}>
-                            {Icon}
+                            {element}
                         </IconButton>
                     );
                 },
@@ -107,8 +86,11 @@ interface IProps {
     children?: any,
     isPending: boolean,
 
-    deleteRow?: (data: any) => void,
-    updateRow?: (data: any) => void
+    actions?: Array<{
+        icon: string,
+        element: JSX.Element,
+        onClick: (event: any, data: any) => void
+    }>
 }
 
 class Table extends React.Component<IProps, IState> {
@@ -192,7 +174,7 @@ class Table extends React.Component<IProps, IState> {
     }
 
     render = () => {
-        const { title, objects, isPending, updateRow, deleteRow } = this.props;
+        const { title, objects, isPending, actions } = this.props;
 
         const columns = this.getColumns(objects);
         const data = this.getData(columns, objects);
@@ -206,8 +188,7 @@ class Table extends React.Component<IProps, IState> {
                 columns={columns}
                 data={data}
                 isLoading={isLoading}
-                updateRow={isPending ? undefined : updateRow}
-                deleteRow={isPending ? undefined : deleteRow}
+                actions={actions}
             />
         );
     }

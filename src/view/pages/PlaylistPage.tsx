@@ -19,9 +19,9 @@ import Table from "../components/Table";
 import Card from "../components/Card";
 import Button from "@material-ui/core/Button";
 import Icon from '@material-ui/core/Icon';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { red } from '@material-ui/core/colors';
 import { history } from "../../store/index";
+import DeleteIcon from '@material-ui/icons/HighlightOff';
 
 interface IProps {
     match: { params: { playlistID: number } },
@@ -110,7 +110,13 @@ class PlaylistPage extends React.Component<Props, IState> {
                             title={playlist?.title}
                             objects={songs}
                             isPending={isPending}
-                            deleteRow={(data: any) => this.handleRemoveSong(data, playlistID)}
+                            actions={[
+                                {
+                                    icon: 'delete',
+                                    element: <DeleteIcon />,
+                                    onClick: (data: any) => this.handleRemoveSong(data, playlistID)
+                                }
+                            ]}
                         />
                     </Grid>
                     <Grid item xs={12} md={3}>

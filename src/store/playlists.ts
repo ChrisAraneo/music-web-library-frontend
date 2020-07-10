@@ -89,6 +89,9 @@ export function deletePlaylist(id: number) {
     store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${id}`, {},
         () => actionDeletePlaylist(id)));
 }
-export function deleteRecordFromPlaylist(id: number, track: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${id}/${track}`, {}, (playlist: Playlist) => actionSetPlaylist(playlist)));
+export function addRecordToPlaylist(playlistID: number, songID: number) {
+    store.dispatch(requestPost(`http://localhost:8080/api/playlists/${playlistID}/${songID}`, {}, (playlist: Playlist) => actionSetPlaylist(playlist)));
+}
+export function deleteRecordFromPlaylist(playlistID: number, track: number) {
+    store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${playlistID}/${track}`, {}, (playlist: Playlist) => actionSetPlaylist(playlist)));
 }
