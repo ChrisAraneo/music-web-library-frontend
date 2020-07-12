@@ -11,66 +11,8 @@ import { getSongsList } from "../../store/songs";
 import Song from "../../model/Song";
 import Icon from '@material-ui/icons/PlaylistAdd';
 import { addRecordToPlaylist, getPlaylistsList } from "../../store/playlists";
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions/DialogActions";
-import Button from "@material-ui/core/Button/Button";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import Select from "@material-ui/core/Select/Select";
+import DialogAddSongToPlaylist from "../components/DialogAddSongToPlaylist";
 
-
-interface IInnerProps {
-    playlists: Playlist[],
-    open: boolean,
-    handleClose: () => void,
-    handleChoosePlaylist: (playlistID: number) => void
-}
-
-const AddDialog: React.FC<IInnerProps> = (props: IInnerProps) => {
-    const { open, handleClose, handleChoosePlaylist, playlists } = props;
-
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        handleChoosePlaylist(event.target.value as number);
-    };
-
-    return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description">
-            <DialogTitle id="alert-dialog-title">Wybierz listę do której dodać utwór</DialogTitle>
-            <DialogContent style={{ minWidth: '400px', minHeight: '300px' }}>
-                <FormControl>
-                    <InputLabel id="demo-simple-select-label">Wybierz</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={undefined}
-                        onChange={handleChange}>
-                        {
-                            playlists.map((playlist: Playlist) => {
-                                if (playlist) {
-                                    return (<MenuItem value={playlist?.playlistID}>{playlist?.title}</MenuItem>);
-                                } else {
-                                    return null;
-                                }
-                            })
-                        }
-                    </Select>
-                </FormControl>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => alert("Wyslano TODO")} color="primary">Dodaj</Button>
-                <Button onClick={handleClose} color="primary" autoFocus>Anuluj</Button>
-            </DialogActions>
-        </Dialog>
-    );
-}
 
 interface IProps {
 
@@ -97,17 +39,23 @@ class SongListPage extends React.Component<Props, IState> {
 
     componentDidMount() {
         getSongsList();
-        getPlaylistsList();
+
+        const { token } = this.props?.auth;
+        if (token) {
+            getPlaylistsList();
+        }
     }
 
-    handleOpenAddDialog = (data: any) => {
+    handleToggleDialog = (data: any) => {
         if (!this.state.open) {
             const link = data["Nazwa utworu"];
             if (link) {
+                console.log("SONG DATA", data);
                 const { props } = link;
                 const { to } = props;
                 const parts = to.split("/");
                 const songID = parts[parts.length - 1];
+                console.log("SONG ID", songID);
                 this.setState({
                     open: true,
                     selectedSongID: songID
@@ -115,31 +63,29 @@ class SongListPage extends React.Component<Props, IState> {
             }
         } else {
             this.setState({
-                open: false,
-                selectedSongID: undefined
+                open: false
             });
         }
     }
 
     handleChoosePlaylist = (playlistID: number) => {
-        alert(`Wybrano playliste ${playlistID}`);
         this.setState({
             selectedPlaylistID: playlistID
         });
     }
 
-    handleAddSongToPlaylist = (playlistID: number | undefined, songID: number | undefined) => {
-        if (songID === undefined || playlistID === undefined) {
+    handleAddSongToPlaylist = (selectedPlaylistID: number | undefined, selectedSongID: number | undefined) => {
+        if (selectedSongID === undefined || selectedPlaylistID === undefined) {
             return;
         }
+
+        addRecordToPlaylist(selectedPlaylistID, selectedSongID);
 
         this.setState({
             open: false,
             selectedSongID: undefined,
             selectedPlaylistID: undefined
-        },
-            () => addRecordToPlaylist(playlistID, songID)
-        );
+        });
     }
 
     processArtistsArray = (artists: Artist[]) => {
@@ -169,9 +115,17 @@ class SongListPage extends React.Component<Props, IState> {
     render = () => {
         const { isPending, hasError, error } = this.props.fetching;
         const { open, selectedSongID, selectedPlaylistID } = this.state;
+        const { token } = this.props?.auth;
         const { songs, playlists } = this.props;
 
         const data = this.processData(songs);
+        const actions = (token ? [
+            {
+                icon: 'add',
+                element: <Icon />,
+                onClick: (event: any, data: any) => this.handleToggleDialog(data)
+            }
+        ] : undefined);
 
         return (
             <>
@@ -181,23 +135,20 @@ class SongListPage extends React.Component<Props, IState> {
                         :
                         null
                 }
-                <AddDialog
+                <DialogAddSongToPlaylist
                     playlists={playlists}
                     open={!isPending && open}
+                    selectedPlaylistID={selectedPlaylistID}
+                    selectedSongID={selectedSongID}
                     handleClose={() => this.setState({ open: false })}
                     handleChoosePlaylist={(playlistID: number) => this.handleChoosePlaylist(playlistID)}
+                    submit={() => this.handleAddSongToPlaylist(selectedPlaylistID, selectedSongID)}
                 />
                 <Table
                     title="Utwory muzyczne"
                     objects={data}
                     isPending={isPending}
-                    actions={[
-                        {
-                            icon: 'add',
-                            element: <Icon />,
-                            onClick: (event: any, data: any) => this.handleOpenAddDialog(data)
-                        }
-                    ]} />
+                    actions={actions} />
             </>
         );
     }
@@ -206,13 +157,15 @@ class SongListPage extends React.Component<Props, IState> {
 interface LinkStateProps {
     fetching: any,
     songs: Song[],
-    playlists: Playlist[]
+    playlists: Playlist[],
+    auth: any
 }
 const mapStateToProps = (
     state: AppState): LinkStateProps => ({
         fetching: state.fetching,
         songs: state.songs,
-        playlists: state.playlists
+        playlists: state.playlists,
+        auth: state.auth
     });
 
 export default connect(mapStateToProps, null)(SongListPage);

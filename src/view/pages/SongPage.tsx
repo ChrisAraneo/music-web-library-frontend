@@ -13,22 +13,42 @@ import Link from "@material-ui/core/Link";
 import PageHeader from "../components/PageHeader";
 import SongURL from "../../model/SongURL";
 import TableList from "../components/TableList";
+import { getPlaylistsList, addRecordToPlaylist } from "../../store/playlists";
+import Playlist from "../../model/Playlist";
+import DialogAddSongToPlaylist from "../components/DialogAddSongToPlaylist";
+import Card from "../components/Card";
+import Button from "@material-ui/core/Button/Button";
+import Icon from '@material-ui/icons/PlaylistAdd';
 
 interface IProps {
     match: { params: { songID: number } },
 }
 
 interface IState {
-
+    open: boolean,
+    selectedPlaylistID: number | undefined
 }
 
 type Props = IProps & LinkStateProps;
 
 class SongPage extends React.Component<Props, IState> {
 
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            open: false,
+            selectedPlaylistID: undefined
+        }
+    }
+
     componentDidMount() {
         const { songID } = this.props.match.params;
         getSong(songID);
+
+        const { token } = this.props?.auth;
+        if (token) {
+            getPlaylistsList();
+        }
     }
 
     processSong = (song: Song | undefined): object => {
@@ -59,15 +79,47 @@ class SongPage extends React.Component<Props, IState> {
         return songURLs?.map((url: SongURL, index: number, array: Array<any>) => <><a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary" href={`${url.url}`} target="_blank">{url.url}</a>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>);
     }
 
+    handleChoosePlaylist = (playlistID: number) => {
+        this.setState({
+            selectedPlaylistID: playlistID
+        });
+    }
+
+    handleAddSongToPlaylist = (selectedPlaylistID: number | undefined, selectedSongID: number | undefined) => {
+        if (selectedSongID === undefined || selectedPlaylistID === undefined) {
+            return;
+        }
+
+        addRecordToPlaylist(selectedPlaylistID, selectedSongID);
+
+        this.setState({
+            open: false,
+            selectedPlaylistID: undefined
+        });
+    }
+
     render = () => {
-        const { songs } = this.props;
+        const { songs, playlists, fetching, auth } = this.props;
+        const { isPending } = fetching;
         const { songID } = this.props.match.params;
+
+        const { selectedPlaylistID, open } = this.state;
+        const { token } = auth;
 
         const song = songs.find((song: Song) => (song ? song.songID == songID : undefined));
         const urls = (song ? this.processURLs(song.songURLs) : []);
 
         return (
             <>
+                <DialogAddSongToPlaylist
+                    playlists={playlists}
+                    open={!isPending && open}
+                    selectedPlaylistID={selectedPlaylistID}
+                    selectedSongID={songID}
+                    handleClose={() => this.setState({ open: false })}
+                    handleChoosePlaylist={(playlistID: number) => this.handleChoosePlaylist(playlistID)}
+                    submit={() => this.handleAddSongToPlaylist(selectedPlaylistID, songID)}
+                />
                 <PageHeader title={song?.title} />
                 <div>
                     <Grid container spacing={3}>
@@ -77,23 +129,39 @@ class SongPage extends React.Component<Props, IState> {
                         <Grid item xs={12} md={4}>
                             <TableList array={urls} />
                         </Grid>
+                        {
+                            token ?
+                                (<Grid item xs={12} md={12}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        startIcon={<Icon />}
+                                        onClick={() => this.setState({ open: true })}>
+                                        Dodaj utwór do listy
+                                    </Button>
+                                </Grid>)
+                                :
+                                null
+                        }
                     </Grid>
                 </div>
-
             </>
         );
-
     }
 };
 
 interface LinkStateProps {
     fetching: any,
-    songs: Song[]
+    songs: Song[],
+    playlists: Playlist[],
+    auth: any
 }
 const mapStateToProps = (
     state: AppState): LinkStateProps => ({
         fetching: state.fetching,
-        songs: state.songs
+        songs: state.songs,
+        playlists: state.playlists,
+        auth: state.auth
     });
 
 export default connect(mapStateToProps, null)(SongPage);

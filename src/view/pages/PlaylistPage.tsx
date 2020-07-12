@@ -6,11 +6,8 @@ import Artist from "../../model/Artist";
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 
-import TableDetails from "../components/TableDetails";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Album from "../../model/Album";
-import Song, { SongInAlbum, SongInPlaylist } from "../../model/Song";
+import Song, { SongInPlaylist } from "../../model/Song";
 import { getPlaylist, deleteRecordFromPlaylist, deletePlaylist } from "../../store/playlists";
 import PageHeader from "../components/PageHeader";
 import Playlist from "../../model/Playlist";
@@ -18,7 +15,6 @@ import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import Table from "../components/Table";
 import Card from "../components/Card";
 import Button from "@material-ui/core/Button";
-import Icon from '@material-ui/core/Icon';
 import { red } from '@material-ui/core/colors';
 import { history } from "../../store/index";
 import DeleteIcon from '@material-ui/icons/HighlightOff';
@@ -83,6 +79,7 @@ class PlaylistPage extends React.Component<Props, IState> {
     }
 
     handleRemoveSong = (data: any, playlistID: number) => {
+        console.log("DATA REMOVING", data);
         const track = data["#"];
         deleteRecordFromPlaylist(playlistID, track);
     }
@@ -114,13 +111,13 @@ class PlaylistPage extends React.Component<Props, IState> {
                                 {
                                     icon: 'delete',
                                     element: <DeleteIcon />,
-                                    onClick: (data: any) => this.handleRemoveSong(data, playlistID)
+                                    onClick: (event: any, data: any) => this.handleRemoveSong(data, playlistID)
                                 }
                             ]}
                         />
                     </Grid>
-                    <Grid item xs={12} md={3}>
-                        <Card title="">
+                    <Grid item xs={12} md={6}>
+                        <Card title="Opcje">
                             <div className={classes.wrapper}>
                                 <Button
                                     className={classes.button}
@@ -147,10 +144,10 @@ const styles = (theme: Theme) => createStyles({
         margin: theme.spacing(1, 0, 1, 0)
     },
     button: {
-        color: theme.palette.getContrastText(red[600]),
-        backgroundColor: red[600],
+        color: theme.palette.getContrastText(red[400]),
+        backgroundColor: red[300],
         '&:hover': {
-            backgroundColor: red[800],
+            backgroundColor: red[500],
         },
     },
     wrapper: {
