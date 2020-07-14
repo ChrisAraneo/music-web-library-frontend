@@ -5,6 +5,7 @@ export default interface Review {
     reviewID: number,
     content: string,
     title: string,
-    album: Album,
-    user: User
+    user: User,
+
+    album?: Album
 }

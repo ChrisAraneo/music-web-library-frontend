@@ -9,6 +9,7 @@ import authReducer from "./auth";
 import songReducer from "./songs";
 import albumReducer from "./albums";
 import playlistReducer from "./playlists";
+import reviewsReducer from "./reviews";
 
 // CREATING ROUTING HISTORY
 export const history = createBrowserHistory();
@@ -21,7 +22,8 @@ export const rootReducer = combineReducers({
     artists: artistReducer,
     songs: songReducer,
     albums: albumReducer,
-    playlists: playlistReducer
+    playlists: playlistReducer,
+    reviews: reviewsReducer
 });
 
 // CREATING STORE

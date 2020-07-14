@@ -83,7 +83,6 @@ class PlaylistListPage extends React.Component<Props, IState> {
                         :
                         null
                 }
-
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8}>
                         <Table title="Twoje listy utworów" objects={data} isPending={isPending} />

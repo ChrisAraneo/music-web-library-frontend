@@ -15,7 +15,6 @@ import DialogAddSongToPlaylist from "../components/DialogAddSongToPlaylist";
 
 
 interface IProps {
-
 }
 
 interface IState {
