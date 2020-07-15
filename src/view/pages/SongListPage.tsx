@@ -12,6 +12,7 @@ import Song from "../../model/Song";
 import Icon from '@material-ui/icons/PlaylistAdd';
 import { addRecordToPlaylist, getPlaylistsList } from "../../store/playlists";
 import DialogAddSongToPlaylist from "../components/DialogAddSongToPlaylist";
+import PageHeader from "../components/PageHeader";
 
 
 interface IProps {
@@ -143,8 +144,9 @@ class SongListPage extends React.Component<Props, IState> {
                     handleChoosePlaylist={(playlistID: number) => this.handleChoosePlaylist(playlistID)}
                     submit={() => this.handleAddSongToPlaylist(selectedPlaylistID, selectedSongID)}
                 />
+                <PageHeader title="Utwory muzyczne" />
                 <Table
-                    title="Utwory muzyczne"
+                    title="Lista utworów muzycznych"
                     objects={data}
                     isPending={isPending}
                     actions={actions} />

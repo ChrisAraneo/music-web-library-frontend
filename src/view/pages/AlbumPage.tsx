@@ -198,7 +198,9 @@ class AlbumPage extends React.Component<Props, IState> {
                     handleChoosePlaylist={(playlistID: number) => this.handleChoosePlaylist(playlistID)}
                     submit={() => this.handleAddSongToPlaylist(selectedPlaylistID, selectedSongID)}
                 />
-                <PageHeader title={album?.title} />
+                <PageHeader
+                    title={album?.title}
+                    aboveTitle="Album muzyczny" />
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={12}>
                         <Table

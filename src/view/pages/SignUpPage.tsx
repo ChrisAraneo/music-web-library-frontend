@@ -22,7 +22,10 @@ import CircularProgress from "../components/CircularProgress";
 import { signUpInit, signUp } from "../../store/auth";
 import Success from "../components/Success";
 import Link from "@material-ui/core/Link";
+import PageHeader from "../components/PageHeader";
+import Grid from "@material-ui/core/Grid/Grid";
 
+import signUpImage from '../../images/sign-up.png';
 
 interface IProps {
     classes: any
@@ -129,68 +132,77 @@ class SignUpPage extends React.Component<Props, IState> {
         } else {
             return (
                 <div className={classes.wrapper}>
-                    <Card title="Tworzenie nowego konta">
-                        <form className={classes.form} noValidate autoComplete="off">
-                            {
-                                hasError ?
-                                    (<Error title="Wystąpił błąd" error={error} />)
-                                    :
-                                    null
-                            }
-                            <TextField
-                                fullWidth={true}
-                                label="Login"
-                                required
-                                onChange={this.handleChangeUsername}
-                                value={this.state.username} />
-                            <TextField
-                                fullWidth={true}
-                                label="Wyświetlana nazwa"
-                                required
-                                onChange={this.handleChangeName}
-                                value={this.state.name} />
-                            <TextField
-                                fullWidth={true}
-                                label="E-mail"
-                                required
-                                onChange={this.handleChangeEmail}
-                                value={this.state.email} />
-                            <TextField
-                                fullWidth={true}
-                                label="Hasło"
-                                required
-                                onChange={this.handleChangePassword1}
-                                value={this.state.password1} />
-                            <TextField
-                                fullWidth={true}
-                                label="Powtórz hasło"
-                                required
-                                onChange={this.handleChangePassword2}
-                                value={this.state.password2} />
-                        </form>
-                        <DividerGradient />
-                        <div className={classes.buttonContainer}>
-                            <Typography className={classes.signIn}>
-                                Masz już konto?{` `}
-                                <Link href="/signin" onClick={() => history.push("/signin")}>Zaloguj się</Link>
-                            </Typography>
-
-                            <div className={classes.rightContainer}>
-                                <CircularProgress enabled={isPending} />
-                                <Button
-                                    className={classes.button}
-                                    variant="contained"
-                                    color="primary"
-                                    disableElevation
-                                    size="large"
-                                    onClick={this.submitForm}
-                                    disabled={isPending}>
-                                    Utwórz konto
+                    <Grid container justify="center">
+                        <Grid item xs={12} md={5}>
+                            <PageHeader title="Zakładanie konta" />
+                            <Card title="Tworzenie nowego konta">
+                                <form className={classes.form} noValidate autoComplete="off">
+                                    {
+                                        hasError ?
+                                            (<Error title="Wystąpił błąd" error={error} />)
+                                            :
+                                            null
+                                    }
+                                    <TextField
+                                        fullWidth={true}
+                                        label="Login"
+                                        required
+                                        onChange={this.handleChangeUsername}
+                                        value={this.state.username} />
+                                    <TextField
+                                        fullWidth={true}
+                                        label="Wyświetlana nazwa"
+                                        required
+                                        onChange={this.handleChangeName}
+                                        value={this.state.name} />
+                                    <TextField
+                                        fullWidth={true}
+                                        label="E-mail"
+                                        required
+                                        onChange={this.handleChangeEmail}
+                                        value={this.state.email} />
+                                    <TextField
+                                        fullWidth={true}
+                                        label="Hasło"
+                                        required
+                                        onChange={this.handleChangePassword1}
+                                        value={this.state.password1} />
+                                    <TextField
+                                        fullWidth={true}
+                                        label="Powtórz hasło"
+                                        required
+                                        onChange={this.handleChangePassword2}
+                                        value={this.state.password2} />
+                                </form>
+                                <DividerGradient />
+                                <div className={classes.buttonContainer}>
+                                    <Typography className={classes.signIn}>
+                                        Masz już konto?{` `}
+                                        <Link href="/signin" onClick={() => history.push("/signin")}>Zaloguj się</Link>
+                                    </Typography>
+                                    <div className={classes.rightContainer}>
+                                        <CircularProgress enabled={isPending} />
+                                        <Button
+                                            className={classes.button}
+                                            variant="contained"
+                                            color="primary"
+                                            disableElevation
+                                            size="large"
+                                            onClick={this.submitForm}
+                                            disabled={isPending}>
+                                            Utwórz konto
                                 </Button>
+                                    </div>
+                                </div>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={undefined} md={4}>
+                            <div className={classes.imageWrapper}>
+                                <img className={classes.image} src={signUpImage} alt="Zakładanie konta" />
                             </div>
+                        </Grid>
+                    </Grid>
 
-                        </div>
-                    </Card>
                 </div>
             );
         }
@@ -210,7 +222,6 @@ const styles = (theme: Theme) => createStyles({
         boxSizing: 'border-box',
         padding: theme.spacing(3),
         marginBottom: theme.spacing(2),
-        maxWidth: theme.breakpoints.width("sm"),
         '& .MuiInputBase-root': {
             marginBottom: theme.spacing(3)
         }
@@ -236,6 +247,16 @@ const styles = (theme: Theme) => createStyles({
     rightContainer: {
         display: 'flex',
         flexDirection: 'row'
+    },
+    imageWrapper: {
+        padding: theme.spacing(4),
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: '100%'
+    },
+    image: {
+
     }
 });
 

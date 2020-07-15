@@ -13,6 +13,7 @@ import Page from '../components/Page';
 import Card from "../components/Card";
 import Table from "../components/Table";
 import Error from "../components/Error";
+import PageHeader from "../components/PageHeader";
 
 interface IProps {
 
@@ -56,7 +57,8 @@ class ArtistListPage extends React.Component<Props, IState> {
                         :
                         null
                 }
-                <Table title="Wykonawcy" objects={data} isPending={isPending} />
+                <PageHeader title="Wykonawcy" />
+                <Table title="Lista wykonawców" objects={data} isPending={isPending} />
             </>
         );
     }

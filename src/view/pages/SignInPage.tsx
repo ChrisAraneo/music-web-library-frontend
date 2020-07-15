@@ -22,6 +22,10 @@ import CircularProgress from "../components/CircularProgress";
 import { signIn } from "../../store/auth";
 import Success from "../components/Success";
 import Link from "@material-ui/core/Link";
+import PageHeader from "../components/PageHeader";
+import Grid from "@material-ui/core/Grid/Grid";
+
+import signInImage from '../../images/sign-in.png';
 
 
 interface IProps {
@@ -75,62 +79,63 @@ class SignInPage extends React.Component<Props, IState> {
         const { classes } = this.props;
 
         return (
-            <div className={classes.wrapper}>
-                <Card title="Logowanie">
-                    <form className={classes.form} noValidate autoComplete="off">
-                        {
-                            hasError ?
-                                (<Error title="Wystąpił błąd" error={error} />)
-                                :
-                                null
-                        }
-                        <TextField
-                            fullWidth={true}
-                            label="Login lub e-mail"
-                            required
-                            onChange={this.handleChangeUsernameOrEmail}
-                            value={this.state.usernameOrEmail} />
-                        <TextField
-                            fullWidth={true}
-                            label="Hasło"
-                            required
-                            onChange={this.handleChangePassword}
-                            value={this.state.password} />
-                    </form>
-                    <DividerGradient />
-                    <div className={classes.buttonContainer}>
-                        <Typography className={classes.signIn}>
-                            <Link href="/signin" onClick={() => history.push("/signin")}>Nie masz konta?</Link>
-                        </Typography>
-                        <div className={classes.rightContainer}>
-                            <CircularProgress enabled={isPending} />
-                            <Button
-                                className={classes.button}
-                                variant="contained"
-                                color="primary"
-                                disableElevation
-                                size="large"
-                                onClick={this.submitForm}
-                                disabled={isPending}>
-                                Zaloguj się
+            <Grid container justify="center">
+                <Grid item xs={12} md={4}>
+                    <PageHeader title="Zaloguj się" />
+                    <Card title="Logowanie">
+                        <form className={classes.form} noValidate autoComplete="off">
+                            {
+                                hasError ?
+                                    (<Error title="Wystąpił błąd" error={error} />)
+                                    :
+                                    null
+                            }
+                            <TextField
+                                fullWidth={true}
+                                label="Login lub e-mail"
+                                required
+                                onChange={this.handleChangeUsernameOrEmail}
+                                value={this.state.usernameOrEmail} />
+                            <TextField
+                                fullWidth={true}
+                                label="Hasło"
+                                required
+                                onChange={this.handleChangePassword}
+                                value={this.state.password} />
+                        </form>
+                        <DividerGradient />
+                        <div className={classes.buttonContainer}>
+                            <Typography className={classes.signIn}>
+                                <Link href="/signup" onClick={() => history.push("/signup")}>Nie masz konta?</Link>
+                            </Typography>
+                            <div className={classes.rightContainer}>
+                                <CircularProgress enabled={isPending} />
+                                <Button
+                                    className={classes.button}
+                                    variant="contained"
+                                    color="primary"
+                                    disableElevation
+                                    size="large"
+                                    onClick={this.submitForm}
+                                    disabled={isPending}>
+                                    Zaloguj się
                                 </Button>
-                        </div>
+                            </div>
 
+                        </div>
+                    </Card>
+                </Grid>
+                <Grid item xs={undefined} md={5}>
+                    <div className={classes.imageWrapper}>
+                        <img className={classes.image} src={signInImage} alt="Logowanie" />
                     </div>
-                </Card>
-            </div>
+                </Grid>
+            </Grid>
         );
     }
-
 };
 
 const styles = (theme: Theme) => createStyles({
-    wrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
     form: {
         boxSizing: 'border-box',
         padding: theme.spacing(3),
@@ -161,7 +166,18 @@ const styles = (theme: Theme) => createStyles({
     rightContainer: {
         display: 'flex',
         flexDirection: 'row'
-    }
+    },
+    imageWrapper: {
+        padding: theme.spacing(4),
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        height: '100%'
+    },
+    image: {
+        width: '100%',
+        height: 'auto'
+    },
 });
 
 interface LinkStateProps {

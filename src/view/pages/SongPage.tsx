@@ -120,7 +120,10 @@ class SongPage extends React.Component<Props, IState> {
                     handleChoosePlaylist={(playlistID: number) => this.handleChoosePlaylist(playlistID)}
                     submit={() => this.handleAddSongToPlaylist(selectedPlaylistID, songID)}
                 />
-                <PageHeader title={song?.title} />
+                <PageHeader
+                    title={song?.title}
+                    aboveTitle="Utwór muzyczny"
+                />
                 <div>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={8}>

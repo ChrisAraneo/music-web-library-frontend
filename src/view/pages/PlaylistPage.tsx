@@ -100,7 +100,9 @@ class PlaylistPage extends React.Component<Props, IState> {
 
         return (
             <>
-                <PageHeader title={playlist?.title} />
+                <PageHeader
+                    title={playlist?.title}
+                    aboveTitle="Lista utworów" />
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Table

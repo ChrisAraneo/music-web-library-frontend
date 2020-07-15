@@ -72,7 +72,9 @@ class ArtistPage extends React.Component<Props, IState> {
 
         return (
             <>
-                <PageHeader title={artist?.artistName} />
+                <PageHeader
+                    title={artist?.artistName}
+                    aboveTitle="Wykonawca" />
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
                         <Table title="Albumy" objects={albums} isPending={isPending} />

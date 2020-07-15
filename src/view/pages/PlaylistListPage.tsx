@@ -20,6 +20,7 @@ import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import PageHeader from "../components/PageHeader";
 
 interface IProps {
     classes: any
@@ -83,6 +84,8 @@ class PlaylistListPage extends React.Component<Props, IState> {
                         :
                         null
                 }
+
+                <PageHeader title="Listy utworów" />
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8}>
                         <Table title="Twoje listy utworów" objects={data} isPending={isPending} />

@@ -8,6 +8,7 @@ import Table from "../components/Table";
 import Error from "../components/Error";
 import { getAlbumsList } from "../../store/albums";
 import Album from "../../model/Album";
+import PageHeader from "../components/PageHeader";
 
 interface IProps {
 
@@ -59,7 +60,8 @@ class AlbumListPage extends React.Component<Props, IState> {
                         :
                         null
                 }
-                <Table title="Albumy muzyczne" objects={data} isPending={isPending} />
+                <PageHeader title="Albumy muzyczne" />
+                <Table title="Lista albumów muzycznych" objects={data} isPending={isPending} />
             </>
         );
     }
