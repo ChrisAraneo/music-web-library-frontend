@@ -1,15 +1,9 @@
 import React from "react";
-import { Provider, connect } from "react-redux";
-import { store, AppState } from "../../store/index";
-import Artist from "../../model/Artist";
-import { ThunkDispatch } from "redux-thunk";
-import { bindActionCreators } from "redux";
-import { getArtistsList, getArtist } from "../../store/artists";
+import { connect } from "react-redux";
+import { AppState } from "../../store/index";
 
-import Page from '../components/Page';
 import Button from "@material-ui/core/Button";
 import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Title from "../components/Title";
 import Typography from "@material-ui/core/Typography";
 
 import { history } from "../../store/index";
@@ -20,12 +14,12 @@ import Error from "../components/Error";
 import CircularProgress from "../components/CircularProgress";
 
 import { signIn } from "../../store/auth";
-import Success from "../components/Success";
 import Link from "@material-ui/core/Link";
 import PageHeader from "../components/PageHeader";
 import Grid from "@material-ui/core/Grid/Grid";
 
-import signInImage from '../../images/sign-in.png';
+import signInImage from "../../images/sign-in.png";
+
 
 
 interface IProps {
@@ -66,7 +60,7 @@ class SignInPage extends React.Component<Props, IState> {
         }
     }
 
-    submitForm = (event: any) => {
+    submitForm = () => {
         const { usernameOrEmail, password } = this.state;
         signIn(usernameOrEmail, password,
             () => history.push("/")
@@ -185,11 +179,9 @@ interface LinkStateProps {
     auth: any,
 }
 const mapStateToProps = (
-    state: AppState,
-    ownProps: IProps
-): LinkStateProps => ({
-    fetching: state.fetching,
-    auth: state.auth
-});
+    state: AppState): LinkStateProps => ({
+        fetching: state.fetching,
+        auth: state.auth
+    });
 
 export default connect(mapStateToProps, null)(withStyles(styles, { withTheme: true })(SignInPage));

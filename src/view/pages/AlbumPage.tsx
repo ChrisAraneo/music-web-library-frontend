@@ -216,6 +216,9 @@ class AlbumPage extends React.Component<Props, IState> {
                             isPending={isPending}
                         />
                     </Grid>
+                    <Link href="#" variant="body2" component={RouterLink} to={`/writereview/${albumID}`}>
+                        {`Napisz recenzję`}
+                    </Link>
                 </Grid>
             </>
         );

@@ -29,6 +29,7 @@ import SongPage from './view/pages/SongPage';
 import PlaylistListPage from './view/pages/PlaylistListPage';
 import PlaylistPage from './view/pages/PlaylistPage';
 import ReviewPage from './view/pages/ReviewPage';
+import WriteReviewPage from './view/pages/WriteReviewPage';
 
 export const App: React.FC = () => {
     return (
@@ -49,6 +50,7 @@ export const App: React.FC = () => {
                             <Route path="/playlists" exact component={PlaylistListPage} />
                             <Route path="/playlists/:playlistID?" component={PlaylistPage} />
                             <Route path="/reviews/:reviewID?" component={ReviewPage} />
+                            <Route path="/writereview/:albumID?" component={WriteReviewPage} />
                             <Route path="/" component={HomePage} />
                         </Switch>
                     </Page>

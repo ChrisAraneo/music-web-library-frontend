@@ -10,8 +10,8 @@ interface IProps {
 
 const Error: React.FC<IProps> = (props: IProps) => {
     const { title, error } = props;
-    let message = error.message;
-    let stack = error.stack;
+    let message = error?.message;
+    let stack = error?.stack;
     const classes = useStyles();
 
     return (
