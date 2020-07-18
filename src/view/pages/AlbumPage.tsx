@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { AppState } from "../../store/index";
+import { history, AppState } from "../../store/index";
 import Artist from "../../model/Artist";
 
 import { Link as RouterLink } from 'react-router-dom';
@@ -20,6 +20,8 @@ import { getSongsList } from "../../store/songs";
 import DialogAddSongToPlaylist from "../components/DialogAddSongToPlaylist";
 import Playlist from "../../model/Playlist";
 import Icon from '@material-ui/icons/PlaylistAdd';
+import ReviewIcon from '@material-ui/icons/RateReview';
+import Button from "@material-ui/core/Button/Button";
 
 interface IProps {
     match: { params: { albumID: number } },
@@ -216,9 +218,20 @@ class AlbumPage extends React.Component<Props, IState> {
                             isPending={isPending}
                         />
                     </Grid>
-                    <Link href="#" variant="body2" component={RouterLink} to={`/writereview/${albumID}`}>
-                        {`Napisz recenzję`}
-                    </Link>
+                    {
+                        token ?
+                            (<Grid item xs={12} md={12}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<ReviewIcon />}
+                                    onClick={() => history.push(`/writereview/${albumID}`)}>
+                                    Napisz recenzję
+                                </Button>
+                            </Grid>)
+                            :
+                            null
+                    }
                 </Grid>
             </>
         );

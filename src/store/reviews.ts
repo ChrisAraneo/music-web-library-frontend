@@ -2,6 +2,8 @@ import Review from "../model/Review";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
+import Album from "../model/Album";
+import User from "../model/User";
 
 // DEFAULT STATE
 const defaultState: Array<Review> = [];
@@ -55,7 +57,7 @@ export function getReviewList() {
 export function getReview(id: number) {
     store.dispatch(requestGet(`http://localhost:8080/api/reviews/${id}`, actionSetReview));
 }
-export function postReview(title: string, content: string, successCallback?: any) {
+export function postReview(albumID: number, title: string, content: string, captcha: string, successCallback?: any) {
     const details: any = {
         'title': title,
         'content': content
@@ -69,12 +71,13 @@ export function postReview(title: string, content: string, successCallback?: any
     }
 
     store.dispatch(requestPost(
-        `http://localhost:8080/api/reviews`,
+        `http://localhost:8080/api/reviews/${albumID}`,
         {
-            body: formBody.join("&"),
             headers: {
-                "Content-Type": `application/x-www-form-urlencoded; charset=UTF-8`
-            }
+                "Content-Type": `application/x-www-form-urlencoded; charset=UTF-8`,
+                "Captcha-Response": captcha
+            },
+            body: formBody.join("&")
         },
         (result) => {
             if (typeof successCallback === "function") {
