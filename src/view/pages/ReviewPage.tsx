@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { AppState } from "../../store/index";
 
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
@@ -10,9 +9,15 @@ import Typography from "@material-ui/core/Typography";
 import PageHeader from "../components/PageHeader";
 import Review from "../../model/Review";
 import { Theme, withStyles, createStyles, makeStyles } from "@material-ui/core/styles";
-import { getReview } from "../../store/reviews";
+import { getReview, deleteReview } from "../../store/reviews";
 import DividerGradient from "../components/DividerGradient";
-import { CircularProgress, Paper } from "@material-ui/core";
+import { CircularProgress, Paper, Button } from "@material-ui/core";
+import { history, AppState } from "../../store/index";
+
+import ReviewIcon from '@material-ui/icons/RateReview';
+
+import Card from "../components/Card";
+import Album from "../../model/Album";
 
 
 interface IProps {
@@ -32,6 +37,14 @@ class ReviewPage extends React.Component<Props, IState> {
         getReview(reviewID);
     }
 
+    handleDeleteReview = (reviewID: number, album: Album | undefined) => {
+        if (album) {
+            deleteReview(reviewID, () => history.push(`/albums/${album?.albumID}`));
+        } else {
+            deleteReview(reviewID, () => history.push(`/`));
+        }
+    }
+
     render = () => {
         const { classes } = this.props;
 
@@ -44,14 +57,16 @@ class ReviewPage extends React.Component<Props, IState> {
 
         const album = review ? (review.album ? review.album : undefined) : undefined;
         const albumLink = album ? (<Link component={RouterLink} to={`/albums/${album?.albumID}`}>{album?.title}</Link>) : null;
+        const albumID = album?.albumID;
 
         const content = review ? review.content : undefined;
         const user = review ? review.user : undefined;
 
+        const isItYours = user ? (user?.userID == auth?.user?.userID) : false;
 
         return (
             <>
-                <Grid container spacing={0} justify="center">
+                <Grid container spacing={isItYours ? 3 : 0} justify="center">
                     <Grid item xs={12} md={8}>
                         <PageHeader
                             title={title}
@@ -88,6 +103,34 @@ class ReviewPage extends React.Component<Props, IState> {
                             </div>
                         </Paper>
                     </Grid>
+                    {
+                        isItYours ?
+                            (<Grid item xs={12} md={8}>
+                                <Card title="Edytuj swoją recenzję">
+                                    <div className={classes.contentWrapper}>
+                                        <Typography variant="body2" gutterBottom className={classes.written}>
+                                            Powyższa recenzja jest napisana przez ciebie.
+                                        </Typography>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            startIcon={<ReviewIcon />}
+                                            onClick={() => history.push(`/writereview/${albumID}/${reviewID}`)}>
+                                            Edytuj recenzję
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            startIcon={<ReviewIcon />}
+                                            onClick={() => this.handleDeleteReview(reviewID, album)}>
+                                            Usuń recenzję
+                                        </Button>
+                                    </div>
+                                </Card>
+                            </Grid>)
+                            :
+                            null
+                    }
                 </Grid>
             </>
         );

@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import PageHeader from "../components/PageHeader";
 import Review from "../../model/Review";
 import { Theme, withStyles, createStyles, makeStyles } from "@material-ui/core/styles";
-import { getReview, postReview } from "../../store/reviews";
+import { getReview, postReview, updateReview } from "../../store/reviews";
 import DividerGradient from "../components/DividerGradient";
 import { Paper, TextField, Button } from "@material-ui/core";
 import Card from "../components/Card";
@@ -24,6 +24,7 @@ import {
 } from 'react-google-recaptcha-v3';
 import { RECAPTCHA_SITE_KEY } from "../../keys";
 import User from "../../model/User";
+import { getAlbum } from "../../store/albums";
 
 
 interface IState {
@@ -34,7 +35,7 @@ interface IState {
 }
 
 interface IProps {
-    match: { params: { albumID: number } },
+    match: { params: { albumID: number | undefined, reviewID: number | undefined } },
     classes: any
 }
 
@@ -49,6 +50,33 @@ class WriteReviewPage extends React.Component<Props, IState> {
             content: "",
             captcha: "",
             isVerified: false
+        }
+    }
+
+    componentDidMount = () => {
+        const { albumID, reviewID } = this.props?.match?.params;
+        if (reviewID && albumID) {
+            getReview(reviewID);
+        }
+    }
+
+    componentDidUpdate = () => {
+        const { reviews, match } = this.props;
+        const { albumID, reviewID } = match?.params;
+        const review = reviews?.find((review: Review) => review?.reviewID == reviewID);
+
+        if (review) {
+            const { title, content } = this.state;
+            if (!title && !content) {
+                const reviewTitle = review?.title;
+                const reviewContent = review?.content;
+                if (reviewTitle && reviewContent) {
+                    this.setState({
+                        title: reviewTitle,
+                        content: reviewContent
+                    })
+                }
+            }
         }
     }
 
@@ -73,8 +101,24 @@ class WriteReviewPage extends React.Component<Props, IState> {
 
     submitForm = async (event: any) => {
         const { title, content, captcha } = this.state;
-        const { albumID } = this.props?.match?.params;
-        postReview(albumID, title, content, captcha, () => alert("SUBMITTED"));
+        const { albumID, reviewID } = this.props?.match?.params;
+        if (albumID && !reviewID) {
+            postReview(albumID, title, content, captcha, () => history.push(`/albums/${albumID}`));
+        } else if (albumID && reviewID) {
+            const { reviews } = this.props;
+            const review = reviews?.find((review: Review) => review?.reviewID == reviewID);
+            if (review) {
+                const updated: Review = {
+                    reviewID: review?.reviewID,
+                    title,
+                    content,
+                    album: review?.album,
+                    user: review?.user
+                }
+                updateReview(updated, captcha,
+                    () => history.push(`/reviews/${reviewID}`));
+            }
+        }
     }
 
     render = () => {
@@ -97,7 +141,7 @@ class WriteReviewPage extends React.Component<Props, IState> {
                 <Grid container justify="center">
                     <Grid item xs={12} md={6}>
                         <PageHeader
-                            title="Recenzja albumu"
+                            title="Twoja recenzja"
                             aboveTitle={albumLink ?
                                 (<><span className={classes.spanWithMargin}>Recenzja albumu</span> {albumLink}</>) : null}
                         />
@@ -129,7 +173,7 @@ class WriteReviewPage extends React.Component<Props, IState> {
                             <DividerGradient />
                             <div className={classes.buttonContainer}>
                                 <Typography className={classes.signIn}>
-                                    <Link href={`albums/${albumID}`} onClick={() => history.push(`albums/${albumID}`)}>Powrót do albumu</Link>
+                                    <Link component={RouterLink} to={`/albums/${album?.albumID}`}>Wróć do albumu</Link>
                                 </Typography>
                                 <div className={classes.rightContainer}>
                                     <CircularProgress enabled={isPending} />
@@ -209,12 +253,14 @@ const styles = (theme: Theme) => createStyles({
 interface LinkStateProps {
     fetching: any,
     albums: Album[],
+    reviews: Review[],
     auth: any
 }
 const mapStateToProps =
     (state: AppState): LinkStateProps => ({
         fetching: state.fetching,
         albums: state.albums,
+        reviews: state.reviews,
         auth: state.auth
     });
 

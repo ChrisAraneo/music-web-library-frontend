@@ -54,8 +54,8 @@ export default function reducer(
 export function getReviewList() {
     store.dispatch(requestGet(`http://localhost:8080/api/reviews`, actionSetReviews));
 }
-export function getReview(id: number) {
-    store.dispatch(requestGet(`http://localhost:8080/api/reviews/${id}`, actionSetReview));
+export function getReview(reviewID: number) {
+    store.dispatch(requestGet(`http://localhost:8080/api/reviews/${reviewID}`, actionSetReview));
 }
 export function postReview(albumID: number, title: string, content: string, captcha: string, successCallback?: any) {
     const details: any = {
@@ -87,10 +87,53 @@ export function postReview(albumID: number, title: string, content: string, capt
         })
     );
 }
-export function updateReview(id: number) {
-    store.dispatch(requestPut(`http://localhost:8080/api/reviews/${id}`, {}, actionSetReview));
+export function updateReview(review: Review, captcha: string, successCallback: any) {
+    const details: any = {
+        'reviewID': review?.reviewID,
+        'title': review?.title,
+        'content': review?.content,
+        'album': review?.album?.albumID
+    };
+
+    if (review?.user?.userID) {
+        details['user'] = review?.user?.userID;
+    }
+
+    console.log("REVIEW", details)
+
+    let formBody = [];
+    for (const property in details) {
+        const encodedKey = encodeURIComponent(property);
+        const encodedValue = encodeURIComponent(details[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    store.dispatch(requestPut(
+        `http://localhost:8080/api/reviews/${review?.reviewID}`,
+        {
+            headers: {
+                "Content-Type": `application/x-www-form-urlencoded; charset=UTF-8`,
+                "Captcha-Response": captcha
+            },
+            body: formBody.join("&")
+        },
+        (result) => {
+            if (typeof successCallback === "function") {
+                successCallback();
+            }
+            return actionSetReview(result);
+        })
+    );
 }
-export function deleteReview(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/reviews/${id}`, {},
-        () => actionDeleteReview(id)));
+export function deleteReview(reviewID: number, successCallback: any) {
+    store.dispatch(requestDelete(
+        `http://localhost:8080/api/reviews/${reviewID}`,
+        {},
+        (result) => {
+            if (typeof successCallback === "function") {
+                successCallback();
+            }
+            return actionDeleteReview(reviewID);
+        })
+    );
 }

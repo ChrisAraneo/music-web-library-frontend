@@ -1,12 +1,14 @@
 import { store } from './index';
 import { requestPost } from '../service/requests';
 import Role from '../model/Role';
+import User from '../model/User';
 
 // DEFAULT STATE
 const defaultState: {
     usernameOrEmail: string,
     token: string | null,
     roles: Array<Role>,
+    user: User | undefined,
     signUp: {
         success: boolean | null,
         message: string | null
@@ -15,6 +17,7 @@ const defaultState: {
     usernameOrEmail: "",
     token: null,
     roles: [],
+    user: undefined,
     signUp: {
         success: null,
         message: null
@@ -38,7 +41,7 @@ export const actionSignUp = (
     signUp: result
 });
 export const actionSignIn = (
-    result: { accessToken: string, tokenType: string, userRoles: Array<any> },
+    result: { accessToken: string, tokenType: string, userRoles: Array<any>, user: User },
     usernameOrEmail: string
 ) => ({
     type: SIGN_IN,
@@ -75,6 +78,7 @@ export default function reducer(
                 usernameOrEmail: action.usernameOrEmail,
                 token: action.result.accessToken,
                 roles: action.result.userRoles,
+                user: action.result.user,
                 signUp: {
                     success: null,
                     message: null
@@ -86,6 +90,7 @@ export default function reducer(
                 ...state,
                 usernameOrEmail: "",
                 token: null,
+                user: undefined,
                 roles: []
             };
         }

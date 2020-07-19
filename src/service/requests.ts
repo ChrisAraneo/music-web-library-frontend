@@ -27,7 +27,7 @@ function request(
             })
             .then(json => {
                 console.log("JSON", json);
-                if (json.error) {
+                if (json?.error) {
                     dispatch(actionFetchError(json.error))
                     throw (json.error);
                 }
