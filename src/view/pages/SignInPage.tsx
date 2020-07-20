@@ -74,7 +74,7 @@ class SignInPage extends React.Component<Props, IState> {
 
         return (
             <Grid container justify="center">
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={5}>
                     <PageHeader title="Zaloguj się" />
                     <Card title="Logowanie">
                         <form className={classes.form} noValidate autoComplete="off">
@@ -119,7 +119,7 @@ class SignInPage extends React.Component<Props, IState> {
                         </div>
                     </Card>
                 </Grid>
-                <Grid item xs={undefined} md={5}>
+                <Grid item xs={undefined} md={4}>
                     <div className={classes.imageWrapper}>
                         <img className={classes.image} src={signInImage} alt="Logowanie" />
                     </div>

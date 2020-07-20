@@ -109,11 +109,18 @@ export function signUp(
     name: string,
     username: string,
     email: string,
-    password: string
+    password: string,
+    captcha: string
 ) {
-    store.dispatch(requestPost(`http://localhost:8080/api/signup`, {
-        body: JSON.stringify({ name, username, email, password })
-    }, actionSignUp));
+    store.dispatch(requestPost(`http://localhost:8080/api/signup`,
+        {
+            headers: {
+                "Captcha-Response": captcha
+            },
+            body: JSON.stringify({ name, username, email, password })
+        },
+        actionSignUp)
+    );
 }
 
 export function signIn(usernameOrEmail: string, password: string, successCallback?: any) {

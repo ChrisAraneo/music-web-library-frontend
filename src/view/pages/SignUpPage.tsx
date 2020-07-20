@@ -9,7 +9,6 @@ import { getArtistsList, getArtist } from "../../store/artists";
 import Page from '../components/Page';
 import Button from "@material-ui/core/Button";
 import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Title from "../components/Title";
 import Typography from "@material-ui/core/Typography";
 
 import { history } from "../../store/index";
@@ -25,6 +24,12 @@ import Link from "@material-ui/core/Link";
 import PageHeader from "../components/PageHeader";
 import Grid from "@material-ui/core/Grid/Grid";
 
+import {
+    GoogleReCaptchaProvider,
+    GoogleReCaptcha
+} from 'react-google-recaptcha-v3';
+import { RECAPTCHA_SITE_KEY } from "../../keys";
+
 import signUpImage from '../../images/sign-up.png';
 
 interface IProps {
@@ -36,7 +41,9 @@ interface IState {
     username: string,
     email: string,
     password1: string,
-    password2: string
+    password2: string,
+    captcha: string,
+    isVerified: boolean
 }
 
 type Props = IProps & LinkStateProps;
@@ -51,7 +58,9 @@ class SignUpPage extends React.Component<Props, IState> {
             username: "",
             email: "",
             password1: "",
-            password2: ""
+            password2: "",
+            captcha: "",
+            isVerified: false
         }
     }
 
@@ -89,10 +98,21 @@ class SignUpPage extends React.Component<Props, IState> {
         }
     }
 
+    handleVerifyCaptcha = (captcha: string) => {
+        this.setState({
+            captcha,
+            isVerified: true
+        });
+    }
+
     submitForm = (event: any) => {
-        const { name, username, email, password1 } = this.state;
-        signUp(name, username, email, password1);
-        this.setState({ name: "", username: "", email: "", password1: "", password2: "" });
+        const { name, username, email, password1, captcha, isVerified } = this.state;
+        if (isVerified) {
+            signUp(name, username, email, password1, captcha);
+            this.setState({ name: "", username: "", email: "", password1: "", password2: "" });
+        } else {
+            alert("Test captcha nie został spełniony!");
+        }
     }
 
     render = () => {
@@ -115,7 +135,7 @@ class SignUpPage extends React.Component<Props, IState> {
                                 onClick={() => history.push("/signin")}
                                 disabled={isPending}>
                                 Zaloguj się
-                                </Button>
+                            </Button>
                             <Button
                                 variant="outlined"
                                 color="primary"
@@ -124,7 +144,7 @@ class SignUpPage extends React.Component<Props, IState> {
                                 onClick={() => history.push("/")}
                                 disabled={isPending}>
                                 Wróć na stronę główną
-                                </Button>
+                            </Button>
                         </Success>
                     </div>
                 </div >
@@ -174,6 +194,11 @@ class SignUpPage extends React.Component<Props, IState> {
                                         onChange={this.handleChangePassword2}
                                         value={this.state.password2} />
                                 </form>
+                                <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
+                                    <GoogleReCaptcha onVerify={this.handleVerifyCaptcha} />
+                                </GoogleReCaptchaProvider>
+                                <script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} async
+                                    defer></script>
                                 <DividerGradient />
                                 <div className={classes.buttonContainer}>
                                     <Typography className={classes.signIn}>
@@ -189,9 +214,9 @@ class SignUpPage extends React.Component<Props, IState> {
                                             disableElevation
                                             size="large"
                                             onClick={this.submitForm}
-                                            disabled={isPending}>
+                                            disabled={isPending && this.state.isVerified}>
                                             Utwórz konto
-                                </Button>
+                                        </Button>
                                     </div>
                                 </div>
                             </Card>
@@ -202,13 +227,10 @@ class SignUpPage extends React.Component<Props, IState> {
                             </div>
                         </Grid>
                     </Grid>
-
                 </div>
             );
         }
-
     }
-
 };
 
 const styles = (theme: Theme) => createStyles({

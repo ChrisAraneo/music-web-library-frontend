@@ -23,8 +23,6 @@ import {
     GoogleReCaptcha
 } from 'react-google-recaptcha-v3';
 import { RECAPTCHA_SITE_KEY } from "../../keys";
-import User from "../../model/User";
-import { getAlbum } from "../../store/albums";
 
 
 interface IState {
@@ -74,7 +72,7 @@ class WriteReviewPage extends React.Component<Props, IState> {
                     this.setState({
                         title: reviewTitle,
                         content: reviewContent
-                    })
+                    });
                 }
             }
         }
@@ -100,24 +98,28 @@ class WriteReviewPage extends React.Component<Props, IState> {
     }
 
     submitForm = async (event: any) => {
-        const { title, content, captcha } = this.state;
+        const { title, content, captcha, isVerified } = this.state;
         const { albumID, reviewID } = this.props?.match?.params;
-        if (albumID && !reviewID) {
-            postReview(albumID, title, content, captcha, () => history.push(`/albums/${albumID}`));
-        } else if (albumID && reviewID) {
-            const { reviews } = this.props;
-            const review = reviews?.find((review: Review) => review?.reviewID == reviewID);
-            if (review) {
-                const updated: Review = {
-                    reviewID: review?.reviewID,
-                    title,
-                    content,
-                    album: review?.album,
-                    user: review?.user
+        if (isVerified) {
+            if (albumID && !reviewID) {
+                postReview(albumID, title, content, captcha, () => history.push(`/albums/${albumID}`));
+            } else if (albumID && reviewID) {
+                const { reviews } = this.props;
+                const review = reviews?.find((review: Review) => review?.reviewID == reviewID);
+                if (review) {
+                    const updated: Review = {
+                        reviewID: review?.reviewID,
+                        title,
+                        content,
+                        album: review?.album,
+                        user: review?.user
+                    }
+                    updateReview(updated, captcha,
+                        () => history.push(`/reviews/${reviewID}`));
                 }
-                updateReview(updated, captcha,
-                    () => history.push(`/reviews/${reviewID}`));
             }
+        } else {
+            alert("Test captcha nie został spełniony!");
         }
     }
 
@@ -164,7 +166,6 @@ class WriteReviewPage extends React.Component<Props, IState> {
                                     onChange={this.handleChangeContent}
                                     value={this.state.content} />
                             </form>
-                            <DividerGradient />
                             <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
                                 <GoogleReCaptcha onVerify={this.handleVerifyCaptcha} />
                             </GoogleReCaptchaProvider>
