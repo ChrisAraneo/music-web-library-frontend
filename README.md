@@ -8,14 +8,20 @@ Błędy:
 Menu po lewej stronie:
 * Zmiana ikon
 
+Strona powitalna:
+* Wizualna zmiana strony powitalnej
+
 SignUp:
-* Captcha na SignUp
+* ~~Captcha na SignUp~~
 * Hasła niewidoczne
 * Obsługa błędów
 * Obrazek
 
 SignIn:
 * Hasła niewidoczne
+
+Search:
+* Wyszukiwarka (?)
 
 Motyw interfejsu:
 * Zmiana kolorystyki interfejsu

@@ -2,10 +2,14 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import IconButton from '@material-ui/core/IconButton';
+
 import MenuIcon from '@material-ui/icons/Menu';
+
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import { history, AppState } from "../../../store/index";
+import Button from '@material-ui/core/Button';
 
 import { DRAWER_WIDTH } from './Drawer';
 import Drawer from './Drawer';
@@ -21,6 +25,7 @@ export const Page: React.FC<IProps> = (props: IProps) => {
     const classes = useStyles();
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -38,9 +43,15 @@ export const Page: React.FC<IProps> = (props: IProps) => {
                         className={classes.menuButton}>
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap>
-                        {title}
+                    <Typography variant="h6" className={classes.title} noWrap>
+                        {
+                            !mobileOpen ?
+                                title
+                                :
+                                ''
+                        }
                     </Typography>
+                    <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -70,11 +81,20 @@ const useStyles = makeStyles((theme: Theme) =>
                 marginLeft: DRAWER_WIDTH,
             },
         },
+        title: {
+            flexGrow: 1,
+        },
         menuButton: {
             marginRight: theme.spacing(2),
             [theme.breakpoints.up('sm')]: {
                 display: 'none',
             },
+        },
+        backButton: {
+            marginRight: theme.spacing(0)
+        },
+        forwardButton: {
+            marginRight: theme.spacing(3)
         },
         toolbar: theme.mixins.toolbar,
         content: {

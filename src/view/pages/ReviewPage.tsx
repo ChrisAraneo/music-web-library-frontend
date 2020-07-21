@@ -6,17 +6,17 @@ import Link from '@material-ui/core/Link';
 
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/basic/PageHeader";
 import Review from "../../model/Review";
 import { Theme, withStyles, createStyles, makeStyles } from "@material-ui/core/styles";
 import { getReview, deleteReview } from "../../store/reviews";
-import DividerGradient from "../components/DividerGradient";
+import DividerGradient from "../components/basic/DividerGradient";
 import { CircularProgress, Paper, Button } from "@material-ui/core";
 import { history, AppState } from "../../store/index";
 
 import ReviewIcon from '@material-ui/icons/RateReview';
 
-import Card from "../components/Card";
+import Card from "../components/basic/Card";
 import Album from "../../model/Album";
 
 

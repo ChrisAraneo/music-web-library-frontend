@@ -7,15 +7,15 @@ import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 import { history } from "../../store/index";
-import Card from "../components/Card";
-import DividerGradient from "../components/DividerGradient";
+import Card from "../components/basic/Card";
+import DividerGradient from "../components/basic/DividerGradient";
 import TextField from "@material-ui/core/TextField";
-import Error from "../components/Error";
-import CircularProgress from "../components/CircularProgress";
+import Error from "../components/basic/Error";
+import CircularProgress from "../components/basic/CircularProgress";
 
 import { signIn } from "../../store/auth";
 import Link from "@material-ui/core/Link";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/basic/PageHeader";
 import Grid from "@material-ui/core/Grid/Grid";
 
 import signInImage from "../../images/sign-in.png";

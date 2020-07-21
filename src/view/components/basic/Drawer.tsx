@@ -7,15 +7,11 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
-import { history, AppState } from "../../store/index";
+import { history, AppState } from "../../../store/index";
 import { connect } from 'react-redux';
-
-import { ROLE_ADMIN } from '../../model/Role';
-
-import { signOut } from "../../store/auth";
-import { isRegExp } from 'util';
+import { ROLE_ADMIN } from '../../../model/Role';
+import { signOut } from "../../../store/auth";
 
 export const DRAWER_WIDTH = 255;
 

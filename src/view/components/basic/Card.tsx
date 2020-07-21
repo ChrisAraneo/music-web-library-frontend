@@ -1,17 +1,11 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import MaterialCard from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import { Paper } from '@material-ui/core';
 import DividerGradient from './DividerGradient';
 import Title from './Title';
 
 interface IProps {
-    title: string,
+    title: string | JSX.Element,
     children?: any
 }
 

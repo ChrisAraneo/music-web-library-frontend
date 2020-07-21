@@ -9,11 +9,11 @@ import { getArtistsList, getArtist } from "../../store/artists";
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 
-import Page from '../components/Page';
-import Card from "../components/Card";
-import Table from "../components/Table";
-import Error from "../components/Error";
-import PageHeader from "../components/PageHeader";
+import Page from '../components/basic/Page';
+import Card from "../components/basic/Card";
+import Table from "../components/basic/Table";
+import Error from "../components/basic/Error";
+import PageHeader from "../components/basic/PageHeader";
 
 interface IProps {
 

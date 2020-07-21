@@ -1,26 +1,13 @@
 import React from "react";
 
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { connect } from "react-redux";
-import { AppState } from "../../store/index";
-import Artist from "../../model/Artist";
-import Playlist from "../../model/Playlist";
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
-import Table from "../components/Table";
-import Error from "../components/Error";
-import { getSongsList } from "../../store/songs";
-import Song from "../../model/Song";
-import Icon from '@material-ui/icons/PlaylistAdd';
-import { addRecordToPlaylist, getPlaylistsList } from "../../store/playlists";
+import Playlist from "../../../model/Playlist";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from "@material-ui/core/Button/Button";
 import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Select from "@material-ui/core/Select/Select";
 

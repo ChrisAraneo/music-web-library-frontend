@@ -4,11 +4,11 @@ import { AppState } from "../../store/index";
 import Artist from "../../model/Artist";
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
-import Table from "../components/Table";
-import Error from "../components/Error";
+import Table from "../components/basic/Table";
+import Error from "../components/basic/Error";
 import { getAlbumsList } from "../../store/albums";
 import Album from "../../model/Album";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/basic/PageHeader";
 
 interface IProps {
 

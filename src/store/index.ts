@@ -5,6 +5,7 @@ import thunk, { ThunkMiddleware } from "redux-thunk";
 
 import fetchingReducer from "./fetching";
 import artistReducer from "./artists";
+import artistTypesReducer from "./artistTypes";
 import authReducer from "./auth";
 import songReducer from "./songs";
 import albumReducer from "./albums";
@@ -20,6 +21,7 @@ export const rootReducer = combineReducers({
     fetching: fetchingReducer,
     auth: authReducer,
     artists: artistReducer,
+    artistTypes: artistTypesReducer,
     songs: songReducer,
     albums: albumReducer,
     playlists: playlistReducer,

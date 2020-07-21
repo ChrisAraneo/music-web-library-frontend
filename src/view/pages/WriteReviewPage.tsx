@@ -7,16 +7,16 @@ import Link from '@material-ui/core/Link';
 
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/basic/PageHeader";
 import Review from "../../model/Review";
 import { Theme, withStyles, createStyles, makeStyles } from "@material-ui/core/styles";
 import { getReview, postReview, updateReview } from "../../store/reviews";
-import DividerGradient from "../components/DividerGradient";
+import DividerGradient from "../components/basic/DividerGradient";
 import { Paper, TextField, Button } from "@material-ui/core";
-import Card from "../components/Card";
+import Card from "../components/basic/Card";
 import Album from "../../model/Album";
-import CircularProgress from "../components/CircularProgress";
-import Error from "../components/Error";
+import CircularProgress from "../components/basic/CircularProgress";
+import Error from "../components/basic/Error";
 
 import {
     GoogleReCaptchaProvider,

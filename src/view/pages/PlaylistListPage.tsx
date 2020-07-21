@@ -11,16 +11,16 @@ import Link from '@material-ui/core/Link';
 
 import Playlist from "../../model/Playlist";
 
-import Page from '../components/Page';
-import Card from "../components/Card";
-import Table from "../components/Table";
-import Error from "../components/Error";
+import Page from '../components/basic/Page';
+import Card from "../components/basic/Card";
+import Table from "../components/basic/Table";
+import Error from "../components/basic/Error";
 import { getPlaylistsList, postPlaylist } from "../../store/playlists";
 import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/basic/PageHeader";
 
 interface IProps {
     classes: any

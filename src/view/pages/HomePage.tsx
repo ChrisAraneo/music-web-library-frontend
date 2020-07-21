@@ -1,22 +1,16 @@
 import React from "react";
-import { Provider, connect } from "react-redux";
-import { store, AppState } from "../../store/index";
-import Artist from "../../model/Artist";
-import { ThunkDispatch } from "redux-thunk";
-import { bindActionCreators } from "redux";
-import { getArtistsList, getArtist } from "../../store/artists";
+import { connect } from "react-redux";
+import { AppState } from "../../store/index";
 
-import Page from '../components/Page';
 import Button from "@material-ui/core/Button";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Title from "../components/Title";
 import Typography from "@material-ui/core/Typography";
 
 import { history } from "../../store/index";
 import Link from "@material-ui/core/Link";
 
-import { signOut } from "../../store/auth";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/basic/PageHeader";
+
 
 interface IProps {
 
@@ -26,8 +20,6 @@ type Props = IProps & LinkStateProps;
 
 const HomePage: React.FC<Props> = (props: Props) => {
 
-    // render = () => {
-
     const styles = useStyles();
 
     const { usernameOrEmail, token } = props.auth;
@@ -36,6 +28,12 @@ const HomePage: React.FC<Props> = (props: Props) => {
         <>
             <Typography variant="subtitle1" component="p">Internetowy Katalog Muzyczny</Typography>
             <PageHeader title="Tysiące utworów w jednym miejscu" />
+            <Typography className={styles.paragraph} variant="h6" component="p">
+                {`Długość historii: ${history.length}`}
+            </Typography>
+            <Typography className={styles.paragraph} variant="h6" component="p">
+                {`Auth: ${JSON.stringify(props.auth)}`}
+            </Typography>
 
             {
                 token && usernameOrEmail ?
@@ -72,13 +70,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface LinkStateProps {
-    auth: any
+    auth: any,
+    router: any,
 }
 const mapStateToProps = (
-    state: AppState,
-    ownProps: IProps
-): LinkStateProps => ({
-    auth: state.auth
-});
+    state: AppState): LinkStateProps => ({
+        auth: state.auth,
+        router: state.router
+    });
 
 export default connect(mapStateToProps, null)(HomePage);

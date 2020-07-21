@@ -5,14 +5,14 @@ import Artist from "../../model/Artist";
 import Playlist from "../../model/Playlist";
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
-import Table from "../components/Table";
-import Error from "../components/Error";
+import Table from "../components/basic/Table";
+import Error from "../components/basic/Error";
 import { getSongsList } from "../../store/songs";
 import Song from "../../model/Song";
 import Icon from '@material-ui/icons/PlaylistAdd';
 import { addRecordToPlaylist, getPlaylistsList } from "../../store/playlists";
-import DialogAddSongToPlaylist from "../components/DialogAddSongToPlaylist";
-import PageHeader from "../components/PageHeader";
+import DialogAddSongToPlaylist from "../components/basic/DialogAddSongToPlaylist";
+import PageHeader from "../components/basic/PageHeader";
 
 
 interface IProps {

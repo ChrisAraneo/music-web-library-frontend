@@ -3,20 +3,20 @@ import { connect } from "react-redux";
 import { AppState } from "../../store/index";
 import { getSong } from "../../store/songs";
 
-import TableDetails from "../components/TableDetails";
+import TableDetails from "../components/basic/TableDetails";
 import Grid from "@material-ui/core/Grid";
 import Song from "../../model/Song";
 import Artist from "../../model/Artist";
 
 import { Link as RouterLink } from 'react-router-dom';
 import Link from "@material-ui/core/Link";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/basic/PageHeader";
 import SongURL from "../../model/SongURL";
-import TableList from "../components/TableList";
+import TableList from "../components/basic/TableList";
 import { getPlaylistsList, addRecordToPlaylist } from "../../store/playlists";
 import Playlist from "../../model/Playlist";
-import DialogAddSongToPlaylist from "../components/DialogAddSongToPlaylist";
-import Card from "../components/Card";
+import DialogAddSongToPlaylist from "../components/basic/DialogAddSongToPlaylist";
+import Card from "../components/basic/Card";
 import Button from "@material-ui/core/Button/Button";
 import Icon from '@material-ui/icons/PlaylistAdd';
 

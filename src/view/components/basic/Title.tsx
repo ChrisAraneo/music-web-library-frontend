@@ -3,7 +3,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 interface IProps {
-    title: string | undefined,
+    title: string | JSX.Element | undefined,
     children?: any
 }
 

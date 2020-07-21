@@ -18,7 +18,7 @@ import ArtistListPage from './view/pages/ArtistListPage';
 import { ThemeProvider } from '@material-ui/core';
 import theme from "./view/theme/theme";
 import SongListPage from './view/pages/SongListPage';
-import Page from './view/components/Page';
+import Page from './view/components/basic/Page';
 import AlbumListPage from './view/pages/AlbumListPage';
 import ArtistPage from './view/pages/ArtistPage';
 import SignUpPage from './view/pages/SignUpPage';

@@ -7,14 +7,19 @@ import { getArtist } from "../../store/artists";
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 
-import Table from "../components/Table";
-import TableDetails from "../components/TableDetails";
+import Table from "../components/basic/Table";
+import TableDetails from "../components/basic/TableDetails";
 import Grid from "@material-ui/core/Grid";
 import Album from "../../model/Album";
-import PageHeader from "../components/PageHeader";
-import TableList from "../components/TableList";
+import PageHeader from "../components/basic/PageHeader";
+import TableList from "../components/basic/TableList";
+import AddArtist from "../components/sections/AddArtist";
 
 import ArtistURL from "../../model/ArtistURL";
+import Role, { ROLE_ADMIN } from "../../model/Role";
+import ArtistType from "../../model/ArtistType";
+import { getArtistTypesList } from "../../store/artistTypes";
+
 
 interface IProps {
     match: { params: { artistID: number } },
@@ -31,6 +36,7 @@ class ArtistPage extends React.Component<Props, IState> {
     componentDidMount() {
         const { artistID } = this.props.match.params;
         getArtist(artistID);
+        getArtistTypesList();
     }
 
     processArtist = (artist: Artist | undefined): object => {
@@ -62,13 +68,14 @@ class ArtistPage extends React.Component<Props, IState> {
     }
 
     render = () => {
-        const { isPending } = this.props.fetching;
-        const { artists } = this.props;
-        const { artistID } = this.props.match.params;
+        const { fetching, auth, artists, artistTypes, match } = this.props;
+        const { isPending } = fetching;
+        const { artistID } = match?.params;
+        const { roles } = auth;
 
         const artist = artists.find((artist: Artist) => (artist ? artist.artistID == artistID : undefined));
-
         const albums = this.processAlbums(artist);
+        const isAdmin = (roles?.find((role: Role) => role?.name == ROLE_ADMIN) ? true : false);
 
         return (
             <>
@@ -87,6 +94,17 @@ class ArtistPage extends React.Component<Props, IState> {
                             <TableList array={this.processURLs(artist?.urls)} />
                         </Grid>
                     </Grid>
+                    {
+                        isAdmin ?
+                            (<Grid item xs={12} md={6}>
+                                <AddArtist
+                                    isPending={isPending}
+                                    artistTypes={artistTypes}>
+                                </AddArtist>
+                            </Grid>)
+                            :
+                            null
+                    }
                 </Grid>
             </>
         );
@@ -96,12 +114,16 @@ class ArtistPage extends React.Component<Props, IState> {
 
 interface LinkStateProps {
     fetching: any,
-    artists: Artist[]
+    artists: Artist[],
+    artistTypes: ArtistType[],
+    auth: any
 }
 const mapStateToProps = (
     state: AppState): LinkStateProps => ({
         fetching: state.fetching,
-        artists: state.artists
+        artists: state.artists,
+        artistTypes: state.artistTypes,
+        auth: state.auth
     });
 
 export default connect(mapStateToProps, null)(ArtistPage);
