@@ -11,12 +11,15 @@ function request(
 
     return (dispatch: any) => {
         dispatch(actionFetchPending());
+        const headers: any = { "Content-Type": "application/json;" };
+        if (auth.token) {
+            headers["Authorization"] = `Bearer ${auth.token}`;
+        }
         fetch(url,
             {
                 ...options,
                 headers: {
-                    "Authorization": `Bearer ${auth.token}`,
-                    "Content-Type": "application/json;",
+                    ...headers,
                     ...options.headers
                 }
             })

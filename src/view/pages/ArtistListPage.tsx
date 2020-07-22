@@ -14,6 +14,11 @@ import Card from "../components/basic/Card";
 import Table from "../components/basic/Table";
 import Error from "../components/basic/Error";
 import PageHeader from "../components/basic/PageHeader";
+import Role, { ROLE_ADMIN } from "../../model/Role";
+import Grid from "@material-ui/core/Grid/Grid";
+import AddArtist from "../components/sections/AddArtist";
+import ArtistType from "../../model/ArtistType";
+import { getArtistTypesList } from "../../store/artistTypes";
 
 interface IProps {
 
@@ -29,6 +34,7 @@ class ArtistListPage extends React.Component<Props, IState> {
 
     componentDidMount() {
         getArtistsList();
+        getArtistTypesList();
     }
 
     processData = (artists: Array<Artist>) => {
@@ -44,10 +50,12 @@ class ArtistListPage extends React.Component<Props, IState> {
     }
 
     render = () => {
-        const { isPending, hasError, error } = this.props.fetching;
-        const { artists } = this.props;
+        const { auth, fetching } = this.props;
+        const { isPending, hasError, error } = fetching;
+        const { artists, artistTypes } = this.props;
 
         const data = this.processData(artists);
+        const isAdmin = (auth?.roles?.find((role: Role) => role?.name == ROLE_ADMIN) ? true : false);
 
         return (
             <>
@@ -58,7 +66,24 @@ class ArtistListPage extends React.Component<Props, IState> {
                         null
                 }
                 <PageHeader title="Wykonawcy" />
-                <Table title="Lista wykonawców" objects={data} isPending={isPending} />
+
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={12}>
+                        <Table title="Lista wykonawców" objects={data} isPending={isPending} />
+                    </Grid>
+                    {
+                        isAdmin ?
+                            (<Grid item xs={12} md={6}>
+                                <AddArtist
+                                    isPending={isPending}
+                                    artistTypes={artistTypes}>
+                                </AddArtist>
+                            </Grid>)
+                            :
+                            null
+                    }
+                </Grid>
+
             </>
         );
     }
@@ -66,14 +91,18 @@ class ArtistListPage extends React.Component<Props, IState> {
 
 interface LinkStateProps {
     fetching: any,
-    artists: Artist[]
+    auth: any,
+    artists: Artist[],
+    artistTypes: ArtistType[]
 }
 const mapStateToProps = (
     state: AppState,
     ownProps: IProps
 ): LinkStateProps => ({
     fetching: state.fetching,
-    artists: state.artists
+    auth: state.auth,
+    artists: state.artists,
+    artistTypes: state.artistTypes
 });
 
 export default connect(mapStateToProps, null)(ArtistListPage);

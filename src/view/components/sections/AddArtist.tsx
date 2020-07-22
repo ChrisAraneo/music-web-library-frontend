@@ -13,6 +13,7 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import DatePicker from "../basic/DatePicker";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import { postArtist } from "../../../store/artists";
 
 interface IProps {
     classes: any,
@@ -29,18 +30,20 @@ interface IState {
     artistType: ArtistType | undefined,
 }
 
+const initialState = {
+    artistName: "",
+    firstName: "",
+    lastName: "",
+    birthDate: new Date(),
+    country: "",
+    artistType: undefined
+}
+
 class AddArtist extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-        this.state = {
-            artistName: "",
-            firstName: "",
-            lastName: "",
-            birthDate: new Date(),
-            country: "",
-            artistType: undefined,
-        }
+        this.state = initialState;
     }
 
     handleChangeArtistName = (event: any) => {
@@ -69,12 +72,18 @@ class AddArtist extends React.Component<IProps, IState> {
     }
 
     submitForm = (event: any) => {
-        alert("TODO");
-        /*
 
-{"artistID":1,"artistName":"Michał Meloman","birthDate":"1989-12-12","country":"Polska","firstName":"Michał","lastName":"Meloman","artistType":{"artistTypeID":1,"name":"Główny wykonawca"},"albums":[{"albumID":1,"title":"Najmniejsze przeboje","year":2020}],"urls":[{"artistUrlID":1,"url":"http://www.google.pl/"}]}
+        const { artistName,
+            firstName,
+            lastName,
+            birthDate,
+            country,
+            artistType } = this.state;
 
-        */
+        postArtist(artistName, birthDate?.toJSON(), country, firstName, lastName, artistType, () => {
+            this.setState({ ...initialState });
+            alert("Wysłano, todo walidacja");
+        });
     }
 
     render = () => {
