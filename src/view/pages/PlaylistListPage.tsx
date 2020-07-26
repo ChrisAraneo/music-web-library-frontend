@@ -70,7 +70,7 @@ class PlaylistListPage extends React.Component<Props, IState> {
     }
 
     render = () => {
-        const { isPending, hasError, error } = this.props.fetching;
+        const { isPending } = this.props.fetching;
         const { playlists } = this.props;
 
         const data = this.processData(playlists);
@@ -78,13 +78,6 @@ class PlaylistListPage extends React.Component<Props, IState> {
 
         return (
             <>
-                {
-                    hasError ?
-                        (<Error title="Błąd pobierania danych" error={error} />)
-                        :
-                        null
-                }
-
                 <PageHeader title="Listy utworów" />
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8}>

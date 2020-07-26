@@ -29,10 +29,7 @@ const HomePage: React.FC<Props> = (props: Props) => {
             <Typography variant="subtitle1" component="p">Internetowy Katalog Muzyczny</Typography>
             <PageHeader title="Tysiące utworów w jednym miejscu" />
             <Typography className={styles.paragraph} variant="h6" component="p">
-                {`Długość historii: ${history.length}`}
-            </Typography>
-            <Typography className={styles.paragraph} variant="h6" component="p">
-                {`Auth: ${JSON.stringify(props.auth)}`}
+                {`Props: ${JSON.stringify(props)}`}
             </Typography>
 
             {
@@ -46,9 +43,9 @@ const HomePage: React.FC<Props> = (props: Props) => {
                     (<>
                         <Typography className={styles.paragraph} variant="h6" component="p">
                             <Link href="#" onClick={() => history.push("/signup")}>Utwórz konto</Link> aby tworzyć własne listy utworów oraz pisać recenzje albumów muzycznych
-                </Typography>
+                        </Typography>
                         <Button className={styles.button} variant="contained" color="primary" disableElevation size="large" onClick={() => history.push("/signup")}>Utwórz konto</Button>
-                        <Button variant="outlined" color="primary" size="large" onClick={() => history.push("/signin")}> Zaloguj się</Button>
+                        <Button variant="outlined" color="primary" size="large" onClick={() => history.push("/signin")}>Zaloguj się</Button>
                     </>)
             }
 
@@ -70,11 +67,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface LinkStateProps {
+    fetching: any,
     auth: any,
     router: any,
 }
 const mapStateToProps = (
     state: AppState): LinkStateProps => ({
+        fetching: state.fetching,
         auth: state.auth,
         router: state.router
     });

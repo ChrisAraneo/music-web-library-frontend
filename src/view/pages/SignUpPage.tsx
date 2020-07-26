@@ -117,7 +117,7 @@ class SignUpPage extends React.Component<Props, IState> {
 
     render = () => {
         const { fetching, auth } = this.props;
-        const { isPending, hasError, error } = fetching;
+        const { isPending } = fetching;
         const { signUp } = auth;
         const { classes } = this.props;
 
@@ -157,12 +157,6 @@ class SignUpPage extends React.Component<Props, IState> {
                             <PageHeader title="Zakładanie konta" />
                             <Card title="Tworzenie nowego konta">
                                 <form className={classes.form} noValidate autoComplete="off">
-                                    {
-                                        hasError ?
-                                            (<Error title="Wystąpił błąd" error={error} />)
-                                            :
-                                            null
-                                    }
                                     <TextField
                                         fullWidth={true}
                                         label="Login"

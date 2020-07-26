@@ -69,7 +69,7 @@ class SignInPage extends React.Component<Props, IState> {
 
     render = () => {
         const { fetching } = this.props;
-        const { isPending, hasError, error } = fetching;
+        const { isPending } = fetching;
         const { classes } = this.props;
 
         return (
@@ -78,12 +78,6 @@ class SignInPage extends React.Component<Props, IState> {
                     <PageHeader title="Zaloguj się" />
                     <Card title="Logowanie">
                         <form className={classes.form} noValidate autoComplete="off">
-                            {
-                                hasError ?
-                                    (<Error title="Wystąpił błąd" error={error} />)
-                                    :
-                                    null
-                            }
                             <TextField
                                 fullWidth={true}
                                 label="Login lub e-mail"

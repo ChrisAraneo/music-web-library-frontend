@@ -53,8 +53,14 @@ export default function reducer(
 export function getArtistsList() {
     store.dispatch(requestGet(`http://localhost:8080/api/artists`, actionSetArtists));
 }
-export function getArtist(id: number) {
-    store.dispatch(requestGet(`http://localhost:8080/api/artists/${id}`, actionSetArtist));
+export function getArtist(id: number, successCallback?: any) {
+    store.dispatch(requestGet(`http://localhost:8080/api/artists/${id}`,
+        (result: Artist) => {
+            if (typeof successCallback === "function") {
+                successCallback(result);
+            }
+            return actionSetArtist(result);
+        }));
 }
 export function postArtist(
     artistName: string,
@@ -83,8 +89,25 @@ export function postArtist(
         return actionSetArtist(result);
     }));
 }
-export function updateArtist(id: number) {
-    store.dispatch(requestPut(`http://localhost:8080/api/artists/${id}`, {}, actionSetArtist));
+export function updateArtist(artist: Artist, successCallback?: any) {
+    const body: any = {
+        artistID: artist.artistID,
+        artistName: artist.artistName,
+        birthDate: artist.birthDate,
+        country: artist.country,
+        firstName: artist.firstName,
+        lastName: artist.lastName,
+        artistType: artist.artistType?.artistTypeID
+    };
+
+    store.dispatch(requestPut(`http://localhost:8080/api/artists/${artist.artistID}`, {
+        body: JSON.stringify(body)
+    }, (result: Artist) => {
+        if (typeof successCallback === "function") {
+            successCallback();
+        }
+        return actionSetArtist(result);
+    }));
 }
 export function deleteArtist(id: number) {
     store.dispatch(requestDelete(`http://localhost:8080/api/artists/${id}`, {}, actionDeleteArtist));

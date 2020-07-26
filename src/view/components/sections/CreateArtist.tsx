@@ -1,5 +1,5 @@
 import React from "react";
-
+import { connect } from "react-redux";
 
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
@@ -14,11 +14,11 @@ import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import DatePicker from "../basic/DatePicker";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import { postArtist } from "../../../store/artists";
+import { AppState } from "../../../store";
+import Artist from "../../../model/Artist";
 
 interface IProps {
-    classes: any,
-    isPending: any,
-    artistTypes: ArtistType[] | undefined
+    classes: any
 }
 
 interface IState {
@@ -39,9 +39,11 @@ const initialState = {
     artistType: undefined
 }
 
-class AddArtist extends React.Component<IProps, IState> {
+type Props = IProps & LinkStateProps;
 
-    constructor(props: IProps) {
+class CreateArtist extends React.Component<Props, IState> {
+
+    constructor(props: Props) {
         super(props);
         this.state = initialState;
     }
@@ -87,7 +89,9 @@ class AddArtist extends React.Component<IProps, IState> {
     }
 
     render = () => {
-        const { classes, isPending, artistTypes } = this.props;
+        const { classes, fetching, artistTypes } = this.props;
+        const { isPending } = fetching;
+        const disabled = isPending;
 
         return (
             <CardAdmin title="Dodaj nowego wykonawcę">
@@ -98,35 +102,43 @@ class AddArtist extends React.Component<IProps, IState> {
                         label="Pseudonim arytstyczny"
                         required
                         onChange={this.handleChangeArtistName}
-                        value={this.state.artistName} />
+                        value={this.state.artistName}
+                        disabled={disabled} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Imię"
                         onChange={this.handleChangeFirstName}
-                        value={this.state.firstName} />
+                        value={this.state.firstName}
+                        disabled={disabled} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Nazwisko"
                         onChange={this.handleChangeLastName}
-                        value={this.state.lastName} />
-                    <DatePicker
-                        label={`Data rozpoczęcia działalności`}
-                        value={this.state.birthDate}
-                        handleChangeDate={this.handleChangeBirthDate} />
+                        value={this.state.lastName}
+                        disabled={disabled} />
+                    <div className={classes.textInput}>
+                        <DatePicker
+                            label={`Data rozpoczęcia działalności`}
+                            value={this.state.birthDate}
+                            handleChangeDate={this.handleChangeBirthDate}
+                            disabled={disabled} />
+                    </div>
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Kraj"
                         onChange={this.handleChangeCountry}
-                        value={this.state.country} />
+                        value={this.state.country}
+                        disabled={disabled} />
                     <FormControl className={classes.selectWrapper}>
                         <Select
                             id="type-select"
                             value={undefined}
                             onChange={this.handleChangeArtistType}
-                            autoWidth>
+                            autoWidth
+                            disabled={disabled}>
                             {
                                 artistTypes?.map((type: ArtistType) => {
                                     if (type) {
@@ -148,7 +160,7 @@ class AddArtist extends React.Component<IProps, IState> {
                     disableElevation
                     size="large"
                     onClick={this.submitForm}
-                    disabled={isPending}>
+                    disabled={disabled}>
                     Dodaj wykonawcę
                     </Button>
             </CardAdmin>
@@ -173,4 +185,14 @@ const classes = (theme: Theme) => createStyles({
     }
 });
 
-export default (withStyles(classes, { withTheme: true })(AddArtist));
+interface LinkStateProps {
+    fetching?: any,
+    artistTypes?: ArtistType[]
+}
+const mapStateToProps = (state: AppState): LinkStateProps => ({
+    fetching: state.fetching,
+    artistTypes: state.artistTypes
+});
+
+const StyledCreateArtist = withStyles(classes, { withTheme: true })(CreateArtist);
+export default connect(mapStateToProps, null)(StyledCreateArtist);

@@ -13,11 +13,13 @@ interface IProps {
     label: string,
     value: MaterialUiPickersDate,
     handleChangeDate: (event: any) => any,
+
+    disabled?: boolean,
     children?: any
 }
 
 const DatePicker: React.FC<IProps> = (props: IProps) => {
-    const { label, value, handleChangeDate } = props;
+    const { label, value, handleChangeDate, disabled } = props;
     const styles = useStyles();
 
     return (
@@ -36,6 +38,7 @@ const DatePicker: React.FC<IProps> = (props: IProps) => {
                     KeyboardButtonProps={{
                         'aria-label': 'change date',
                     }}
+                    disabled={disabled ? true : false}
                 />
             </Grid>
         </MuiPickersUtilsProvider>

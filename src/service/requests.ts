@@ -23,27 +23,29 @@ function request(
                     ...options.headers
                 }
             })
-            .then(result => {
-                console.log("STATUS", result.status);
+            .then((result: Response) => {
+                const status = result.status;
                 const json = result.json();
+
+                if (Math.floor(status / 100) != 2) {
+                    throw json;
+                }
+
                 return json;
             })
-            .then(json => {
-                console.log("JSON", json);
-                if (json?.error) {
-                    dispatch(actionFetchError(json.error))
-                    throw (json.error);
-                }
-                // console.log(result); // TESTING PURPOSES
+            .then((json: object) => {
                 dispatch(actionFetchSuccess());
                 dispatch(successCallback(json));
                 return json;
             })
-            .catch(error => {
-                dispatch(actionFetchError(error));
-                if (typeof errorCallback === "function") {
-                    dispatch(errorCallback(error));
-                }
+            .catch((error: any) => {
+                error.then((json: any) => {
+                    dispatch(actionFetchError(json));
+                    if (typeof errorCallback === "function") {
+                        dispatch(errorCallback(error));
+                    }
+                });
+
             });
     }
 }

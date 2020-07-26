@@ -113,7 +113,7 @@ class SongListPage extends React.Component<Props, IState> {
     }
 
     render = () => {
-        const { isPending, hasError, error } = this.props.fetching;
+        const { isPending } = this.props.fetching;
         const { open, selectedSongID, selectedPlaylistID } = this.state;
         const { token } = this.props?.auth;
         const { songs, playlists } = this.props;
@@ -129,12 +129,6 @@ class SongListPage extends React.Component<Props, IState> {
 
         return (
             <>
-                {
-                    hasError ?
-                        (<Error title="Błąd pobierania danych" error={error} />)
-                        :
-                        null
-                }
                 <DialogAddSongToPlaylist
                     playlists={playlists}
                     open={!isPending && open}

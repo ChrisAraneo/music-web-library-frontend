@@ -20,8 +20,20 @@ SignUp:
 SignIn:
 * Hasła niewidoczne
 
+Wykonawcy:
+* ~~Dodawanie wykonawców~~
+* Walidacja dodawania wykonawców
+* Modyfikacja wykonawców
+* Usuwanie wykonawców
+
+* Dodawanie typów wykonawców
+* Modyfikowanie typów wykonawców
+* Usuwanie typów wykonawców
+
 Search:
 * Wyszukiwarka (?)
+
+
 
 Motyw interfejsu:
 * Zmiana kolorystyki interfejsu

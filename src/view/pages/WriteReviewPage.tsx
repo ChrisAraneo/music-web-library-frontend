@@ -127,7 +127,7 @@ class WriteReviewPage extends React.Component<Props, IState> {
         const { classes } = this.props;
 
         const { fetching, albums, match, auth } = this.props;
-        const { hasError, error, isPending } = fetching;
+        const { isPending } = fetching;
         const { albumID } = match.params;
 
         const { isVerified } = this.state;
@@ -137,7 +137,7 @@ class WriteReviewPage extends React.Component<Props, IState> {
         const albumLink = album ? (<Link component={RouterLink} to={`/albums/${album?.albumID}`}>{album?.title}</Link>) : null;
 
         if (!token) {
-            return (<Error title="Musisz być zalogowany, aby napisać recenzję." error={error} />)
+            return (<Error title="Musisz być zalogowany, aby napisać recenzję." />)
         } else {
             return (
                 <Grid container justify="center">
@@ -149,7 +149,6 @@ class WriteReviewPage extends React.Component<Props, IState> {
                         />
                         <Card title="Pisanie nowej recenzji albumu">
                             <form className={classes.form} noValidate autoComplete="off">
-                                {hasError ? (<Error title="Wystąpił błąd" error={error} />) : null}
                                 <TextField
                                     fullWidth={true}
                                     label="Tytuł recenzji"

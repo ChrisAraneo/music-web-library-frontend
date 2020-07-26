@@ -2,9 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { AppState } from "../../store/index";
 import Artist from "../../model/Artist";
-
-
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 import Album from "../../model/Album";
+import PageHeader from "../components/basic/PageHeader";
+import Grid from "@material-ui/core/Grid/Grid";
+import Card from "../components/basic/Card";
 
 interface IProps {
     match: { params: { artistID: number } },
@@ -22,10 +25,17 @@ class AdminPage extends React.Component<Props, IState> {
     }
 
     render = () => {
-
         return (
             <>
-                <h1>Panel admina</h1>
+                <PageHeader
+                    title="Panel administratora" />
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <Card title="">
+                            <Link component={RouterLink} to={`/admin/artists`}>Wykonawcy</Link>
+                        </Card>
+                    </Grid>
+                </Grid>
             </>
         );
     }

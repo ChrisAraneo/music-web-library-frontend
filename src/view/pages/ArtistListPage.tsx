@@ -16,7 +16,7 @@ import Error from "../components/basic/Error";
 import PageHeader from "../components/basic/PageHeader";
 import Role, { ROLE_ADMIN } from "../../model/Role";
 import Grid from "@material-ui/core/Grid/Grid";
-import AddArtist from "../components/sections/AddArtist";
+import AddArtist from "../components/sections/CreateArtist";
 import ArtistType from "../../model/ArtistType";
 import { getArtistTypesList } from "../../store/artistTypes";
 
@@ -34,7 +34,6 @@ class ArtistListPage extends React.Component<Props, IState> {
 
     componentDidMount() {
         getArtistsList();
-        getArtistTypesList();
     }
 
     processData = (artists: Array<Artist>) => {
@@ -51,39 +50,20 @@ class ArtistListPage extends React.Component<Props, IState> {
 
     render = () => {
         const { auth, fetching } = this.props;
-        const { isPending, hasError, error } = fetching;
         const { artists, artistTypes } = this.props;
+        const { isPending } = fetching;
 
         const data = this.processData(artists);
         const isAdmin = (auth?.roles?.find((role: Role) => role?.name == ROLE_ADMIN) ? true : false);
 
         return (
             <>
-                {
-                    hasError ?
-                        (<Error title="Błąd pobierania danych" error={error} />)
-                        :
-                        null
-                }
                 <PageHeader title="Wykonawcy" />
-
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={12}>
                         <Table title="Lista wykonawców" objects={data} isPending={isPending} />
                     </Grid>
-                    {
-                        isAdmin ?
-                            (<Grid item xs={12} md={6}>
-                                <AddArtist
-                                    isPending={isPending}
-                                    artistTypes={artistTypes}>
-                                </AddArtist>
-                            </Grid>)
-                            :
-                            null
-                    }
                 </Grid>
-
             </>
         );
     }

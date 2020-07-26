@@ -13,7 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Album from "../../model/Album";
 import PageHeader from "../components/basic/PageHeader";
 import TableList from "../components/basic/TableList";
-import AddArtist from "../components/sections/AddArtist";
+import AddArtist from "../components/sections/CreateArtist";
 
 import ArtistURL from "../../model/ArtistURL";
 import Role, { ROLE_ADMIN } from "../../model/Role";
@@ -36,7 +36,6 @@ class ArtistPage extends React.Component<Props, IState> {
     componentDidMount() {
         const { artistID } = this.props.match.params;
         getArtist(artistID);
-        getArtistTypesList();
     }
 
     processArtist = (artist: Artist | undefined): object => {
@@ -94,17 +93,6 @@ class ArtistPage extends React.Component<Props, IState> {
                             <TableList array={this.processURLs(artist?.urls)} />
                         </Grid>
                     </Grid>
-                    {
-                        isAdmin ?
-                            (<Grid item xs={12} md={6}>
-                                <AddArtist
-                                    isPending={isPending}
-                                    artistTypes={artistTypes}>
-                                </AddArtist>
-                            </Grid>)
-                            :
-                            null
-                    }
                 </Grid>
             </>
         );

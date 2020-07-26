@@ -30,6 +30,7 @@ import PlaylistListPage from './view/pages/PlaylistListPage';
 import PlaylistPage from './view/pages/PlaylistPage';
 import ReviewPage from './view/pages/ReviewPage';
 import WriteReviewPage from './view/pages/WriteReviewPage';
+import AdminArtistPage from './view/pages/AdminArtistPage';
 
 export const App: React.FC = () => {
     return (
@@ -40,9 +41,10 @@ export const App: React.FC = () => {
                         <Switch>
                             <Route path="/signup" component={SignUpPage} />
                             <Route path="/signin" component={SignInPage} />
-                            <Route path="/admin" component={AdminPage} />
                             <Route path="/artists" exact component={ArtistListPage} />
                             <Route path="/artists/:artistID?" component={ArtistPage} />
+                            <Route path="/admin" exact component={AdminPage} />
+                            <Route path="/admin/artists" component={AdminArtistPage} />
                             <Route path="/songs" exact component={SongListPage} />
                             <Route path="/songs/:songID?" component={SongPage} />
                             <Route path="/albums" exact component={AlbumListPage} />

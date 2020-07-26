@@ -47,19 +47,13 @@ class AlbumListPage extends React.Component<Props, IState> {
     }
 
     render = () => {
-        const { isPending, hasError, error } = this.props.fetching;
+        const { isPending } = this.props.fetching;
         const { albums } = this.props;
 
         const data = this.processData(albums);
 
         return (
             <>
-                {
-                    hasError ?
-                        (<Error title="Błąd pobierania danych" error={error} />)
-                        :
-                        null
-                }
                 <PageHeader title="Albumy muzyczne" />
                 <Table title="Lista albumów muzycznych" objects={data} isPending={isPending} />
             </>
