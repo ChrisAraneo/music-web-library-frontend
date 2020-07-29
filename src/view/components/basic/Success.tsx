@@ -6,24 +6,25 @@ import { Paper, Typography } from '@material-ui/core';
 interface IProps {
     title: string,
     message?: string,
-    children?: any
+    onClick?: () => any
 }
 
 const Success: React.FC<IProps> = (props: IProps) => {
-    const { title, message, children } = props;
+    const { title, message } = props;
     const classes = useStyles();
 
     return (
         <Paper className={classes.root} elevation={2}>
-            <Alert className={classes.alert} severity="success">
+            <Alert
+                className={classes.alert}
+                severity="success"
+                onClose={() => { if (typeof props.onClick == "function") { props.onClick(); } }}>
                 <AlertTitle>{title}</AlertTitle>
-                {
-                    message ?
-                        (<Typography>{message}</Typography>)
-                        :
-                        null
-                }
-                {children}
+                <Typography>
+                    {
+                        message ? message : ''
+                    }
+                </Typography>
             </Alert>
         </Paper>
     );
@@ -33,7 +34,9 @@ export default Success;
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
+            boxSizing: 'border-box',
             width: '100%',
+            maxWidth: '400px',
             padding: 0,
             marginBottom: theme.spacing(2)
         },

@@ -3,6 +3,7 @@ import { requestGet, requestPut, requestDelete, requestPost } from "../service/r
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import ArtistType from "../model/ArtistType";
+import { addNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<Artist> = [];
@@ -84,8 +85,9 @@ export function postArtist(
         body: JSON.stringify(body)
     }, (result: Artist) => {
         if (typeof successCallback === "function") {
-            successCallback();
+            successCallback(result);
         }
+        addNotification("Dodano wykonawcę", "Pomyślnie dodano wykonawcę");
         return actionSetArtist(result);
     }));
 }
@@ -104,11 +106,50 @@ export function updateArtist(artist: Artist, successCallback?: any) {
         body: JSON.stringify(body)
     }, (result: Artist) => {
         if (typeof successCallback === "function") {
-            successCallback();
+            successCallback(result);
         }
+        addNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
         return actionSetArtist(result);
     }));
 }
-export function deleteArtist(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/artists/${id}`, {}, actionDeleteArtist));
+export function deleteArtist(id: number, successCallback?: any) {
+    store.dispatch(requestDelete(`http://localhost:8080/api/artists/${id}`, {},
+        () => {
+            addNotification("Usunięto wykonawcę", "Pomyślnie usunięto wykonawcę");
+            return actionDeleteArtist(id);
+        }));
+}
+export function postArtistURL(
+    artistID: number,
+    url: string,
+    successCallback?: any
+) {
+    const body: any = {
+        artist: {
+            artistID
+        },
+        url
+    };
+
+    store.dispatch(requestPost(`http://localhost:8080/api/artisturls`, {
+        body: JSON.stringify(body)
+    }, (result: Artist) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Dodano URL", "Pomyślnie dodano URL");
+        return actionSetArtist(result);
+    }));
+}
+export function deleteArtistURL(
+    artistURLID: number,
+    successCallback?: any
+) {
+    store.dispatch(requestDelete(`http://localhost:8080/api/artisturls/${artistURLID}`, {}, (result: Artist) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Usunięto URL", "Pomyślnie usunięto URL");
+        return actionSetArtist(result);
+    }));
 }

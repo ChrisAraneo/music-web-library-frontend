@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { AppState } from "../../store/index";
 import Artist from "../../model/Artist";
-import { getArtist } from "../../store/artists";
+import { getArtist, deleteArtistURL } from "../../store/artists";
 
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
@@ -18,7 +18,7 @@ import AddArtist from "../components/sections/CreateArtist";
 import ArtistURL from "../../model/ArtistURL";
 import Role, { ROLE_ADMIN } from "../../model/Role";
 import ArtistType from "../../model/ArtistType";
-import { getArtistTypesList } from "../../store/artistTypes";
+import BackspaceIcon from '@material-ui/icons/Backspace';
 
 
 interface IProps {
@@ -62,8 +62,8 @@ class ArtistPage extends React.Component<Props, IState> {
         return [];
     }
 
-    processURLs = (artistURLs: ArtistURL[] | undefined) => {
-        return artistURLs?.map((url: ArtistURL, index: number, array: Array<any>) => <><a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary" href={`${url.url}`} target="_blank">{url.url}</a>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>);
+    processURLs = (artistURLs: ArtistURL[] | undefined, isAdmin: boolean) => {
+        return artistURLs?.map((url: ArtistURL, index: number, array: Array<any>) => (<><a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary" href={`${url.url}`} target="_blank">{url.url}</a>{isAdmin ? <a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary" href="#" onClick={() => deleteArtistURL(url.artistUrlID)}><BackspaceIcon style={{ marginLeft: '1rem' }} fontSize="small" color="primary" /></a> : null}</>));
     }
 
     render = () => {
@@ -86,11 +86,13 @@ class ArtistPage extends React.Component<Props, IState> {
                         <Table title="Albumy" objects={albums} isPending={isPending} />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <Grid item xs={12} md={12}>
-                            <TableDetails object={this.processArtist(artist)} />
-                        </Grid>
-                        <Grid item xs={12} md={12}>
-                            <TableList array={this.processURLs(artist?.urls)} />
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} md={12}>
+                                <TableDetails object={this.processArtist(artist)} />
+                            </Grid>
+                            <Grid item xs={12} md={12}>
+                                <TableList array={this.processURLs(artist?.urls, isAdmin)} />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

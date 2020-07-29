@@ -19,7 +19,9 @@ import Artist from "../../../model/Artist";
 import { getArtistTypesList } from "../../../store/artistTypes";
 
 interface IProps {
-    classes: any
+    classes: any,
+    artists: Artist[],
+    artistTypes: ArtistType[]
 }
 
 interface IState {
@@ -49,11 +51,6 @@ class UpdateArtist extends React.Component<Props, IState> {
     constructor(props: Props) {
         super(props);
         this.state = initialState;
-    }
-
-    componentDidMount = () => {
-        getArtistTypesList();
-        getArtistsList();
     }
 
     handleChangeArtist = (event: any) => {
@@ -238,14 +235,10 @@ const classes = (theme: Theme) => createStyles({
 });
 
 interface LinkStateProps {
-    fetching?: any,
-    artists?: Artist[],
-    artistTypes?: ArtistType[]
+    fetching?: any
 }
 const mapStateToProps = (state: AppState): LinkStateProps => ({
-    fetching: state.fetching,
-    artists: state.artists,
-    artistTypes: state.artistTypes
+    fetching: state.fetching
 });
 
 const StyledCreateArtist = withStyles(classes, { withTheme: true })(UpdateArtist);

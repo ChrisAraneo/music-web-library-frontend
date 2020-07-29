@@ -33,6 +33,7 @@ class AdminPage extends React.Component<Props, IState> {
                     <Grid item xs={12} md={6}>
                         <Card title="">
                             <Link component={RouterLink} to={`/admin/artists`}>Wykonawcy</Link>
+                            <Link component={RouterLink} to={`/admin/songs`}>Utwory muzyczne</Link>
                         </Card>
                     </Grid>
                 </Grid>

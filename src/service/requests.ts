@@ -39,12 +39,19 @@ function request(
                 return json;
             })
             .catch((error: any) => {
-                error.then((json: any) => {
-                    dispatch(actionFetchError(json));
-                    if (typeof errorCallback === "function") {
-                        dispatch(errorCallback(error));
+                if (error) {
+                    if (typeof error.then == "function") {
+                        error.then((json: any) => {
+                            dispatch(actionFetchError(json));
+                            if (typeof errorCallback === "function") {
+                                dispatch(errorCallback(error));
+                            }
+                        });
+                    } else {
+                        console.log("erroriks", error);
                     }
-                });
+                }
+
 
             });
     }

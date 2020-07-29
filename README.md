@@ -1,6 +1,6 @@
 # Music Web Library Frontend
 
-## TODO (20 VII)
+## TODO (29 VII)
 
 Błędy:
 * Lepsze przechowywanie błędów w postaci stosu
@@ -22,13 +22,25 @@ SignIn:
 
 Wykonawcy:
 * ~~Dodawanie wykonawców~~
-* Walidacja dodawania wykonawców
-* Modyfikacja wykonawców
-* Usuwanie wykonawców
+* ~~Modyfikacja wykonawców~~
+* ~~Usuwanie wykonawców~~
 
-* Dodawanie typów wykonawców
-* Modyfikowanie typów wykonawców
-* Usuwanie typów wykonawców
+* ~~Dodawanie typów wykonawców~~
+* ~~Modyfikowanie typów wykonawców~~
+* ~~Usuwanie typów wykonawców~~
+
+* ~~Dodawanie URL wykonawców~~
+* ~~Usuwanie URL wykonawców~~
+
+* Łączenie wykonawcy z piosenką
+* Usunięcie połączenia wykonawcy z piosenką
+
+* Walidacje
+
+Piosenki:
+* Dodawanie piosenek
+* Modyfikowanie piosenek
+* Usuwanie piosenek
 
 Search:
 * Wyszukiwarka (?)

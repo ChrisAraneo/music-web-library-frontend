@@ -1,7 +1,8 @@
 import Song from "../model/Song";
-import { requestGet, requestPut, requestDelete } from "../service/requests";
+import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
+import { addNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<Song> = [];
@@ -54,6 +55,44 @@ export function getSongsList() {
 }
 export function getSong(id: number) {
     store.dispatch(requestGet(`http://localhost:8080/api/songs/${id}`, actionSetSong));
+}
+export function postSong(
+    title: string,
+    bpm?: number,
+    comment?: string,
+    genre?: string,
+    language?: string,
+    length?: number,
+    mainKey?: string,
+    publisher?: string,
+    terms?: string,
+    website?: string,
+    year?: number,
+    successCallback?: any
+) {
+    const body: any = {
+        title,
+        bpm,
+        comment,
+        genre,
+        language,
+        length,
+        mainKey,
+        publisher,
+        terms,
+        website,
+        year
+    };
+
+    store.dispatch(requestPost(`http://localhost:8080/api/songs`, {
+        body: JSON.stringify(body)
+    }, (result: Song) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Dodano utwór muzyczny", "Pomyślnie dodano utwór muzyczny");
+        return actionSetSong(result);
+    }));
 }
 export function updateSong(id: number) {
     store.dispatch(requestPut(`http://localhost:8080/api/songs/${id}`, {}, actionSetSong));

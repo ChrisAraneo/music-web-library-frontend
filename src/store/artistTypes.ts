@@ -1,7 +1,8 @@
 import ArtistType from "../model/ArtistType";
-import { requestGet, requestPut, requestDelete } from "../service/requests";
+import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
+import { addNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<ArtistType> = [];
@@ -52,12 +53,54 @@ export default function reducer(
 export function getArtistTypesList() {
     store.dispatch(requestGet(`http://localhost:8080/api/artisttypes`, actionSetArtistTypes));
 }
-export function getArtistType(id: number) {
-    store.dispatch(requestGet(`http://localhost:8080/api/artisttypes/${id}`, actionSetArtistType));
+export function getArtistType(id: number, successCallback?: any) {
+    store.dispatch(requestGet(`http://localhost:8080/api/artisttypes/${id}`,
+        (result: ArtistType) => {
+            if (typeof successCallback === "function") {
+                successCallback(result);
+            }
+            return actionSetArtistType(result);
+        })
+    );
 }
-export function updateArtistType(id: number) {
-    store.dispatch(requestPut(`http://localhost:8080/api/artisttypes/${id}`, {}, actionSetArtistType));
+export function postArtistType(
+    name: string,
+    successCallback?: any
+) {
+    const body: any = {
+        name,
+    };
+
+    store.dispatch(requestPost(`http://localhost:8080/api/artisttypes`, {
+        body: JSON.stringify(body)
+    }, (result: ArtistType) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Dodano rodzaj", "Pomyślnie dodano rodzaj działalności muzycznej");
+        return actionSetArtistType(result);
+    }));
 }
-export function deleteArtist(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/artisttypes/${id}`, {}, actionDeleteArtistType));
+export function updateArtistType(type: ArtistType, successCallback?: any) {
+    const body: any = {
+        artistTypeID: type.artistTypeID,
+        name: type.name
+    };
+
+    store.dispatch(requestPut(`http://localhost:8080/api/artisttypes/${type.artistTypeID}`, {
+        body: JSON.stringify(body)
+    }, (result: ArtistType) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
+        return actionSetArtistType(result);
+    }));
+}
+export function deleteArtistType(id: number) {
+    store.dispatch(requestDelete(`http://localhost:8080/api/artisttypes/${id}`, {},
+        () => {
+            addNotification("Usunięto", "Pomyślnie usunięto rodzaj działalności muzycznej");
+            return actionDeleteArtistType(id);
+        }));
 }

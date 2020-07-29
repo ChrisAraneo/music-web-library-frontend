@@ -12,7 +12,8 @@ import { DRAWER_WIDTH } from './Drawer';
 import Drawer from './Drawer';
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Error from "./Error";
-import { removeError } from "../../../store/fetching";
+import { actionFetchSuccess, removeNotification } from "../../../store/fetching";
+import Success from "./Success";
 
 interface IProps {
     title: string,
@@ -45,7 +46,7 @@ class Page extends React.Component<Props, IState> {
     render = () => {
         const { title, window, children, classes, fetching, auth } = this.props;
         const { mobileOpen } = this.state;
-        const { errors } = fetching;
+        const { notifications } = fetching;
 
         return (
             <div className={classes.root}>
@@ -82,12 +83,24 @@ class Page extends React.Component<Props, IState> {
                         {children}
                         <div className={classes.notifications}>
                             {
-                                errors?.map((item: any, index: number) => {
-                                    return <Error
-                                        key={`${item.error}-${item.message}-${index}`}
-                                        title={item.error}
-                                        message={item.message}
-                                        onClick={() => removeError(index)} />
+                                notifications?.map((item: any, index: number) => {
+                                    if (item) {
+                                        const id = item.id;
+                                        if (item?.type == "error") {
+                                            return (<Error
+                                                key={id}
+                                                title={item.title}
+                                                message={item.message}
+                                                onClick={() => removeNotification(id)} />)
+                                        } else if (item?.type == "success") {
+                                            return (<Success
+                                                key={id}
+                                                title={item.title}
+                                                message={item.message}
+                                                onClick={() => removeNotification(id)} />)
+                                        }
+                                    }
+
                                 })
                             }
                         </div>
