@@ -1,7 +1,8 @@
 import Album from "../model/Album";
-import { requestGet, requestPut, requestDelete } from "../service/requests";
+import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
+import { addNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<Album> = [];
@@ -52,12 +53,80 @@ export default function reducer(
 export function getAlbumsList() {
     store.dispatch(requestGet(`http://localhost:8080/api/albums`, actionSetAlbums));
 }
-export function getAlbum(id: number) {
-    store.dispatch(requestGet(`http://localhost:8080/api/albums/${id}`, actionSetAlbum));
+export function getAlbum(id: number, successCallback?: any) {
+    store.dispatch(requestGet(`http://localhost:8080/api/albums/${id}`,
+        (result: Album) => {
+            if (typeof successCallback === "function") {
+                successCallback(result);
+            }
+            return actionSetAlbum(result);
+        }));
 }
-export function updateAlbum(id: number) {
-    store.dispatch(requestPut(`http://localhost:8080/api/albums/${id}`, {}, actionSetAlbum));
+export function postAlbum(
+    title: string,
+    year: number,
+    successCallback?: any
+) {
+    const body: any = {
+        title,
+        year
+    };
+
+    store.dispatch(requestPost(`http://localhost:8080/api/albums`, {
+        body: JSON.stringify(body)
+    }, (result: Album) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Dodano album", "Pomyślnie dodano album muzyczny");
+        return actionSetAlbum(result);
+    }));
+}
+export function updateAlbum(album: Album, successCallback?: any) {
+    const body: any = {
+        albumID: album.albumID,
+        title: album.title,
+        year: album.year
+    };
+
+    store.dispatch(requestPut(`http://localhost:8080/api/albums/${album.albumID}`, {
+        body: JSON.stringify(body)
+    }, (result: Album) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
+        return actionSetAlbum(result);
+    }));
 }
 export function deleteAlbum(id: number) {
     store.dispatch(requestDelete(`http://localhost:8080/api/albums/${id}`, {}, actionDeleteAlbum));
+}
+export function postSongToAlbum(
+    albumID: number,
+    songID: number,
+    track: number,
+    successCallback?: any
+) {
+    store.dispatch(requestPost(`http://localhost:8080/api/albums/${albumID}/${songID}/${track}`, {}, (result: Album) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Dodano utwór do albumu", "Pomyślnie dodano utwór muzyczny do albumu");
+        return actionSetAlbum(result);
+    }));
+}
+export function deleteSongFromAlbum(
+    albumID: number,
+    songID: number,
+    track: number,
+    successCallback?: any
+) {
+    store.dispatch(requestDelete(`http://localhost:8080/api/albums/${albumID}/${songID}/${track}`, {}, (result: Album) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Dodano utwór do albumu", "Pomyślnie dodano utwór muzyczny do albumu");
+        return actionSetAlbum(result);
+    }));
 }

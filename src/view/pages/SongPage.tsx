@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { AppState } from "../../store/index";
-import { getSong } from "../../store/songs";
+import { getSong, deleteSongURL } from "../../store/songs";
 
 import TableDetails from "../components/basic/TableDetails";
 import Grid from "@material-ui/core/Grid";
@@ -19,6 +19,8 @@ import DialogAddSongToPlaylist from "../components/basic/DialogAddSongToPlaylist
 import Card from "../components/basic/Card";
 import Button from "@material-ui/core/Button/Button";
 import Icon from '@material-ui/icons/PlaylistAdd';
+import BackspaceIcon from '@material-ui/icons/Backspace';
+import Role, { ROLE_ADMIN } from "../../model/Role";
 
 interface IProps {
     match: { params: { songID: number } },
@@ -75,8 +77,8 @@ class SongPage extends React.Component<Props, IState> {
         return ({});
     }
 
-    processURLs = (songURLs: undefined | SongURL[]) => {
-        return songURLs?.map((url: SongURL, index: number, array: Array<any>) => <><a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary" href={`${url.url}`} target="_blank">{url.url}</a>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>);
+    processURLs = (songURLs: undefined | SongURL[], isAdmin: boolean) => {
+        return songURLs?.map((url: SongURL, index: number, array: Array<any>) => <><a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary" href={`${url.url}`} target="_blank">{url.url}</a>{isAdmin ? <a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary" href="#" onClick={() => deleteSongURL(url.songURLID)}><BackspaceIcon style={{ marginLeft: '1rem' }} fontSize="small" color="primary" /></a> : null}</>);
     }
 
     handleChoosePlaylist = (playlistID: number) => {
@@ -104,10 +106,12 @@ class SongPage extends React.Component<Props, IState> {
         const { songID } = this.props.match.params;
 
         const { selectedPlaylistID, open } = this.state;
-        const { token } = auth;
+        const { token, roles } = auth;
+
+        const isAdmin = (roles?.find((role: Role) => role?.name == ROLE_ADMIN) ? true : false);
 
         const song = songs.find((song: Song) => (song ? song.songID == songID : undefined));
-        const urls = (song ? this.processURLs(song.songURLs) : []);
+        const urls = (song ? this.processURLs(song.songURLs, isAdmin) : []);
 
         return (
             <>

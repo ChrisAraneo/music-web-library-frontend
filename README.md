@@ -32,15 +32,32 @@ Wykonawcy:
 * ~~Dodawanie URL wykonawców~~
 * ~~Usuwanie URL wykonawców~~
 
-* Łączenie wykonawcy z piosenką
+* Łączenie wykonawcy z piosenką (!!! sprawdzić połączenie - czy submituje)
 * Usunięcie połączenia wykonawcy z piosenką
 
 * Walidacje
 
 Piosenki:
-* Dodawanie piosenek
-* Modyfikowanie piosenek
-* Usuwanie piosenek
+* ~~Dodawanie piosenek~~
+* ~~Modyfikowanie piosenek~~
+* ~~Usuwanie piosenek~~
+
+* ~~Dodawanie URL piosenek~~
+* ~~Usuwanie URL piosenek~~
+
+Albumy:
+* ~~Dodawanie albumów~~
+* ~~Modyfikowanie albumów~~
+* ~~Usuwanie albumów~~
+
+* ~~Dodawanie piosenek do albumów~~
+* ~~Usuwanie piosenek z albumów~~
+
+* Dodawanie okładek albumów
+* Usuwanie okładek albumów
+
+Playlisty:
+((sprawdzenie kodu))
 
 Search:
 * Wyszukiwarka (?)

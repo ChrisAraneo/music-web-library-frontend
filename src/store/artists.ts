@@ -115,6 +115,9 @@ export function updateArtist(artist: Artist, successCallback?: any) {
 export function deleteArtist(id: number, successCallback?: any) {
     store.dispatch(requestDelete(`http://localhost:8080/api/artists/${id}`, {},
         () => {
+            if (typeof successCallback === "function") {
+                successCallback();
+            }
             addNotification("Usunięto wykonawcę", "Pomyślnie usunięto wykonawcę");
             return actionDeleteArtist(id);
         }));
@@ -150,6 +153,32 @@ export function deleteArtistURL(
             successCallback(result);
         }
         addNotification("Usunięto URL", "Pomyślnie usunięto URL");
+        return actionSetArtist(result);
+    }));
+}
+export function attachSongToArtist(
+    artistID: number,
+    songID: number,
+    successCallback?: any
+) {
+    store.dispatch(requestPost(`http://localhost:8080/api/artists/${artistID}/${songID}`, {}, (result: Artist) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Połączono utwór z wykonawcą", "Pomyślnie połączono utwór muzyczny z wykonawcą");
+        return actionSetArtist(result);
+    }));
+}
+export function detachSongFromAlbum(
+    artistID: number,
+    songID: number,
+    successCallback?: any
+) {
+    store.dispatch(requestDelete(`http://localhost:8080/api/artists/${artistID}/${songID}`, {}, (result: Artist) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Usunięto połączenie", "Pomyślnie usunięto połączenie wykonawca-utwór");
         return actionSetArtist(result);
     }));
 }

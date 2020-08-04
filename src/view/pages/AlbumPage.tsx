@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Album from "../../model/Album";
 import { SongInAlbum } from "../../model/Song";
-import { getAlbum } from "../../store/albums";
+import { getAlbum, deleteSongFromAlbum } from "../../store/albums";
 import PageHeader from "../components/basic/PageHeader";
 import Review from "../../model/Review";
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
@@ -19,9 +19,12 @@ import { getPlaylistsList, addRecordToPlaylist } from "../../store/playlists";
 import { getSongsList } from "../../store/songs";
 import DialogAddSongToPlaylist from "../components/basic/DialogAddSongToPlaylist";
 import Playlist from "../../model/Playlist";
-import Icon from '@material-ui/icons/PlaylistAdd';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import ReviewIcon from '@material-ui/icons/RateReview';
 import Button from "@material-ui/core/Button/Button";
+import Role, { ROLE_ADMIN } from "../../model/Role";
+import { table } from "console";
 
 interface IProps {
     match: { params: { albumID: number } },
@@ -96,6 +99,19 @@ class AlbumPage extends React.Component<Props, IState> {
             selectedSongID: undefined,
             selectedPlaylistID: undefined
         });
+    }
+
+    handleRemoveSongFromAlbum = (albumID: number, songRowData: any) => {
+        console.log("songRowData", songRowData);
+        const { tableData } = songRowData;
+        if (tableData) {
+            const { id } = tableData;
+            const track = songRowData['#'];
+            if (typeof id === "number" && typeof track === "number") {
+                console.log(tableData);
+                deleteSongFromAlbum(albumID, id, track);
+            }
+        }
     }
 
     processAlbum = (album: Album | undefined) => {
@@ -173,7 +189,7 @@ class AlbumPage extends React.Component<Props, IState> {
     render = () => {
         const { fetching, albums, playlists, match, auth } = this.props;
         const { isPending } = fetching;
-        const { token } = auth;
+        const { token, roles } = auth;
         const { albumID } = match.params;
 
         const { open, selectedSongID, selectedPlaylistID } = this.state;
@@ -181,13 +197,22 @@ class AlbumPage extends React.Component<Props, IState> {
         const album = albums.find((album: Album) => (album ? album.albumID == albumID : undefined));
         const reviews = album?.reviews;
 
-        const actions = (token ? [
-            {
+        const isAdmin = (roles?.find((role: Role) => role?.name == ROLE_ADMIN) ? true : false);
+        const actions = [];
+        if (token) {
+            actions.push({
                 icon: 'add',
-                element: <Icon />,
+                element: <PlaylistAddIcon />,
                 onClick: (event: any, data: any) => this.handleToggleDialog(data)
-            }
-        ] : undefined);
+            });
+        }
+        if (isAdmin) {
+            actions.push({
+                icon: 'add',
+                element: <DeleteForeverIcon />,
+                onClick: (event: any, data: any) => this.handleRemoveSongFromAlbum(albumID, data)
+            })
+        }
 
         return (
             <>

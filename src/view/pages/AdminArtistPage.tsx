@@ -2,20 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { AppState } from "../../store/index";
 import Artist from "../../model/Artist";
-import { getArtist, getArtistsList } from "../../store/artists";
+import { getArtistsList } from "../../store/artists";
 
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
-
-import Table from "../components/basic/Table";
-import TableDetails from "../components/basic/TableDetails";
 import Grid from "@material-ui/core/Grid";
-import Album from "../../model/Album";
 import PageHeader from "../components/basic/PageHeader";
-import TableList from "../components/basic/TableList";
-import AddArtist from "../components/sections/CreateArtist";
 
-import ArtistURL from "../../model/ArtistURL";
 import Role, { ROLE_ADMIN } from "../../model/Role";
 import ArtistType from "../../model/ArtistType";
 import { getArtistTypesList } from "../../store/artistTypes";
@@ -26,6 +17,9 @@ import CreateArtistType from "../components/sections/CreateArtistType";
 import RemoveArtistType from "../components/sections/RemoveArtistType";
 import UpdateArtistType from "../components/sections/UpdateArtistType";
 import CreateArtistURL from "../components/sections/CreateArtistURL";
+import CreateSongArtist from "../components/sections/CreateSongArtist";
+import Song from "../../model/Song";
+import { getSongsList } from "../../store/songs";
 
 
 interface IProps {
@@ -43,13 +37,13 @@ class AdminArtistPage extends React.Component<Props, IState> {
     componentDidMount() {
         getArtistsList();
         getArtistTypesList();
+        getSongsList();
     }
 
     render = () => {
-        const { fetching, auth, artists, artistTypes } = this.props;
+        const { auth, artists, songs, artistTypes } = this.props;
         const { roles } = auth;
 
-        const isAdmin = (roles?.find((role: Role) => role?.name == ROLE_ADMIN) ? true : false);
 
         return (
             <>
@@ -62,6 +56,7 @@ class AdminArtistPage extends React.Component<Props, IState> {
                             artistTypes={artistTypes} />
                         <RemoveArtist
                             artists={artists} />
+                        <CreateSongArtist artists={artists} songs={songs} />
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <UpdateArtist
@@ -91,12 +86,14 @@ class AdminArtistPage extends React.Component<Props, IState> {
 interface LinkStateProps {
     fetching: any,
     artists: Artist[],
+    songs: Song[],
     artistTypes: ArtistType[],
     auth: any
 }
 const mapStateToProps = (state: AppState): LinkStateProps => ({
     fetching: state.fetching,
     artists: state.artists,
+    songs: state.songs,
     artistTypes: state.artistTypes,
     auth: state.auth
 });

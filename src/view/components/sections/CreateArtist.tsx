@@ -94,78 +94,76 @@ class CreateArtist extends React.Component<Props, IState> {
         const disabled = isPending;
 
         return (
-            <div className={classes.marginBottom}>
-                <CardAdmin title="Dodaj nowego wykonawcę">
-                    <form className={classes.form} noValidate autoComplete="off">
-                        <TextField
-                            className={classes.textInput}
-                            fullWidth={true}
-                            label="Pseudonim arytstyczny"
-                            required
-                            onChange={this.handleChangeArtistName}
-                            value={this.state.artistName}
+            <CardAdmin title="Dodaj nowego wykonawcę">
+                <form className={classes.form} noValidate autoComplete="off">
+                    <TextField
+                        className={classes.textInput}
+                        fullWidth={true}
+                        label="Pseudonim arytstyczny"
+                        required
+                        onChange={this.handleChangeArtistName}
+                        value={this.state.artistName}
+                        disabled={disabled} />
+                    <TextField
+                        className={classes.textInput}
+                        fullWidth={true}
+                        label="Imię"
+                        onChange={this.handleChangeFirstName}
+                        value={this.state.firstName}
+                        disabled={disabled} />
+                    <TextField
+                        className={classes.textInput}
+                        fullWidth={true}
+                        label="Nazwisko"
+                        onChange={this.handleChangeLastName}
+                        value={this.state.lastName}
+                        disabled={disabled} />
+                    <div className={classes.textInput}>
+                        <DatePicker
+                            label={`Data rozpoczęcia działalności`}
+                            value={this.state.birthDate}
+                            handleChangeDate={this.handleChangeBirthDate}
                             disabled={disabled} />
-                        <TextField
-                            className={classes.textInput}
-                            fullWidth={true}
-                            label="Imię"
-                            onChange={this.handleChangeFirstName}
-                            value={this.state.firstName}
-                            disabled={disabled} />
-                        <TextField
-                            className={classes.textInput}
-                            fullWidth={true}
-                            label="Nazwisko"
-                            onChange={this.handleChangeLastName}
-                            value={this.state.lastName}
-                            disabled={disabled} />
-                        <div className={classes.textInput}>
-                            <DatePicker
-                                label={`Data rozpoczęcia działalności`}
-                                value={this.state.birthDate}
-                                handleChangeDate={this.handleChangeBirthDate}
-                                disabled={disabled} />
-                        </div>
-                        <TextField
-                            className={classes.textInput}
-                            fullWidth={true}
-                            label="Kraj"
-                            onChange={this.handleChangeCountry}
-                            value={this.state.country}
-                            disabled={disabled} />
-                        <FormControl className={classes.selectWrapper}>
-                            <Select
-                                id="type-select"
-                                value={undefined}
-                                onChange={this.handleChangeArtistType}
-                                autoWidth
-                                disabled={disabled}>
-                                {
-                                    artistTypes?.map((type: ArtistType) => {
-                                        if (type) {
-                                            return (<MenuItem key={type?.artistTypeID} value={type?.artistTypeID}>{type?.name}</MenuItem>);
-                                        } else {
-                                            return null;
-                                        }
-                                    })
-                                }
-                            </Select>
-                            <FormHelperText>Rodzaj działalności</FormHelperText>
-                        </FormControl>
-                    </form>
-                    <DividerGradient />
-                    <Button
-                        className={classes.button}
-                        variant="contained"
-                        color="primary"
-                        disableElevation
-                        size="large"
-                        onClick={this.submitForm}
-                        disabled={disabled}>
-                        Dodaj wykonawcę
+                    </div>
+                    <TextField
+                        className={classes.textInput}
+                        fullWidth={true}
+                        label="Kraj"
+                        onChange={this.handleChangeCountry}
+                        value={this.state.country}
+                        disabled={disabled} />
+                    <FormControl className={classes.selectWrapper}>
+                        <Select
+                            id="type-select"
+                            value={undefined}
+                            onChange={this.handleChangeArtistType}
+                            autoWidth
+                            disabled={disabled}>
+                            {
+                                artistTypes?.map((type: ArtistType) => {
+                                    if (type) {
+                                        return (<MenuItem key={type?.artistTypeID} value={type?.artistTypeID}>{type?.name}</MenuItem>);
+                                    } else {
+                                        return null;
+                                    }
+                                })
+                            }
+                        </Select>
+                        <FormHelperText>Rodzaj działalności</FormHelperText>
+                    </FormControl>
+                </form>
+                <DividerGradient />
+                <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    size="large"
+                    onClick={this.submitForm}
+                    disabled={disabled}>
+                    Dodaj wykonawcę
                     </Button>
-                </CardAdmin>
-            </div>
+            </CardAdmin>
         );
     }
 };
@@ -184,9 +182,6 @@ const classes = (theme: Theme) => createStyles({
     },
     button: {
         margin: theme.spacing(3)
-    },
-    marginBottom: {
-        marginBottom: theme.spacing(3)
     }
 });
 

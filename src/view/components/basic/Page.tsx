@@ -12,7 +12,7 @@ import { DRAWER_WIDTH } from './Drawer';
 import Drawer from './Drawer';
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Error from "./Error";
-import { actionFetchSuccess, removeNotification } from "../../../store/fetching";
+import { removeNotification } from "../../../store/fetching";
 import Success from "./Success";
 
 interface IProps {
@@ -83,7 +83,7 @@ class Page extends React.Component<Props, IState> {
                         {children}
                         <div className={classes.notifications}>
                             {
-                                notifications?.map((item: any, index: number) => {
+                                notifications?.reverse().map((item: any, index: number) => {
                                     if (item) {
                                         const id = item.id;
                                         if (item?.type == "error") {

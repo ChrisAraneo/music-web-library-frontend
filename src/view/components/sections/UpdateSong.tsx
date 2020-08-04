@@ -7,13 +7,20 @@ import DividerGradient from "../basic/DividerGradient";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
 import { AppState } from "../../../store";
-import { postSong } from "../../../store/songs";
+import { getSong, updateSong } from "../../../store/songs";
+import Select from "@material-ui/core/Select/Select";
+import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
+import Song, { SongInPlaylist } from "../../../model/Song";
+import FormControl from "@material-ui/core/FormControl/FormControl";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 
 interface IProps {
-    classes: any
+    classes: any,
+    songs: Song[]
 }
 
 interface IState {
+    songID: number,
     title: string,
     bpm?: number
     comment?: string,
@@ -28,6 +35,7 @@ interface IState {
 }
 
 const initialState = {
+    songID: Number.MIN_VALUE,
     title: "",
     bpm: undefined,
     comment: undefined,
@@ -43,11 +51,34 @@ const initialState = {
 
 type Props = IProps & LinkStateProps;
 
-class CreateSong extends React.Component<Props, IState> {
+class UpdateSong extends React.Component<Props, IState> {
 
     constructor(props: Props) {
         super(props);
         this.state = { ...initialState };
+    }
+
+    handleChangeSong = (event: any) => {
+        const value = event?.target?.value;
+        if (value) {
+            this.setState({ songID: value });
+            getSong(value, (song: Song) => {
+                this.setState({
+                    songID: song?.songID,
+                    title: song?.title,
+                    bpm: song?.bpm,
+                    comment: song?.comment,
+                    genre: song?.genre,
+                    language: song?.language,
+                    length: song?.length,
+                    mainKey: song?.mainKey,
+                    publisher: song?.publisher,
+                    terms: song?.terms,
+                    website: song?.website,
+                    year: song?.year
+                });
+            });
+        }
     }
 
     handleChangeTitle = (event: any) => {
@@ -140,20 +171,9 @@ class CreateSong extends React.Component<Props, IState> {
     }
 
     submitForm = () => {
+        const song = { ...this.state };
 
-        const { title, bpm, comment, genre, language, length, mainKey, publisher, terms, website, year } = this.state;
-
-        postSong(title,
-            bpm,
-            comment,
-            genre,
-            language,
-            length,
-            mainKey,
-            publisher,
-            terms,
-            website,
-            year,
+        updateSong(song,
             () => {
                 this.setState({ ...initialState });
                 alert("Wysłano, todo walidacja");
@@ -161,12 +181,34 @@ class CreateSong extends React.Component<Props, IState> {
     }
 
     render = () => {
-        const { classes, fetching } = this.props;
+        const { classes, fetching, songs } = this.props;
         const { isPending } = fetching;
-        const disabled = isPending;
+        const disabled = isPending || this.state.songID == initialState.songID;
 
         return (
-            <CardAdmin title="Dodaj nowy utwór">
+            <CardAdmin title="Edytuj informacje o utworze">
+                <div className={classes.form}>
+                    <FormControl className={classes.selectWrapper}>
+                        <Select
+                            id="type-select"
+                            value={undefined}
+                            onChange={this.handleChangeSong}
+                            required
+                            autoWidth>
+                            {
+                                songs?.map((song: Song) => {
+                                    if (song) {
+                                        return (<MenuItem key={song?.songID} value={song?.songID}>{song?.title}</MenuItem>);
+                                    } else {
+                                        return null;
+                                    }
+                                })
+                            }
+                        </Select>
+                        <FormHelperText>Wybierz utwór do edycji</FormHelperText>
+                    </FormControl>
+                </div>
+                <DividerGradient />
                 <form className={classes.form} noValidate autoComplete="off">
                     <TextField
                         className={classes.textInput}
@@ -256,7 +298,7 @@ class CreateSong extends React.Component<Props, IState> {
                     size="large"
                     onClick={this.submitForm}
                     disabled={disabled}>
-                    Dodaj utwór
+                    Zapisz zmiany
                     </Button>
             </CardAdmin>
         );
@@ -287,5 +329,5 @@ const mapStateToProps = (state: AppState): LinkStateProps => ({
     fetching: state.fetching
 });
 
-const Styled = withStyles(classes, { withTheme: true })(CreateSong);
+const Styled = withStyles(classes, { withTheme: true })(UpdateSong);
 export default connect(mapStateToProps, null)(Styled);

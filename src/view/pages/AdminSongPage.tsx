@@ -28,6 +28,9 @@ import UpdateArtistType from "../components/sections/UpdateArtistType";
 import CreateArtistURL from "../components/sections/CreateArtistURL";
 import Song from "../../model/Song";
 import CreateSong from "../components/sections/CreateSong";
+import UpdateSong from "../components/sections/UpdateSong";
+import RemoveSong from "../components/sections/RemoveSong";
+import CreateSongURL from "../components/sections/CreateSongURL";
 
 
 interface IProps {
@@ -63,12 +66,18 @@ class AdminSongPage extends React.Component<Props, IState> {
                             <Grid item xs={12} md={12}>
                                 <CreateSong />
                             </Grid>
+                            <Grid item xs={12} md={12}>
+                                <RemoveSong songs={songs} />
+                            </Grid>
+                            <Grid item xs={12} md={12}>
+                                <CreateSongURL songs={songs} />
+                            </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={12}>
-                                <h1>bbbbbbb</h1>
+                                <UpdateSong songs={songs} />
                             </Grid>
                         </Grid>
                     </Grid>

@@ -5,7 +5,6 @@ import * as serviceWorker from './serviceWorker';
 
 import { Provider } from "react-redux";
 import { store } from "./store/index";
-// import AppRouter from "./router";
 
 import { ConnectedRouter } from 'connected-react-router'
 
@@ -32,6 +31,7 @@ import ReviewPage from './view/pages/ReviewPage';
 import WriteReviewPage from './view/pages/WriteReviewPage';
 import AdminArtistPage from './view/pages/AdminArtistPage';
 import AdminSongPage from './view/pages/AdminSongPage';
+import AdminAlbumPage from './view/pages/AdminAlbumPage';
 
 export const App: React.FC = () => {
     return (
@@ -47,6 +47,7 @@ export const App: React.FC = () => {
                             <Route path="/admin" exact component={AdminPage} />
                             <Route path="/admin/artists" component={AdminArtistPage} />
                             <Route path="/admin/songs" component={AdminSongPage} />
+                            <Route path="/admin/albums" component={AdminAlbumPage} />
                             <Route path="/songs" exact component={SongListPage} />
                             <Route path="/songs/:songID?" component={SongPage} />
                             <Route path="/albums" exact component={AlbumListPage} />
