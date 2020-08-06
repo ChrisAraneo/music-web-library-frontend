@@ -13,32 +13,45 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Song from "../../../model/Song";
 import Artist from "../../../model/Artist";
-import { getArtist, attachSongToArtist } from "../../../store/artists";
+import { getArtist, attachSongToArtist, detachSongFromArtist } from "../../../store/artists";
 
 
 interface IProps {
     classes: any,
-    artists: Artist[],
     songs: Song[]
 }
 
 interface IState {
+    songID: number,
+    artists: Artist[] | undefined,
     artistID: number,
-    songID: number
 }
 
 const initialState = {
     artistID: Number.MIN_VALUE,
+    artists: undefined,
     songID: Number.MIN_VALUE
 }
 
 type Props = IProps & LinkStateProps;
 
-class CreateSongArtist extends React.Component<Props, IState> {
+class RemoveSongArtist extends React.Component<Props, IState> {
 
     constructor(props: Props) {
         super(props);
         this.state = { ...initialState };
+    }
+
+    handleChangeSong = (event: any) => {
+        const value = event?.target?.value;
+        if (value) {
+            getSong(value, (song: Song) => {
+                this.setState({
+                    songID: song?.songID,
+                    artists: song?.artists
+                });
+            });
+        }
     }
 
     handleChangeArtist = (event: any) => {
@@ -50,52 +63,26 @@ class CreateSongArtist extends React.Component<Props, IState> {
         }
     }
 
-    handleChangeSong = (event: any) => {
-        const value = event?.target?.value;
-        if (value) {
-            getSong(value, () => {
-                this.setState({ songID: value });
-            });
-        }
-    }
-
     submitForm = () => {
         const { artistID, songID } = this.state;
         if (artistID && songID) {
-            attachSongToArtist(artistID, songID,
+            detachSongFromArtist(artistID, songID,
                 () => {
+                    this.setState({ ...initialState });
+                    getSong(songID);
                     alert("TODO walidacja");
                 });
         }
     }
 
     render = () => {
-        const { classes, fetching, artists, songs } = this.props;
+        const { classes, fetching, songs } = this.props;
         const { isPending } = fetching;
         const disabled = isPending || this.state.artistID == initialState.artistID || this.state.songID == initialState.songID;
 
         return (
-            <CardAdmin title="Dodaj powiązanie utwór-wykonawca">
+            <CardAdmin title="Usuń powiązanie utwór-wykonawca">
                 <div className={classes.form}>
-                    <FormControl className={classes.selectWrapper}>
-                        <Select
-                            id="type-select"
-                            value={undefined}
-                            onChange={this.handleChangeArtist}
-                            required
-                            autoWidth>
-                            {
-                                artists?.map((artist: Artist) => {
-                                    if (artist) {
-                                        return (<MenuItem key={artist.artistID} value={artist.artistID}>{artist.artistName}</MenuItem>);
-                                    } else {
-                                        return null;
-                                    }
-                                })
-                            }
-                        </Select>
-                        <FormHelperText>Wybierz wykonawcę</FormHelperText>
-                    </FormControl>
                     <FormControl className={classes.selectWrapper}>
                         <Select
                             id="type-select"
@@ -106,7 +93,7 @@ class CreateSongArtist extends React.Component<Props, IState> {
                             {
                                 songs?.map((song: Song) => {
                                     if (song) {
-                                        return (<MenuItem key={song?.songID} value={song?.songID}>{song?.title}</MenuItem>);
+                                        return (<MenuItem key={song.songID} value={song.songID}>{song.title}</MenuItem>);
                                     } else {
                                         return null;
                                     }
@@ -114,6 +101,26 @@ class CreateSongArtist extends React.Component<Props, IState> {
                             }
                         </Select>
                         <FormHelperText>Wybierz utwór</FormHelperText>
+                    </FormControl>
+                    <FormControl className={classes.selectWrapper}>
+                        <Select
+                            id="type-select"
+                            value={undefined}
+                            onChange={this.handleChangeArtist}
+                            required
+                            disabled={this.state.artists === undefined || this.state.artists?.length < 1}
+                            autoWidth>
+                            {
+                                this.state.artists?.map((artist: Artist) => {
+                                    if (artist) {
+                                        return (<MenuItem key={artist.artistID} value={artist.artistID}>{artist.artistName}</MenuItem>);
+                                    } else {
+                                        return null;
+                                    }
+                                })
+                            }
+                        </Select>
+                        <FormHelperText>Wybierz wykonawcę</FormHelperText>
                     </FormControl>
                 </div>
                 <DividerGradient />
@@ -125,7 +132,7 @@ class CreateSongArtist extends React.Component<Props, IState> {
                     size="large"
                     onClick={this.submitForm}
                     disabled={disabled}>
-                    Dodaj
+                    Usuń powiązanie
                     </Button>
             </CardAdmin>
         );
@@ -156,5 +163,5 @@ const mapStateToProps = (state: AppState): LinkStateProps => ({
     fetching: state.fetching
 });
 
-const Styled = withStyles(classes, { withTheme: true })(CreateSongArtist);
+const Styled = withStyles(classes, { withTheme: true })(RemoveSongArtist);
 export default connect(mapStateToProps, null)(Styled); 

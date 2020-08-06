@@ -169,7 +169,7 @@ export function attachSongToArtist(
         return actionSetArtist(result);
     }));
 }
-export function detachSongFromAlbum(
+export function detachSongFromArtist(
     artistID: number,
     songID: number,
     successCallback?: any

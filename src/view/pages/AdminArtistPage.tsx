@@ -20,6 +20,7 @@ import CreateArtistURL from "../components/sections/CreateArtistURL";
 import CreateSongArtist from "../components/sections/CreateSongArtist";
 import Song from "../../model/Song";
 import { getSongsList } from "../../store/songs";
+import RemoveSongArtist from "../components/sections/RemoveSongArtist";
 
 
 interface IProps {
@@ -57,6 +58,7 @@ class AdminArtistPage extends React.Component<Props, IState> {
                         <RemoveArtist
                             artists={artists} />
                         <CreateSongArtist artists={artists} songs={songs} />
+                        <RemoveSongArtist songs={songs} />
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <UpdateArtist

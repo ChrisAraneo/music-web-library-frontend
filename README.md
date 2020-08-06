@@ -20,6 +20,8 @@ SignUp:
 SignIn:
 * Hasła niewidoczne
 
+Walidacje
+
 Wykonawcy:
 * ~~Dodawanie wykonawców~~
 * ~~Modyfikacja wykonawców~~
@@ -32,10 +34,8 @@ Wykonawcy:
 * ~~Dodawanie URL wykonawców~~
 * ~~Usuwanie URL wykonawców~~
 
-* Łączenie wykonawcy z piosenką (!!! sprawdzić połączenie - czy submituje)
-* Usunięcie połączenia wykonawcy z piosenką
-
-* Walidacje
+* ~~Łączenie wykonawcy z piosenką~~
+* ~~Usunięcie połączenia wykonawcy z piosenką~~
 
 Piosenki:
 * ~~Dodawanie piosenek~~
