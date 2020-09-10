@@ -53,8 +53,12 @@ Albumy:
 * ~~Dodawanie piosenek do albumów~~
 * ~~Usuwanie piosenek z albumów~~
 
-* Dodawanie okładek albumów
-* Usuwanie okładek albumów
+Okładki:
+* ~~Dodawanie okładek albumów~~
+* ~~Dodawanie powiązania okładka-album~~
+* ~~Usuwanie powiązania okładka-album~~
+* ~~Usuwanie okładek albumów~~
+* Wyświetlanie okładek na stronach albumów
 
 Playlisty:
 ((sprawdzenie kodu))
@@ -62,11 +66,9 @@ Playlisty:
 Search:
 * Wyszukiwarka (?)
 
-
-
 Motyw interfejsu:
-* Zmiana kolorystyki interfejsu
-* Tła
+* ~~Zmiana kolorystyki interfejsu~~
+* ~~Tła~~
 
 Tłumaczenie:
 * Internacjonalizacja, słownik w pliku
