@@ -9,7 +9,7 @@ interface IProps {
     onClick?: () => any
 }
 
-const Error: React.FC<IProps> = (props: IProps) => {
+const Error: React.FunctionComponent<IProps> = (props: IProps) => {
     const { title, message } = props;
     const classes = useStyles();
 

@@ -7,7 +7,7 @@ interface IProps {
     children?: any
 }
 
-const Title: React.FC<IProps> = (props: IProps) => {
+const Title: React.FunctionComponent<IProps> = (props: IProps) => {
     const classes = useStyles();
 
     return (
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            margin: theme.spacing(0, 2, 0, 2)
+            margin: theme.spacing(0, 2, 0, 2),
         }
     }),
 );

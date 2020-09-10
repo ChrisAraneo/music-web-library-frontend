@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-
 interface IProps {
     window?: () => Window;
     mobileOpen: boolean,
@@ -39,7 +38,7 @@ interface IProps {
 
 type Props = IProps & LinkStateProps;
 
-const Drawer: React.FC<Props> = (props: Props) => {
+const Drawer: React.FunctionComponent<Props> = (props: Props) => {
     const { window, mobileOpen, handleDrawerToggle, auth } = props;
     const { usernameOrEmail, token, roles } = auth;
     const classes = useStyles();
@@ -92,14 +91,12 @@ const Drawer: React.FC<Props> = (props: Props) => {
     );
 }
 
-
-
 interface IPropsContent {
     isLogged: boolean,
     isAdmin: boolean
 }
 
-const DrawerContent: React.FC<IPropsContent> = (props: IPropsContent) => {
+const DrawerContent: React.FunctionComponent<IPropsContent> = (props: IPropsContent) => {
     const { isLogged, isAdmin } = props;
     const classes = useStyles();
 
@@ -127,7 +124,6 @@ const DrawerContent: React.FC<IPropsContent> = (props: IPropsContent) => {
                     <ListItemIcon><InboxIcon /></ListItemIcon>
                     <ListItemText primary="Utwory" />
                 </ListItem>
-
             </List>
             <Divider />
             {
@@ -165,7 +161,6 @@ const DrawerContent: React.FC<IPropsContent> = (props: IPropsContent) => {
                             <ListItemText primary="Zaloguj się" />
                         </ListItem>)
                 }
-
             </List>
         </div>
     );

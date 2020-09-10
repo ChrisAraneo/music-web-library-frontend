@@ -7,12 +7,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-
 interface IProps {
     object: any
 }
 
-const TableDetails = (props: IProps) => {
+const TableDetails: React.FunctionComponent<IProps> = (props: IProps) => {
     const classes = useStyles();
     const { object } = props;
 

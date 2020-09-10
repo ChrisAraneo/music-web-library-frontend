@@ -4,9 +4,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import DividerGradient from './DividerGradient';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 
-
-
-const Toolbar: React.FC = (props) => {
+const Toolbar: React.FunctionComponent = (props) => {
     const styles = useStyles();
 
     return (
@@ -40,7 +38,7 @@ interface ITableCoreProps {
     }>
 }
 
-const TableCore: React.FC<ITableCoreProps> = (props: ITableCoreProps) => {
+const TableCore: React.FunctionComponent<ITableCoreProps> = (props: ITableCoreProps) => {
     const { title, isLoading, columns, data, actions } = props;
     const styles = useStyles();
 

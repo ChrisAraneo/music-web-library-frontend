@@ -14,7 +14,7 @@ interface IProps {
     isPending: boolean
 }
 
-const Progress: React.FC<IProps> = (props: IProps) => {
+const Progress: React.FunctionComponent<IProps> = (props: IProps) => {
     const { isPending } = props;
     const classes = useStyles();
 

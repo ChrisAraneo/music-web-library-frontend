@@ -6,7 +6,7 @@ interface IProps {
     enabled: boolean
 }
 
-const CircularProgress: React.FC<IProps> = (props: IProps) => {
+const CircularProgress: React.FunctionComponent<IProps> = (props: IProps) => {
     const { enabled } = props;
     const classes = useStyles();
 

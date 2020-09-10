@@ -9,7 +9,7 @@ interface IProps {
     children?: any
 }
 
-const Card: React.FC<IProps> = (props: IProps) => {
+const Card: React.FunctionComponent<IProps> = (props: IProps) => {
     const { title } = props;
     const styles = useStyles();
 

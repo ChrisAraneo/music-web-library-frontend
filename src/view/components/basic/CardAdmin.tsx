@@ -1,13 +1,14 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Card from "./Card";
+import { SECONDARY } from '../../theme/theme';
 
 interface IProps {
     title: string,
     children?: any
 }
 
-const CardAdmin: React.FC<IProps> = (props: IProps) => {
+const CardAdmin: React.FunctionComponent<IProps> = (props: IProps) => {
     const { title } = props;
     const styles = useStyles();
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(2),
         },
         admin: {
-            color: theme.palette.grey[600],
+            color: SECONDARY,
             marginRight: theme.spacing(1)
         }
     })

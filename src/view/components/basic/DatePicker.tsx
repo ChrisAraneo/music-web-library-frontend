@@ -18,7 +18,7 @@ interface IProps {
     children?: any
 }
 
-const DatePicker: React.FC<IProps> = (props: IProps) => {
+const DatePicker: React.FunctionComponent<IProps> = (props: IProps) => {
     const { label, value, handleChangeDate, disabled } = props;
     const styles = useStyles();
 

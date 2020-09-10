@@ -7,7 +7,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Theme, createStyles, withStyles } from '@material-ui/core/styles';
 import { AppState } from "../../../store/index";
-import Button from '@material-ui/core/Button';
 import { DRAWER_WIDTH } from './Drawer';
 import Drawer from './Drawer';
 import AppBar from "@material-ui/core/AppBar/AppBar";
@@ -44,14 +43,14 @@ class Page extends React.Component<Props, IState> {
     }
 
     render = () => {
-        const { title, window, children, classes, fetching, auth } = this.props;
+        const { title, window, children, classes, fetching } = this.props;
         const { mobileOpen } = this.state;
         const { notifications } = fetching;
 
         return (
             <div className={classes.root}>
                 <CssBaseline />
-                <AppBar position="fixed" className={classes.appBar}>
+                <AppBar color="default" position="fixed" className={classes.appBar}>
                     <Toolbar>
                         <IconButton
                             color="inherit"
@@ -69,7 +68,6 @@ class Page extends React.Component<Props, IState> {
                                     ''
                             }
                         </Typography>
-                        <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
                 <Drawer
@@ -78,12 +76,11 @@ class Page extends React.Component<Props, IState> {
                     handleDrawerToggle={this.handleDrawerToggle} />
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-
                     <div className={classes.content}>
                         {children}
                         <div className={classes.notifications}>
                             {
-                                notifications?.reverse().map((item: any, index: number) => {
+                                notifications?.reverse().map((item: any) => {
                                     if (item) {
                                         const id = item.id;
                                         if (item?.type == "error") {
@@ -100,7 +97,6 @@ class Page extends React.Component<Props, IState> {
                                                 onClick={() => removeNotification(id)} />)
                                         }
                                     }
-
                                 })
                             }
                         </div>
@@ -113,7 +109,7 @@ class Page extends React.Component<Props, IState> {
 
 const styles = (theme: Theme) => createStyles({
     root: {
-        display: 'flex',
+        display: 'flex'
     },
     appBar: {
         [theme.breakpoints.up('sm')]: {

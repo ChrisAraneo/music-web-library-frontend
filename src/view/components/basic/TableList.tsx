@@ -7,12 +7,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-
 interface IProps {
     array: any[] | undefined
 }
 
-const TableList = (props: IProps) => {
+const TableList: React.FunctionComponent<IProps> = (props: IProps) => {
     const classes = useStyles();
     const { array } = props;
 
@@ -45,6 +44,5 @@ export default TableList;
 
 const useStyles = makeStyles({
     table: {
-        //
     },
 });

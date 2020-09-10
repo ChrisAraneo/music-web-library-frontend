@@ -11,7 +11,6 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Select from "@material-ui/core/Select/Select";
 
-
 interface IProps {
     playlists: Playlist[],
     open: boolean,
@@ -22,7 +21,7 @@ interface IProps {
     submit: () => void
 }
 
-const DialogAddSongToPlaylist: React.FC<IProps> = (props: IProps) => {
+const DialogAddSongToPlaylist: React.FunctionComponent<IProps> = (props: IProps) => {
     const styles = useStyles();
     const { open, selectedPlaylistID, selectedSongID, handleClose, handleChoosePlaylist, playlists, submit } = props;
 
