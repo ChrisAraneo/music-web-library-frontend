@@ -11,6 +11,7 @@ import songReducer from "./songs";
 import albumReducer from "./albums";
 import playlistReducer from "./playlists";
 import reviewsReducer from "./reviews";
+import coverReducer from "./covers";
 
 // CREATING ROUTING HISTORY
 export const history = createBrowserHistory();
@@ -25,7 +26,8 @@ export const rootReducer = combineReducers({
     songs: songReducer,
     albums: albumReducer,
     playlists: playlistReducer,
-    reviews: reviewsReducer
+    reviews: reviewsReducer,
+    covers: coverReducer
 });
 
 // CREATING STORE
