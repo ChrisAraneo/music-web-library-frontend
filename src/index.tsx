@@ -32,34 +32,37 @@ import WriteReviewPage from './view/pages/WriteReviewPage';
 import AdminArtistPage from './view/pages/AdminArtistPage';
 import AdminSongPage from './view/pages/AdminSongPage';
 import AdminAlbumPage from './view/pages/AdminAlbumPage';
+import Background from './view/components/basic/Background';
 
 export const App: React.FC = () => {
     return (
         <Provider store={store}>
             <ConnectedRouter history={history}>
                 <ThemeProvider theme={theme}>
-                    <Page title="Internetowy katalog muzyczny">
-                        <Switch>
-                            <Route path="/signup" component={SignUpPage} />
-                            <Route path="/signin" component={SignInPage} />
-                            <Route path="/artists" exact component={ArtistListPage} />
-                            <Route path="/artists/:artistID?" component={ArtistPage} />
-                            <Route path="/admin" exact component={AdminPage} />
-                            <Route path="/admin/artists" component={AdminArtistPage} />
-                            <Route path="/admin/songs" component={AdminSongPage} />
-                            <Route path="/admin/albums" component={AdminAlbumPage} />
-                            <Route path="/songs" exact component={SongListPage} />
-                            <Route path="/songs/:songID?" component={SongPage} />
-                            <Route path="/albums" exact component={AlbumListPage} />
-                            <Route path="/albums/:albumID?" component={AlbumPage} />
-                            <Route path="/playlists" exact component={PlaylistListPage} />
-                            <Route path="/playlists/:playlistID?" component={PlaylistPage} />
-                            <Route path="/reviews/:reviewID?" component={ReviewPage} />
-                            <Route path="/writereview/:albumID?/:reviewID?" exact component={WriteReviewPage} />
-                            <Route path="/writereview/:albumID?" component={WriteReviewPage} />
-                            <Route path="/" component={HomePage} />
-                        </Switch>
-                    </Page>
+                    <Background>
+                        <Page title="Internetowy katalog muzyczny">
+                            <Switch>
+                                <Route path="/signup" component={SignUpPage} />
+                                <Route path="/signin" component={SignInPage} />
+                                <Route path="/artists" exact component={ArtistListPage} />
+                                <Route path="/artists/:artistID?" component={ArtistPage} />
+                                <Route path="/admin" exact component={AdminPage} />
+                                <Route path="/admin/artists" component={AdminArtistPage} />
+                                <Route path="/admin/songs" component={AdminSongPage} />
+                                <Route path="/admin/albums" component={AdminAlbumPage} />
+                                <Route path="/songs" exact component={SongListPage} />
+                                <Route path="/songs/:songID?" component={SongPage} />
+                                <Route path="/albums" exact component={AlbumListPage} />
+                                <Route path="/albums/:albumID?" component={AlbumPage} />
+                                <Route path="/playlists" exact component={PlaylistListPage} />
+                                <Route path="/playlists/:playlistID?" component={PlaylistPage} />
+                                <Route path="/reviews/:reviewID?" component={ReviewPage} />
+                                <Route path="/writereview/:albumID?/:reviewID?" exact component={WriteReviewPage} />
+                                <Route path="/writereview/:albumID?" component={WriteReviewPage} />
+                                <Route path="/" component={HomePage} />
+                            </Switch>
+                        </Page>
+                    </Background>
                 </ThemeProvider>
             </ConnectedRouter>
         </Provider>
