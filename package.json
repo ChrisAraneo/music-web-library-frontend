@@ -21,6 +21,7 @@
     "@types/redux": "^3.6.0",
     "connected-react-router": "^6.8.0",
     "material-table": "^1.64.0",
+    "material-ui-image": "^3.2.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-recaptcha-v3": "^1.5.2",

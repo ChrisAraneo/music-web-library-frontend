@@ -25,6 +25,10 @@ import ReviewIcon from '@material-ui/icons/RateReview';
 import Button from "@material-ui/core/Button/Button";
 import Role, { ROLE_ADMIN } from "../../model/Role";
 import { table } from "console";
+import Image from 'material-ui-image';
+import Card from "../components/basic/Card";
+import Paper from "@material-ui/core/Paper/Paper";
+import Cover from "../components/basic/Cover";
 
 interface IProps {
     match: { params: { albumID: number } },
@@ -195,6 +199,7 @@ class AlbumPage extends React.Component<Props, IState> {
         const { open, selectedSongID, selectedPlaylistID } = this.state;
 
         const album = albums.find((album: Album) => (album ? album.albumID == albumID : undefined));
+        const cover = album?.cover;
         const reviews = album?.reviews;
 
         const isAdmin = (roles?.find((role: Role) => role?.name == ROLE_ADMIN) ? true : false);
@@ -230,12 +235,26 @@ class AlbumPage extends React.Component<Props, IState> {
                     aboveTitle="Album muzyczny" />
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={12}>
-                        <Table
-                            title={`Utwory w albumie muzycznym`}
-                            objects={this.processSongs(album?.songs)}
-                            isPending={isPending}
-                            actions={actions} />
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} md={cover ? 8 : 12}>
+                                <Table
+                                    title={`Utwory w albumie muzycznym`}
+                                    objects={this.processSongs(album?.songs)}
+                                    isPending={isPending}
+                                    actions={actions} />
+                            </Grid>
+                            {
+                                cover ?
+                                    (<Grid item xs={12} md={4}>
+                                        <Cover data={cover?.data} />
+                                    </Grid>)
+                                    :
+                                    null
+                            }
+                        </Grid>
                     </Grid>
+
+
                     <Grid item xs={12} md={12}>
                         <Table
                             title="Recenzje albumu"
