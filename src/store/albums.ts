@@ -2,7 +2,8 @@ import Album from "../model/Album";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
-import { addNotification } from "./fetching";
+import { addNotification, actionFetchSuccess } from "./fetching";
+import Cover from "../model/Cover";
 
 // DEFAULT STATE
 const defaultState: Array<Album> = [];
@@ -99,8 +100,15 @@ export function updateAlbum(album: Album, successCallback?: any) {
         return actionSetAlbum(result);
     }));
 }
-export function deleteAlbum(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/albums/${id}`, {}, actionDeleteAlbum));
+export function deleteAlbum(id: number, successCallback?: any) {
+    store.dispatch(requestDelete(`http://localhost:8080/api/albums/${id}`, {},
+        () => {
+            if (typeof successCallback === "function") {
+                successCallback();
+            }
+            addNotification("Usunięto album", "Pomyślnie usunięto album muzyczny.");
+            return actionDeleteAlbum(id);
+        }));
 }
 export function postSongToAlbum(
     albumID: number,
@@ -127,6 +135,32 @@ export function deleteSongFromAlbum(
             successCallback(result);
         }
         addNotification("Dodano utwór do albumu", "Pomyślnie dodano utwór muzyczny do albumu");
+        return actionSetAlbum(result);
+    }));
+}
+export function attachCoverToAlbum(
+    albumID: number,
+    coverID: number,
+    successCallback?: any
+) {
+    store.dispatch(requestPost(`http://localhost:8080/api/covers/${coverID}/${albumID}`, {}, (result: Album) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Dodano okładkę do albumu", "Pomyślnie dodano okładkę do albumu");
+        return actionSetAlbum(result);
+    }));
+}
+export function detachCoverFromAlbum(
+    coverID: number,
+    albumID: number,
+    successCallback?: any
+) {
+    store.dispatch(requestDelete(`http://localhost:8080/api/covers/${coverID}/${albumID}`, {}, (result: Album) => {
+        if (typeof successCallback === "function") {
+            successCallback(result);
+        }
+        addNotification("Usunięto połączenie", "Pomyślnie usunięto połączenie okładka-album");
         return actionSetAlbum(result);
     }));
 }
