@@ -1,26 +1,28 @@
 # Music Web Library Frontend
 
-## TODO (29 VII)
+## TODO (12 XIX)
+
+Walidacje
+
+Testy API
 
 Błędy:
-* Lepsze przechowywanie błędów w postaci stosu
+* ~~Lepsze przechowywanie błędów w postaci stosu~~
 
 Menu po lewej stronie:
-* Zmiana ikon
+* ~~Zmiana ikon~~
 
 Strona powitalna:
-* Wizualna zmiana strony powitalnej
+* ~~Wizualna zmiana strony powitalnej~~
+* Poprawa części wizualnej strony powitalnej
 
 SignUp:
 * ~~Captcha na SignUp~~
 * Hasła niewidoczne
 * Obsługa błędów
-* Obrazek
 
 SignIn:
 * Hasła niewidoczne
-
-Walidacje
 
 Wykonawcy:
 * ~~Dodawanie wykonawców~~
@@ -58,13 +60,13 @@ Okładki:
 * ~~Dodawanie powiązania okładka-album~~
 * ~~Usuwanie powiązania okładka-album~~
 * ~~Usuwanie okładek albumów~~
-* Wyświetlanie okładek na stronach albumów
-
-Playlisty:
-((sprawdzenie kodu))
+* ~~Wyświetlanie okładek na stronach albumów~~
 
 Search:
 * Wyszukiwarka (?)
+
+Panel administratora:
+* ~~Przyciski~~
 
 Motyw interfejsu:
 * ~~Zmiana kolorystyki interfejsu~~
