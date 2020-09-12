@@ -10,17 +10,12 @@ import { history } from "../../store/index";
 import Card from "../components/basic/Card";
 import DividerGradient from "../components/basic/DividerGradient";
 import TextField from "@material-ui/core/TextField";
-import Error from "../components/basic/Error";
 import CircularProgress from "../components/basic/CircularProgress";
 
 import { signIn } from "../../store/auth";
 import Link from "@material-ui/core/Link";
 import PageHeader from "../components/basic/PageHeader";
 import Grid from "@material-ui/core/Grid/Grid";
-
-import signInImage from "../../images/sign-in.png";
-
-
 
 interface IProps {
     classes: any
@@ -74,7 +69,7 @@ class SignInPage extends React.Component<Props, IState> {
 
         return (
             <Grid container justify="center">
-                <Grid item xs={12} md={5}>
+                <Grid item xs={12} md={4}>
                     <PageHeader title="Zaloguj się" />
                     <Card title="Logowanie">
                         <form className={classes.form} noValidate autoComplete="off">
@@ -88,6 +83,7 @@ class SignInPage extends React.Component<Props, IState> {
                                 fullWidth={true}
                                 label="Hasło"
                                 required
+                                type="password"
                                 onChange={this.handleChangePassword}
                                 value={this.state.password} />
                         </form>
@@ -109,14 +105,8 @@ class SignInPage extends React.Component<Props, IState> {
                                     Zaloguj się
                                 </Button>
                             </div>
-
                         </div>
                     </Card>
-                </Grid>
-                <Grid item xs={undefined} md={4}>
-                    <div className={classes.imageWrapper}>
-                        <img className={classes.image} src={signInImage} alt="Logowanie" />
-                    </div>
                 </Grid>
             </Grid>
         );
@@ -154,18 +144,7 @@ const styles = (theme: Theme) => createStyles({
     rightContainer: {
         display: 'flex',
         flexDirection: 'row'
-    },
-    imageWrapper: {
-        padding: theme.spacing(4),
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        height: '100%'
-    },
-    image: {
-        width: '100%',
-        height: 'auto'
-    },
+    }
 });
 
 interface LinkStateProps {

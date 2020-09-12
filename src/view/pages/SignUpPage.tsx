@@ -179,12 +179,14 @@ class SignUpPage extends React.Component<Props, IState> {
                                         fullWidth={true}
                                         label="Hasło"
                                         required
+                                        type="password"
                                         onChange={this.handleChangePassword1}
                                         value={this.state.password1} />
                                     <TextField
                                         fullWidth={true}
                                         label="Powtórz hasło"
                                         required
+                                        type="password"
                                         onChange={this.handleChangePassword2}
                                         value={this.state.password2} />
                                 </form>
@@ -214,11 +216,6 @@ class SignUpPage extends React.Component<Props, IState> {
                                     </div>
                                 </div>
                             </Card>
-                        </Grid>
-                        <Grid item xs={undefined} md={4}>
-                            <div className={classes.imageWrapper}>
-                                <img className={classes.image} src={signUpImage} alt="Zakładanie konta" />
-                            </div>
                         </Grid>
                     </Grid>
                 </div>
