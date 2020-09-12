@@ -3,6 +3,14 @@ import Divider from '@material-ui/core/Divider';
 import DrawerMaterial from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
+import HomeIcon from '@material-ui/icons/Home';
+import PeopleIcon from '@material-ui/icons/People';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import AlbumIcon from '@material-ui/icons/Album';
+import QueueMusicIcon from '@material-ui/icons/QueueMusic';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -106,22 +114,22 @@ const DrawerContent: React.FunctionComponent<IPropsContent> = (props: IPropsCont
             <Divider />
             <List>
                 <ListItem button onClick={() => history.push("/")}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemIcon><HomeIcon /></ListItemIcon>
                     <ListItemText primary="Strona główna" />
                 </ListItem>
             </List>
             <Divider />
             <List>
                 <ListItem button onClick={() => history.push("/artists")}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemIcon><PeopleIcon /></ListItemIcon>
                     <ListItemText primary="Wykonawcy" />
                 </ListItem>
                 <ListItem button onClick={() => history.push("/albums")}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemIcon><AlbumIcon /></ListItemIcon>
                     <ListItemText primary="Albumy" />
                 </ListItem>
                 <ListItem button onClick={() => history.push("/songs")}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemIcon><MusicNoteIcon /></ListItemIcon>
                     <ListItemText primary="Utwory" />
                 </ListItem>
             </List>
@@ -131,7 +139,7 @@ const DrawerContent: React.FunctionComponent<IPropsContent> = (props: IPropsCont
                     <>
                         <List>
                             <ListItem button onClick={() => history.push("/admin")}>
-                                <ListItemIcon><InboxIcon /></ListItemIcon>
+                                <ListItemIcon><VerifiedUserIcon /></ListItemIcon>
                                 <ListItemText primary="Panel administratora" />
                             </ListItem>
                         </List>
@@ -146,18 +154,18 @@ const DrawerContent: React.FunctionComponent<IPropsContent> = (props: IPropsCont
                         (
                             <>
                                 <ListItem button onClick={() => history.push("/playlists")}>
-                                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                                    <ListItemIcon><QueueMusicIcon /></ListItemIcon>
                                     <ListItemText primary="Twoje listy utworów" />
                                 </ListItem>
                                 <ListItem button onClick={() => { signOut(); history.push("/"); }}>
-                                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                                    <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                                     <ListItemText primary="Wyloguj się" />
                                 </ListItem>
                             </>
                         )
                         :
                         (<ListItem button onClick={() => history.push("/signin")}>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemIcon><AccountCircleIcon /></ListItemIcon>
                             <ListItemText primary="Zaloguj się" />
                         </ListItem>)
                 }

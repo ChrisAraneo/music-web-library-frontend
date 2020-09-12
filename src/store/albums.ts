@@ -2,8 +2,7 @@ import Album from "../model/Album";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
-import { actionFetchSuccess, addSuccessNotification } from "./fetching";
-import Cover from "../model/Cover";
+import { addSuccessNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<Album> = [];

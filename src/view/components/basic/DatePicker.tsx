@@ -15,11 +15,12 @@ interface IProps {
     handleChangeDate: (event: any) => any,
 
     disabled?: boolean,
+    error?: boolean,
     children?: any
 }
 
 const DatePicker: React.FunctionComponent<IProps> = (props: IProps) => {
-    const { label, value, handleChangeDate, disabled } = props;
+    const { label, value, handleChangeDate, disabled, error } = props;
     const styles = useStyles();
 
     return (
@@ -39,6 +40,7 @@ const DatePicker: React.FunctionComponent<IProps> = (props: IProps) => {
                         'aria-label': 'change date',
                     }}
                     disabled={disabled ? true : false}
+                    error={error}
                 />
             </Grid>
         </MuiPickersUtilsProvider>

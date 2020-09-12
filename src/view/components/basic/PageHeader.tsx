@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            margin: theme.spacing(0, 2, 4, 2),
+            margin: theme.spacing(0, 2, 4, 2)
         },
         aboveTitle: {
             width: '100%',
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            margin: theme.spacing(0, 2, 0, 2),
+            margin: theme.spacing(0, 2, 0, 2)
         }
     }),
 );

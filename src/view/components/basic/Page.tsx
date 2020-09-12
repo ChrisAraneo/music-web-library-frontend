@@ -50,7 +50,7 @@ class Page extends React.Component<Props, IState> {
         return (
             <div className={classes.root}>
                 <CssBaseline />
-                <AppBar color="default" position="fixed" className={classes.appBar}>
+                <AppBar color="primary" position="fixed" className={classes.appBar}>
                     <Toolbar>
                         <IconButton
                             color="inherit"
