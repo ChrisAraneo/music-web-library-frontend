@@ -2,7 +2,7 @@ import Song, { SongInAlbum } from "../model/Song";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
-import { addNotification } from "./fetching";
+import { addSuccessNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<Song> = [];
@@ -96,7 +96,7 @@ export function postSong(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano utwór muzyczny", "Pomyślnie dodano utwór muzyczny");
+        addSuccessNotification("Dodano utwór muzyczny", "Pomyślnie dodano utwór muzyczny");
         return actionSetSong(result);
     }));
 }
@@ -122,7 +122,7 @@ export function updateSong(song: Song, successCallback?: any) {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
+        addSuccessNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
         return actionSetSong(result);
     }));
 }
@@ -132,7 +132,7 @@ export function deleteSong(id: number, successCallback?: any) {
             if (typeof successCallback === "function") {
                 successCallback();
             }
-            addNotification("Usunięto utwór", "Pomyślnie usunięto utwór muzyczny");
+            addSuccessNotification("Usunięto utwór", "Pomyślnie usunięto utwór muzyczny");
             return actionDeleteSong(id);
         }));
 }
@@ -154,7 +154,7 @@ export function postSongURL(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano URL", "Pomyślnie dodano URL");
+        addSuccessNotification("Dodano URL", "Pomyślnie dodano URL");
         return actionSetSong(result);
     }));
 }
@@ -166,7 +166,7 @@ export function deleteSongURL(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Usunięto URL", "Pomyślnie usunięto URL");
+        addSuccessNotification("Usunięto URL", "Pomyślnie usunięto URL");
         return actionSetSong(result);
     }));
 }

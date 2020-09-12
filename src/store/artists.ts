@@ -3,7 +3,7 @@ import { requestGet, requestPut, requestDelete, requestPost } from "../service/r
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import ArtistType from "../model/ArtistType";
-import { addNotification } from "./fetching";
+import { addSuccessNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<Artist> = [];
@@ -87,7 +87,7 @@ export function postArtist(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano wykonawcę", "Pomyślnie dodano wykonawcę");
+        addSuccessNotification("Dodano wykonawcę", "Pomyślnie dodano wykonawcę");
         return actionSetArtist(result);
     }));
 }
@@ -108,7 +108,7 @@ export function updateArtist(artist: Artist, successCallback?: any) {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
+        addSuccessNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
         return actionSetArtist(result);
     }));
 }
@@ -118,7 +118,7 @@ export function deleteArtist(id: number, successCallback?: any) {
             if (typeof successCallback === "function") {
                 successCallback();
             }
-            addNotification("Usunięto wykonawcę", "Pomyślnie usunięto wykonawcę");
+            addSuccessNotification("Usunięto wykonawcę", "Pomyślnie usunięto wykonawcę");
             return actionDeleteArtist(id);
         }));
 }
@@ -140,7 +140,7 @@ export function postArtistURL(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano URL", "Pomyślnie dodano URL");
+        addSuccessNotification("Dodano URL", "Pomyślnie dodano URL");
         return actionSetArtist(result);
     }));
 }
@@ -152,7 +152,7 @@ export function deleteArtistURL(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Usunięto URL", "Pomyślnie usunięto URL");
+        addSuccessNotification("Usunięto URL", "Pomyślnie usunięto URL");
         return actionSetArtist(result);
     }));
 }
@@ -165,7 +165,7 @@ export function attachSongToArtist(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Połączono utwór z wykonawcą", "Pomyślnie połączono utwór muzyczny z wykonawcą");
+        addSuccessNotification("Połączono utwór z wykonawcą", "Pomyślnie połączono utwór muzyczny z wykonawcą");
         return actionSetArtist(result);
     }));
 }
@@ -178,7 +178,7 @@ export function detachSongFromArtist(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Usunięto połączenie", "Pomyślnie usunięto połączenie wykonawca-utwór");
+        addSuccessNotification("Usunięto połączenie", "Pomyślnie usunięto połączenie wykonawca-utwór");
         return actionSetArtist(result);
     }));
 }

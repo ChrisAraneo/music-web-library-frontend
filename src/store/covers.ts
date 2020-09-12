@@ -2,7 +2,7 @@ import Album from "../model/Album";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
-import { addNotification, actionFetchSuccess } from "./fetching";
+import { actionFetchSuccess, addSuccessNotification } from "./fetching";
 import Cover from "../model/Cover";
 
 // DEFAULT STATE
@@ -77,7 +77,7 @@ export function postCover(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano okładkę albumu", "Pomyślnie dodano okładkę albumu");
+        addSuccessNotification("Dodano okładkę albumu", "Pomyślnie dodano okładkę albumu");
         return actionSetCover(result);
     }));
 }
@@ -87,7 +87,7 @@ export function deleteCover(id: number, successCallback?: any) {
             if (typeof successCallback === "function") {
                 successCallback();
             }
-            addNotification("Usunięto okładkę albumu", "Pomyślnie usunięto okładkę albumu.");
+            addSuccessNotification("Usunięto okładkę albumu", "Pomyślnie usunięto okładkę albumu.");
             return actionDeleteCover(id);
         }));
 }

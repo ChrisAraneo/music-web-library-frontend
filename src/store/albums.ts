@@ -2,7 +2,7 @@ import Album from "../model/Album";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
-import { addNotification, actionFetchSuccess } from "./fetching";
+import { actionFetchSuccess, addSuccessNotification } from "./fetching";
 import Cover from "../model/Cover";
 
 // DEFAULT STATE
@@ -79,7 +79,7 @@ export function postAlbum(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano album", "Pomyślnie dodano album muzyczny");
+        addSuccessNotification("Dodano album", "Pomyślnie dodano album muzyczny");
         return actionSetAlbum(result);
     }));
 }
@@ -96,7 +96,7 @@ export function updateAlbum(album: Album, successCallback?: any) {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
+        addSuccessNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
         return actionSetAlbum(result);
     }));
 }
@@ -106,7 +106,7 @@ export function deleteAlbum(id: number, successCallback?: any) {
             if (typeof successCallback === "function") {
                 successCallback();
             }
-            addNotification("Usunięto album", "Pomyślnie usunięto album muzyczny.");
+            addSuccessNotification("Usunięto album", "Pomyślnie usunięto album muzyczny.");
             return actionDeleteAlbum(id);
         }));
 }
@@ -120,7 +120,7 @@ export function postSongToAlbum(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano utwór do albumu", "Pomyślnie dodano utwór muzyczny do albumu");
+        addSuccessNotification("Dodano utwór do albumu", "Pomyślnie dodano utwór muzyczny do albumu");
         return actionSetAlbum(result);
     }));
 }
@@ -134,7 +134,7 @@ export function deleteSongFromAlbum(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano utwór do albumu", "Pomyślnie dodano utwór muzyczny do albumu");
+        addSuccessNotification("Dodano utwór do albumu", "Pomyślnie dodano utwór muzyczny do albumu");
         return actionSetAlbum(result);
     }));
 }
@@ -147,7 +147,7 @@ export function attachCoverToAlbum(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano okładkę do albumu", "Pomyślnie dodano okładkę do albumu");
+        addSuccessNotification("Dodano okładkę do albumu", "Pomyślnie dodano okładkę do albumu");
         return actionSetAlbum(result);
     }));
 }
@@ -160,7 +160,7 @@ export function detachCoverFromAlbum(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Usunięto połączenie", "Pomyślnie usunięto połączenie okładka-album");
+        addSuccessNotification("Usunięto połączenie", "Pomyślnie usunięto połączenie okładka-album");
         return actionSetAlbum(result);
     }));
 }

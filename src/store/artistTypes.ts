@@ -2,7 +2,7 @@ import ArtistType from "../model/ArtistType";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
-import { addNotification } from "./fetching";
+import { addSuccessNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<ArtistType> = [];
@@ -77,7 +77,7 @@ export function postArtistType(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Dodano rodzaj", "Pomyślnie dodano rodzaj działalności muzycznej");
+        addSuccessNotification("Dodano rodzaj", "Pomyślnie dodano rodzaj działalności muzycznej");
         return actionSetArtistType(result);
     }));
 }
@@ -93,14 +93,14 @@ export function updateArtistType(type: ArtistType, successCallback?: any) {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
+        addSuccessNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany");
         return actionSetArtistType(result);
     }));
 }
 export function deleteArtistType(id: number) {
     store.dispatch(requestDelete(`http://localhost:8080/api/artisttypes/${id}`, {},
         () => {
-            addNotification("Usunięto", "Pomyślnie usunięto rodzaj działalności muzycznej");
+            addSuccessNotification("Usunięto", "Pomyślnie usunięto rodzaj działalności muzycznej");
             return actionDeleteArtistType(id);
         }));
 }

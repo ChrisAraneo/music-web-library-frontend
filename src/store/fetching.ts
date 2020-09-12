@@ -10,6 +10,7 @@ const defaultState = {
 const FETCH_PENDING = "FETCH_PENDING";
 const FETCH_SUCCESS = "FETCH_SUCCESS";
 const FETCH_ERROR = "FETCH_ERROR";
+const NOTIFICATION_ERROR = "NOTIFICATION_ERROR";
 const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
 
 // ACTION CREATORS
@@ -22,6 +23,10 @@ export const actionFetchSuccess = (success?: any) => ({
 });
 export const actionFetchError = (error?: any) => ({
     type: FETCH_ERROR,
+    error
+});
+export const actionNotificationError = (error?: any) => ({
+    type: NOTIFICATION_ERROR,
     error
 });
 export const actionRemoveNotification = (id: string) => ({
@@ -83,6 +88,27 @@ export default function reducer(
                 };
             }
         }
+        case NOTIFICATION_ERROR: {
+            const id = new Date().toISOString();
+            const type = "error";
+            const { error } = action;
+            if (error) {
+                return {
+                    isPending: state.isPending,
+                    notifications: [...state.notifications, {
+                        title: error.error,
+                        message: error.message,
+                        id,
+                        type
+                    }]
+                };
+            } else {
+                return {
+                    isPending: false,
+                    notifications: [...state.notifications]
+                };
+            }
+        }
         case REMOVE_NOTIFICATION: {
             const { id } = action;
             const { notifications } = state;
@@ -102,8 +128,11 @@ export default function reducer(
 }
 
 // PUBLIC ASYNC FUNCTIONS TO USE
-export function addNotification(title: string, message: string) {
+export function addSuccessNotification(title: string, message: string) {
     store.dispatch(actionFetchSuccess({ title, message }));
+}
+export function addValidationErrorNotification(title: string, message: string) {
+    store.dispatch(actionNotificationError({ error: title, message }));
 }
 export function removeNotification(id: string) {
     store.dispatch(actionRemoveNotification(id));

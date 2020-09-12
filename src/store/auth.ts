@@ -2,7 +2,7 @@ import { store } from './index';
 import { requestPost } from '../service/requests';
 import Role from '../model/Role';
 import User from '../model/User';
-import { addNotification } from './fetching';
+import { addSuccessNotification } from './fetching';
 
 // DEFAULT STATE
 const defaultState: {
@@ -121,7 +121,7 @@ export function signUp(
             body: JSON.stringify({ name, username, email, password })
         },
         (result: any) => {
-            addNotification("Utworzono konto", "Pomyślnie utworzono konto");
+            addSuccessNotification("Utworzono konto", "Pomyślnie utworzono konto");
             return actionSignUp(result);
         })
     );
@@ -134,12 +134,12 @@ export function signIn(usernameOrEmail: string, password: string, successCallbac
         if (typeof successCallback === "function") {
             successCallback();
         }
-        addNotification("Zalogowano", `Zalogowano jako ${usernameOrEmail}`);
+        addSuccessNotification("Zalogowano", `Zalogowano jako ${usernameOrEmail}`);
         return actionSignIn(result, usernameOrEmail);
     }));
 }
 
 export function signOut() {
     store.dispatch(actionSignOut);
-    addNotification("Wylogowano", "Pomyślnie wylogowano");
+    addSuccessNotification("Wylogowano", "Pomyślnie wylogowano");
 }
