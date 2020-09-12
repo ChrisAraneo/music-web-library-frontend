@@ -7,17 +7,20 @@ import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
 import { AppState } from "../../../store";
 import { postCover } from "../../../store/covers";
+import { validateCoverData } from "../../../model/Cover";
 
 interface IProps {
     classes: any
 }
 
 interface IState {
-    data: string
+    data: string,
+    validData: boolean
 }
 
 const initialState = {
-    data: ""
+    data: "",
+    validData: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -36,10 +39,17 @@ class CreateCover extends React.Component<Props, IState> {
     submitForm = () => {
         const { data } = this.state;
 
-        postCover(data, () => {
-            this.setState({ ...initialState });
-            alert("Zmieniono, todo walidacja");
-        });
+        const validData = validateCoverData(data,
+            () => this.setState({ validData: true }),
+            () => this.setState({ validData: false })
+        );
+
+        if (validData) {
+            postCover(data, () => {
+                this.setState({ ...initialState });
+            });
+        }
+
     }
 
     render = () => {
@@ -56,7 +66,8 @@ class CreateCover extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeData}
                         value={this.state.data}
-                        disabled={isPending} />
+                        disabled={isPending}
+                        error={this.state.validData} />
                 </form>
                 <DividerGradient />
                 <Button

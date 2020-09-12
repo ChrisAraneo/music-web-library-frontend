@@ -17,6 +17,7 @@ import { postArtist, updateArtist, getArtistsList, getArtist, postArtistURL } fr
 import { AppState } from "../../../store";
 import Artist from "../../../model/Artist";
 import { getArtistTypesList } from "../../../store/artistTypes";
+import { validateArtistURL } from "../../../model/ArtistURL";
 
 interface IProps {
     classes: any,
@@ -26,11 +27,13 @@ interface IProps {
 interface IState {
     artistID: number,
     url: string
+    validURL: boolean
 }
 
 const initialState = {
     artistID: Number.MIN_VALUE,
-    url: ""
+    url: "",
+    validURL: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -59,10 +62,14 @@ class CreateArtistURL extends React.Component<Props, IState> {
     submitForm = () => {
         const { artistID, url } = this.state;
 
-        if (artistID != initialState.artistID) {
+        const validURL = validateArtistURL(url,
+            () => this.setState({ validURL: true }),
+            () => this.setState({ validURL: false })
+        );
+
+        if (validURL) {
             postArtistURL(artistID, url, () => {
                 this.setState({ ...initialState });
-                alert("Zmieniono, todo walidacja");
             });
         }
     }
@@ -104,7 +111,8 @@ class CreateArtistURL extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeURL}
                         value={this.state.url}
-                        disabled={isPending || disabled} />
+                        disabled={isPending || disabled}
+                        error={this.state.validURL} />
                 </form>
                 <DividerGradient />
                 <Button

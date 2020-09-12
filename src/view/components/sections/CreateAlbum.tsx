@@ -6,17 +6,9 @@ import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
-import ArtistType from "../../../model/ArtistType";
-import Select from "@material-ui/core/Select/Select";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
-import DatePicker from "../basic/DatePicker";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { postArtist } from "../../../store/artists";
 import { AppState } from "../../../store";
-import Artist from "../../../model/Artist";
 import { postAlbum } from "../../../store/albums";
+import { validateAlbumTitle, validateAlbumYear } from "../../../model/Album";
 
 interface IProps {
     classes: any
@@ -24,12 +16,16 @@ interface IProps {
 
 interface IState {
     title: string,
-    year: number | undefined
+    year: number | undefined,
+    validTitle: boolean,
+    validYear: boolean
 }
 
 const initialState = {
     title: "",
-    year: undefined
+    year: undefined,
+    validTitle: true,
+    validYear: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -69,12 +65,22 @@ class CreateAlbum extends React.Component<Props, IState> {
 
     }
 
-    submitForm = (event: any) => {
+    submitForm = () => {
         const { title, year } = this.state;
-        if (typeof year === "number") {
+
+        const validTitle = validateAlbumTitle(title,
+            () => this.setState({ validTitle: true }),
+            () => this.setState({ validTitle: false })
+        );
+
+        const validYear = validateAlbumYear(year,
+            () => this.setState({ validYear: true }),
+            () => this.setState({ validYear: false })
+        );
+
+        if (validTitle && validYear) {
             postAlbum(title, Number(year), () => {
                 this.setState({ ...initialState });
-                alert("Wysłano, todo walidacja");
             });
         }
     }
@@ -95,7 +101,9 @@ class CreateAlbum extends React.Component<Props, IState> {
                             required
                             onChange={this.handleChangeTitle}
                             value={this.state.title}
-                            disabled={disabled} />
+                            disabled={disabled}
+                            error={!this.state.validTitle}
+                        />
                         <TextField
                             className={classes.textInput}
                             fullWidth={true}
@@ -103,7 +111,9 @@ class CreateAlbum extends React.Component<Props, IState> {
                             required
                             onChange={this.handleChangeYear}
                             value={this.state.year}
-                            disabled={disabled} />
+                            disabled={disabled}
+                            error={!this.state.validYear}
+                        />
                     </form>
                     <DividerGradient />
                     <Button

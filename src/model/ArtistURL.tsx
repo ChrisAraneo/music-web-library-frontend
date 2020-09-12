@@ -1,11 +1,11 @@
 import { validate, isURL } from "./validation/common";
 
-export default interface AlbumURL {
+export default interface ArtistURL {
     artistUrlID: number,
     url: string
 }
 
-export const validateAlbumURL = (
+export const validateArtistURL = (
     url: unknown,
     successCallback?: () => any,
     errorCallback?: () => any

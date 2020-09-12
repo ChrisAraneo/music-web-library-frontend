@@ -8,17 +8,20 @@ import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
 import { AppState } from "../../../store";
 import { postArtistType } from "../../../store/artistTypes";
+import { validateArtistTypeName } from "../../../model/ArtistType";
 
 interface IProps {
     classes: any
 }
 
 interface IState {
-    name: string
+    name: string,
+    validName: boolean
 }
 
 const initialState = {
     name: "",
+    validName: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -36,10 +39,17 @@ class CreateArtistType extends React.Component<Props, IState> {
 
     submitForm = () => {
         const { name } = this.state;
-        postArtistType(name, () => {
-            this.setState({ ...initialState });
-            alert("Wysłano, todo walidacja");
-        });
+
+        const validName = validateArtistTypeName(name,
+            () => this.setState({ validName: true }),
+            () => this.setState({ validName: false })
+        );
+
+        if (validName) {
+            postArtistType(name, () => {
+                this.setState({ ...initialState });
+            });
+        }
     }
 
     render = () => {
@@ -58,7 +68,8 @@ class CreateArtistType extends React.Component<Props, IState> {
                             required
                             onChange={this.handleChangeName}
                             value={this.state.name}
-                            disabled={disabled} />
+                            disabled={disabled}
+                            error={this.state.validName} />
                     </form>
                     <DividerGradient />
                     <Button

@@ -10,6 +10,7 @@ import { history } from "../../store/index";
 import Link from "@material-ui/core/Link";
 
 import PageHeader from "../components/basic/PageHeader";
+import Grid from "@material-ui/core/Grid/Grid";
 
 
 interface IProps {
@@ -25,34 +26,27 @@ const HomePage: React.FC<Props> = (props: Props) => {
     const { usernameOrEmail, token } = props.auth;
 
     return (
-        <>
-            <Typography variant="subtitle1" component="p">Internetowy Katalog Muzyczny</Typography>
-            <PageHeader title="Tysiące utworów w jednym miejscu" />
-            <Typography className={styles.paragraph} variant="h6" component="p">
-                {`Props: ${JSON.stringify(props)}`}
-            </Typography>
-
-            {
-                token && usernameOrEmail ?
-                    (
-                        <Typography className={styles.paragraph} variant="h6" component="p">
-                            {`${usernameOrEmail} | ${token}`}
+        <Grid container justify="center">
+            <Grid item xs={12} md={8}>
+                <Typography variant="subtitle1" component="p">Internetowy Katalog Muzyczny</Typography>
+                {
+                    token && usernameOrEmail ?
+                        (
+                            <PageHeader title={`Witaj, ${usernameOrEmail}!`} />
+                        )
+                        :
+                        (<>
+                            <PageHeader title="Tysiące utworów w jednym miejscu" />
+                            <Typography className={styles.paragraph} variant="h6" component="p">
+                                <Link href="#" onClick={() => history.push("/signup")}>Utwórz konto</Link> aby tworzyć własne listy utworów oraz pisać recenzje albumów muzycznych
                         </Typography>
-                    )
-                    :
-                    (<>
-                        <Typography className={styles.paragraph} variant="h6" component="p">
-                            <Link href="#" onClick={() => history.push("/signup")}>Utwórz konto</Link> aby tworzyć własne listy utworów oraz pisać recenzje albumów muzycznych
-                        </Typography>
-                        <Button className={styles.button} variant="contained" color="primary" disableElevation size="large" onClick={() => history.push("/signup")}>Utwórz konto</Button>
-                        <Button variant="outlined" color="primary" size="large" onClick={() => history.push("/signin")}>Zaloguj się</Button>
-                    </>)
-            }
-
-
-        </>
+                            <Button className={styles.button} variant="contained" color="primary" disableElevation size="large" onClick={() => history.push("/signup")}>Utwórz konto</Button>
+                            <Button variant="outlined" color="primary" size="large" onClick={() => history.push("/signin")}>Zaloguj się</Button>
+                        </>)
+                }
+            </Grid>
+        </Grid>
     );
-    // }
 };
 
 const useStyles = makeStyles((theme: Theme) =>

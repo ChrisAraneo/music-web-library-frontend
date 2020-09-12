@@ -15,7 +15,7 @@ import DatePicker from "../basic/DatePicker";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import { postArtist } from "../../../store/artists";
 import { AppState } from "../../../store";
-import Artist from "../../../model/Artist";
+import Artist, { validateArtistName, validateArtistFirstName, validateArtistCountry, validateArtistLastName, validateArtistBirthDate, validateArtistType } from "../../../model/Artist";
 
 interface IProps {
     artistTypes: ArtistType[],
@@ -24,20 +24,32 @@ interface IProps {
 
 interface IState {
     artistName: string,
+    validArtistName: boolean,
     firstName: string,
+    validFirstName: boolean,
     lastName: string,
+    validLastName: boolean,
     country: string,
-    birthDate: MaterialUiPickersDate,
+    validCountry: boolean,
+    birthDate: MaterialUiPickersDate | undefined,
+    validBirthDate: boolean,
     artistType: ArtistType | undefined,
+    validArtistType: boolean
 }
 
 const initialState = {
     artistName: "",
+    validArtistName: true,
     firstName: "",
+    validFirstName: true,
     lastName: "",
-    birthDate: new Date(),
+    validLastName: true,
+    birthDate: undefined,
+    validBirthDate: true,
     country: "",
-    artistType: undefined
+    validCountry: true,
+    artistType: undefined,
+    validArtistType: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -73,8 +85,7 @@ class CreateArtist extends React.Component<Props, IState> {
         this.setState({ artistType: event?.target?.value });
     }
 
-    submitForm = (event: any) => {
-
+    submitForm = () => {
         const { artistName,
             firstName,
             lastName,
@@ -82,10 +93,56 @@ class CreateArtist extends React.Component<Props, IState> {
             country,
             artistType } = this.state;
 
-        postArtist(artistName, birthDate?.toJSON(), country, firstName, lastName, artistType, () => {
-            this.setState({ ...initialState });
-            alert("Wysłano, todo walidacja");
-        });
+        const validArtistName = validateArtistName(artistName,
+            () => this.setState({ validArtistName: true }),
+            () => this.setState({ validArtistName: false })
+        );
+
+        let validFirstName = true;
+        if (firstName.length > 0) {
+            validFirstName = validateArtistFirstName(firstName,
+                () => this.setState({ validFirstName: true }),
+                () => this.setState({ validFirstName: false })
+            );
+        }
+
+        let validLastName = true;
+        if (lastName.length > 0) {
+            validLastName = validateArtistLastName(lastName,
+                () => this.setState({ validLastName: true }),
+                () => this.setState({ validLastName: false })
+            );
+        }
+
+        let validBirthDate = true;
+        if (birthDate != initialState.birthDate) {
+            validBirthDate = validateArtistBirthDate(birthDate,
+                () => this.setState({ validBirthDate: true }),
+                () => this.setState({ validBirthDate: false })
+            );
+        }
+
+        let validCountry = true;
+        if (country.length > 0) {
+            validCountry = validateArtistCountry(country,
+                () => this.setState({ validCountry: true }),
+                () => this.setState({ validCountry: false })
+            );
+        }
+
+        let validArtistType = true;
+        if (artistType != initialState.artistType) {
+            validArtistType = validateArtistType(artistType,
+                () => this.setState({ validArtistType: true }),
+                () => this.setState({ validArtistType: false })
+            );
+        }
+
+        if (validArtistName && validFirstName && validLastName && validBirthDate && validCountry && validArtistType) {
+            postArtist(artistName, birthDate?.toJSON(), country, firstName, lastName, artistType, () => {
+                this.setState({ ...initialState });
+            });
+        }
     }
 
     render = () => {
@@ -103,27 +160,31 @@ class CreateArtist extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeArtistName}
                         value={this.state.artistName}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={this.state.validArtistName} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Imię"
                         onChange={this.handleChangeFirstName}
                         value={this.state.firstName}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={this.state.validFirstName} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Nazwisko"
                         onChange={this.handleChangeLastName}
                         value={this.state.lastName}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={this.state.validLastName} />
                     <div className={classes.textInput}>
                         <DatePicker
                             label={`Data rozpoczęcia działalności`}
-                            value={this.state.birthDate}
+                            value={this.state.birthDate ? this.state.birthDate : new Date()}
                             handleChangeDate={this.handleChangeBirthDate}
-                            disabled={disabled} />
+                            disabled={disabled}
+                            error={this.state.validBirthDate} />
                     </div>
                     <TextField
                         className={classes.textInput}
@@ -131,14 +192,16 @@ class CreateArtist extends React.Component<Props, IState> {
                         label="Kraj"
                         onChange={this.handleChangeCountry}
                         value={this.state.country}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={this.state.validCountry} />
                     <FormControl className={classes.selectWrapper}>
                         <Select
                             id="type-select"
                             value={undefined}
                             onChange={this.handleChangeArtistType}
                             autoWidth
-                            disabled={disabled}>
+                            disabled={disabled}
+                            error={this.state.validArtistType}>
                             {
                                 artistTypes?.map((type: ArtistType) => {
                                     if (type) {

@@ -8,9 +8,16 @@ import Album from "../../model/Album";
 import PageHeader from "../components/basic/PageHeader";
 import Grid from "@material-ui/core/Grid/Grid";
 import Card from "../components/basic/Card";
+import { Theme } from "@material-ui/core/styles/createMuiTheme";
+import Button from "@material-ui/core/Button/Button";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import { history } from "../../store/index";
+import createStyles from "@material-ui/core/styles/createStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 interface IProps {
     match: { params: { artistID: number } },
+    classes: any
 }
 
 interface IState {
@@ -25,16 +32,27 @@ class AdminPage extends React.Component<Props, IState> {
     }
 
     render = () => {
+        const { classes } = this.props;
         return (
             <>
                 <PageHeader
                     title="Panel administratora" />
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={6}>
+                <Grid container spacing={0}>
+                    <Grid item xs={12} md={8}>
                         <Card title="">
-                            <Link component={RouterLink} to={`/admin/artists`}>Wykonawcy</Link>
-                            <Link component={RouterLink} to={`/admin/songs`}>Utwory muzyczne</Link>
-                            <Link component={RouterLink} to={`/admin/albums`}>Albumy muzyczne</Link>
+                            <div className={classes.card}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} md={4}>
+                                        <Button className={classes.button} variant="contained" color="primary" disableElevation fullWidth onClick={() => history.push("/admin/artists")}>Wykonawcy</Button>
+                                    </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <Button className={classes.button} variant="contained" color="primary" disableElevation fullWidth onClick={() => history.push("/admin/songs")}>Utwory muzyczne</Button>
+                                    </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <Button className={classes.button} variant="contained" color="primary" disableElevation fullWidth onClick={() => history.push("/admin/albums")}>Albumy muzyczne</Button>
+                                    </Grid>
+                                </Grid>
+                            </div>
                         </Card>
                     </Grid>
                 </Grid>
@@ -42,6 +60,15 @@ class AdminPage extends React.Component<Props, IState> {
         );
     }
 };
+
+const styles = (theme: Theme) => createStyles({
+    button: {
+        margin: theme.spacing(0, 2, 0, 0)
+    },
+    card: {
+        padding: theme.spacing(2)
+    }
+});
 
 interface LinkStateProps {
     fetching: any,
@@ -55,4 +82,4 @@ const mapStateToProps = (
         albums: state.albums,
     });
 
-export default connect(mapStateToProps, null)(AdminPage);
+export default connect(mapStateToProps, null)(withStyles(styles, { withTheme: true })(AdminPage));

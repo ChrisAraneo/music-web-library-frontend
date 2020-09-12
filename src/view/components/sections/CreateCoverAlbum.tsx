@@ -61,7 +61,6 @@ class CreateCoverAlbum extends React.Component<Props, IState> {
             attachCoverToAlbum(albumID, coverID,
                 () => {
                     this.setState({ ...initialState });
-                    alert("TODO walidacja");
                 });
         }
     }
