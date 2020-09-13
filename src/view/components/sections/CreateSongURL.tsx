@@ -1,24 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
-import ArtistType from "../../../model/ArtistType";
 import Select from "@material-ui/core/Select/Select";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
-import DatePicker from "../basic/DatePicker";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { postArtist, updateArtist, getArtistsList, getArtist, postArtistURL } from "../../../store/artists";
 import { AppState } from "../../../store";
-import Artist from "../../../model/Artist";
-import { getArtistTypesList } from "../../../store/artistTypes";
 import Song from "../../../model/Song";
 import { getSong, postSongURL } from "../../../store/songs";
+import { validateSongURL } from "../../../model/SongURL";
 
 interface IProps {
     classes: any,
@@ -27,12 +21,14 @@ interface IProps {
 
 interface IState {
     songID: number,
-    url: string
+    url: string,
+    validURL: boolean
 }
 
 const initialState = {
     songID: Number.MIN_VALUE,
-    url: ""
+    url: "",
+    validURL: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -61,10 +57,14 @@ class CreateSongURL extends React.Component<Props, IState> {
     submitForm = () => {
         const { songID, url } = this.state;
 
-        if (songID != initialState.songID) {
+        const validURL = validateSongURL(url,
+            () => this.setState({ validURL: true }),
+            () => this.setState({ validURL: false })
+        );
+
+        if (songID != initialState.songID && validURL) {
             postSongURL(songID, url, () => {
                 this.setState({ ...initialState });
-                alert("Zmieniono, todo walidacja");
             });
         }
     }
@@ -106,7 +106,8 @@ class CreateSongURL extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeURL}
                         value={this.state.url}
-                        disabled={isPending || disabled} />
+                        disabled={isPending || disabled}
+                        error={this.state.validURL} />
                 </form>
                 <DividerGradient />
                 <Button

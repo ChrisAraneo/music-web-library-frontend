@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
@@ -10,7 +9,7 @@ import { AppState } from "../../../store";
 import { getSong, updateSong } from "../../../store/songs";
 import Select from "@material-ui/core/Select/Select";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
-import Song, { SongInPlaylist } from "../../../model/Song";
+import Song, { SongInPlaylist, validateSongTitle, validateSongComment, validateSongLength, validateSongLanguage, validateSongGenre, validateSongBpm, validateSongMainKey, validateSongPublisher, validateSongTerms, validateSongWebsite } from "../../../model/Song";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 
@@ -22,31 +21,53 @@ interface IProps {
 interface IState {
     songID: number,
     title: string,
-    bpm?: number
+    validTitle: boolean,
+    bpm?: number,
+    validBPM: boolean,
     comment?: string,
+    validComment: boolean,
     genre?: string,
+    validGenre: boolean,
     language?: string,
-    length?: number
+    validLanguage: boolean,
+    length?: number,
+    validLength: boolean,
     mainKey?: string,
+    validMainKey: boolean,
     publisher?: string,
+    validPublisher: boolean,
     terms?: string,
+    validTerms: boolean,
     website?: string,
-    year?: number
+    validWebsite: boolean,
+    year?: number,
+    validYear: boolean
 }
 
 const initialState = {
     songID: Number.MIN_VALUE,
     title: "",
+    validTitle: true,
     bpm: undefined,
+    validBPM: true,
     comment: undefined,
+    validComment: true,
     genre: undefined,
+    validGenre: true,
     language: undefined,
+    validLanguage: true,
     length: undefined,
+    validLength: true,
     mainKey: undefined,
+    validMainKey: true,
     publisher: undefined,
+    validPublisher: true,
     terms: undefined,
+    validTerms: true,
     website: undefined,
-    year: undefined
+    validWebsite: true,
+    year: undefined,
+    validYear: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -171,13 +192,102 @@ class UpdateSong extends React.Component<Props, IState> {
     }
 
     submitForm = () => {
-        const song = { ...this.state };
+        const { songID, title, bpm, comment, genre, language, length, mainKey, publisher, terms, website, year } = this.state;
 
-        updateSong(song,
-            () => {
-                this.setState({ ...initialState });
-                alert("Wysłano, todo walidacja");
-            });
+        const validSongID = (songID != initialState.songID);
+
+        const validTitle = validateSongTitle(title,
+            () => this.setState({ validTitle: true }),
+            () => this.setState({ validTitle: false })
+        );
+
+        let validBPM = true;
+        if (bpm != initialState.bpm) {
+            validBPM = validateSongBpm(bpm,
+                () => this.setState({ validBPM: true }),
+                () => this.setState({ validBPM: false })
+            );
+        }
+
+        let validComment = true;
+        if (comment != initialState.comment) {
+            validComment = validateSongComment(comment,
+                () => this.setState({ validComment: true }),
+                () => this.setState({ validComment: false })
+            );
+        }
+
+        let validGenre = true;
+        if (genre != initialState.genre) {
+            validGenre = validateSongGenre(genre,
+                () => this.setState({ validGenre: true }),
+                () => this.setState({ validGenre: false })
+            );
+        }
+
+        let validLanguage = true;
+        if (language != initialState.language) {
+            validLanguage = validateSongLanguage(language,
+                () => this.setState({ validLanguage: true }),
+                () => this.setState({ validLanguage: false })
+            );
+        }
+
+        let validLength = true;
+        if (length != initialState.length) {
+            validLength = validateSongLength(length,
+                () => this.setState({ validLength: true }),
+                () => this.setState({ validLength: false })
+            );
+        }
+
+        let validMainKey = true;
+        if (mainKey != initialState.mainKey) {
+            validMainKey = validateSongMainKey(mainKey,
+                () => this.setState({ validMainKey: true }),
+                () => this.setState({ validMainKey: false })
+            );
+        }
+
+        let validPublisher = true;
+        if (publisher != initialState.publisher) {
+            validPublisher = validateSongPublisher(publisher,
+                () => this.setState({ validPublisher: true }),
+                () => this.setState({ validPublisher: false })
+            );
+        }
+
+        let validTerms = true;
+        if (terms != initialState.terms) {
+            validTerms = validateSongTerms(terms,
+                () => this.setState({ validTerms: true }),
+                () => this.setState({ validTerms: false })
+            );
+        }
+
+        let validWebsite = true;
+        if (website != initialState.website) {
+            validWebsite = validateSongWebsite(website,
+                () => this.setState({ validWebsite: true }),
+                () => this.setState({ validWebsite: false })
+            );
+        }
+
+        let validYear = true;
+        if (year != initialState.year) {
+            validYear = validateSongWebsite(year,
+                () => this.setState({ validYear: true }),
+                () => this.setState({ validYear: false })
+            );
+        }
+
+        if (validSongID && validTitle && validBPM && validComment && validGenre && validLanguage && validYear) {
+            const song: Song = { songID, title, bpm, comment, genre, language, length, mainKey, publisher, terms, website, year };
+            updateSong(song,
+                () => {
+                    this.setState({ ...initialState });
+                });
+        }
     }
 
     render = () => {

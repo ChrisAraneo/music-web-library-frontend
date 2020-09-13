@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
@@ -14,7 +13,6 @@ import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Song from "../../../model/Song";
 import Artist from "../../../model/Artist";
 import { getArtist, attachSongToArtist, detachSongFromArtist } from "../../../store/artists";
-
 
 interface IProps {
     classes: any,
@@ -65,12 +63,11 @@ class RemoveSongArtist extends React.Component<Props, IState> {
 
     submitForm = () => {
         const { artistID, songID } = this.state;
-        if (artistID && songID) {
+        if (artistID != initialState.artistID && songID != initialState.songID) {
             detachSongFromArtist(artistID, songID,
                 () => {
                     this.setState({ ...initialState });
                     getSong(songID);
-                    alert("TODO walidacja");
                 });
         }
     }

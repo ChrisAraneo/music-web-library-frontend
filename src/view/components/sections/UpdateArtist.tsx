@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
@@ -13,10 +12,9 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import DatePicker from "../basic/DatePicker";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { postArtist, updateArtist, getArtistsList, getArtist } from "../../../store/artists";
+import { updateArtist, getArtist } from "../../../store/artists";
 import { AppState } from "../../../store";
-import Artist from "../../../model/Artist";
-import { getArtistTypesList } from "../../../store/artistTypes";
+import Artist, { validateArtistCountry, validateArtistName, validateArtistFirstName, validateArtistLastName, validateArtistType } from "../../../model/Artist";
 
 interface IProps {
     classes: any,
@@ -27,21 +25,33 @@ interface IProps {
 interface IState {
     artistID: number,
     artistName: string,
-    firstName: string,
-    lastName: string,
-    country: string,
-    birthDate: MaterialUiPickersDate,
-    artistType: ArtistType | undefined,
+    validArtistName: boolean
+    firstName?: string,
+    validFirstName: boolean,
+    lastName?: string,
+    validLastName: boolean,
+    country?: string,
+    validCountry: boolean,
+    birthDate?: MaterialUiPickersDate | undefined,
+    validBirthDate: boolean,
+    artistType?: ArtistType | undefined,
+    validArtistType: boolean
 }
 
 const initialState = {
     artistID: Number.MIN_VALUE,
     artistName: "",
+    validArtistName: true,
     firstName: "",
+    validFirstName: true,
     lastName: "",
-    birthDate: new Date(),
+    validLastName: true,
+    birthDate: undefined,
+    validBirthDate: true,
     country: "",
-    artistType: undefined
+    validCountry: true,
+    artistType: undefined,
+    validArtistType: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -98,19 +108,56 @@ class UpdateArtist extends React.Component<Props, IState> {
     submitForm = () => {
         const { artistID, artistName, country, firstName, lastName, artistType } = this.state;
 
-        let birthDate;
-        if (this.state.birthDate) {
-            birthDate = new Date();
-            birthDate.setDate(this.state.birthDate.getDate());
-            birthDate.setMonth(this.state.birthDate.getMonth());
-            birthDate.setFullYear(this.state.birthDate.getFullYear());
+        const validArtistID = (artistID != initialState.artistID);
+
+        const validArtistName = validateArtistName(artistName,
+            () => this.setState({ validArtistName: true }),
+            () => this.setState({ validArtistName: false })
+        );
+
+        let validCountry = true;
+        if (country != initialState.country) {
+            validCountry = validateArtistCountry(country,
+                () => this.setState({ validCountry: true }),
+                () => this.setState({ validCountry: false })
+            );
         }
 
-        const artist: Artist = { artistID, artistName, birthDate: birthDate ? birthDate : undefined, country, firstName, lastName, artistType };
-        if (artist) {
+        let validFirstName = true;
+        if (firstName != initialState.firstName) {
+            validFirstName = validateArtistFirstName(firstName,
+                () => this.setState({ validFirstName: true }),
+                () => this.setState({ validFirstName: false })
+            );
+        }
+
+        let validLastName = true;
+        if (lastName != initialState.lastName) {
+            validLastName = validateArtistLastName(lastName,
+                () => this.setState({ validLastName: true }),
+                () => this.setState({ validLastName: false })
+            );
+        }
+
+        let validArtistType = true;
+        if (artistType != initialState.artistType) {
+            validArtistType = validateArtistType(artistType,
+                () => this.setState({ validArtistType: true }),
+                () => this.setState({ validArtistType: false })
+            );
+        }
+
+        if (validArtistID && validArtistName && validCountry && validFirstName && validLastName && validArtistType) {
+            let birthDate = undefined;
+            if (this.state.birthDate) {
+                birthDate = new Date();
+                birthDate.setDate(this.state.birthDate.getDate());
+                birthDate.setMonth(this.state.birthDate.getMonth());
+                birthDate.setFullYear(this.state.birthDate.getFullYear());
+            }
+            const artist: Artist = { artistID, artistName, birthDate: birthDate ? birthDate : undefined, country, firstName, lastName, artistType };
             updateArtist(artist, () => {
                 this.setState({ ...initialState });
-                alert("Zmieniono, todo walidacja");
             });
         }
     }
@@ -152,25 +199,28 @@ class UpdateArtist extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeArtistName}
                         value={this.state.artistName}
-                        disabled={isPending || disabled} />
+                        disabled={isPending || disabled}
+                        error={this.state.validArtistName} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Imię"
                         onChange={this.handleChangeFirstName}
                         value={this.state.firstName}
-                        disabled={isPending || disabled} />
+                        disabled={isPending || disabled}
+                        error={this.state.validFirstName} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Nazwisko"
                         onChange={this.handleChangeLastName}
                         value={this.state.lastName}
-                        disabled={isPending || disabled} />
+                        disabled={isPending || disabled}
+                        error={this.state.validLastName} />
                     <div className={classes.textInput}>
                         <DatePicker
                             label={`Data rozpoczęcia działalności`}
-                            value={this.state.birthDate}
+                            value={this.state.birthDate ? this.state.birthDate : new Date()}
                             handleChangeDate={this.handleChangeBirthDate}
                             disabled={isPending || disabled} />
                     </div>
@@ -180,7 +230,8 @@ class UpdateArtist extends React.Component<Props, IState> {
                         label="Kraj"
                         onChange={this.handleChangeCountry}
                         value={this.state.country}
-                        disabled={isPending || disabled} />
+                        disabled={isPending || disabled}
+                        error={this.state.validCountry} />
                     <FormControl className={classes.selectWrapper}>
                         <Select
                             id="type-select"

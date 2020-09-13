@@ -1,23 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
-import ArtistType from "../../../model/ArtistType";
 import Select from "@material-ui/core/Select/Select";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
-import DatePicker from "../basic/DatePicker";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { postArtist, updateArtist, getArtistsList, getArtist } from "../../../store/artists";
 import { AppState } from "../../../store";
-import Artist from "../../../model/Artist";
-import { getArtistTypesList } from "../../../store/artistTypes";
-import Album from "../../../model/Album";
+import Album, { validateAlbumTitle, validateAlbumYear } from "../../../model/Album";
 import { getAlbum, updateAlbum } from "../../../store/albums";
 
 interface IProps {
@@ -28,13 +21,17 @@ interface IProps {
 interface IState {
     albumID: number,
     title: string,
-    year: number | undefined
+    validTitle: boolean,
+    year: number | undefined,
+    validYear: boolean
 }
 
 const initialState = {
     albumID: Number.MIN_VALUE,
     title: "",
-    year: undefined
+    validTitle: true,
+    year: undefined,
+    validYear: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -89,14 +86,23 @@ class UpdateAlbum extends React.Component<Props, IState> {
 
     submitForm = () => {
         const { albumID, title, year } = this.state;
-        if (typeof year === "number") {
+
+        const validTitle = validateAlbumTitle(title,
+            () => this.setState({ validTitle: true }),
+            () => this.setState({ validTitle: false })
+        );
+
+        const validYear = validateAlbumYear(Number(year),
+            () => this.setState({ validYear: true }),
+            () => this.setState({ validYear: false })
+        );
+
+        if (validTitle && validYear) {
             const album: Album = { albumID, title, year: Number(year) };
             updateAlbum(album, () => {
                 this.setState({ ...initialState });
-                alert("Zmieniono, todo walidacja");
             });
         }
-
     }
 
     render = () => {

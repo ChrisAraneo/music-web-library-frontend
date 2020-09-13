@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
@@ -86,11 +85,10 @@ class CreateSongAlbum extends React.Component<Props, IState> {
 
     submitForm = () => {
         const { albumID, songID, track } = this.state;
-        if (albumID && songID && track) {
+        if (albumID && songID && track && albumID != initialState.albumID && songID != initialState.songID) {
             postSongToAlbum(albumID, songID, track,
-                (result: Album) => {
+                () => {
                     this.setState({ ...initialState });
-                    alert("TODO walidacja");
                 });
         }
     }

@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
@@ -61,11 +60,8 @@ class CreateSongArtist extends React.Component<Props, IState> {
 
     submitForm = () => {
         const { artistID, songID } = this.state;
-        if (artistID && songID) {
-            attachSongToArtist(artistID, songID,
-                () => {
-                    alert("TODO walidacja");
-                });
+        if (artistID && songID && artistID != initialState.artistID && songID != initialState.songID) {
+            attachSongToArtist(artistID, songID);
         }
     }
 

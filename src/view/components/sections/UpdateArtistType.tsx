@@ -1,22 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
-import ArtistType from "../../../model/ArtistType";
+import ArtistType, { validateArtistTypeName } from "../../../model/ArtistType";
 import Select from "@material-ui/core/Select/Select";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
-import DatePicker from "../basic/DatePicker";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { postArtist, updateArtist, getArtistsList, getArtist } from "../../../store/artists";
 import { AppState } from "../../../store";
-import Artist from "../../../model/Artist";
-import { getArtistTypesList, getArtistType, updateArtistType } from "../../../store/artistTypes";
+import { getArtistType, updateArtistType } from "../../../store/artistTypes";
 
 interface IProps {
     classes: any,
@@ -25,12 +20,14 @@ interface IProps {
 
 interface IState {
     artistTypeID: number,
-    name: string
+    name: string,
+    validName: boolean
 }
 
 const initialState = {
     artistTypeID: Number.MIN_VALUE,
-    name: ""
+    name: "",
+    validName: true
 }
 
 type Props = IProps & LinkStateProps;
@@ -61,12 +58,18 @@ class UpdateArtistType extends React.Component<Props, IState> {
 
     submitForm = () => {
         const { artistTypeID, name } = this.state;
-        const type: ArtistType = { artistTypeID, name };
 
-        if (type) {
+        const validArtistTypeID = (artistTypeID != initialState.artistTypeID);
+
+        const validName = validateArtistTypeName(name,
+            () => this.setState({ validName: true }),
+            () => this.setState({ validName: false })
+        );
+
+        if (validArtistTypeID && validName) {
+            const type: ArtistType = { artistTypeID, name };
             updateArtistType(type, () => {
                 this.setState({ ...initialState });
-                alert("Zmieniono, todo walidacja");
             });
         }
     }

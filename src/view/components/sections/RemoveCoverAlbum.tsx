@@ -5,14 +5,10 @@ import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
 import Button from "@material-ui/core/Button/Button";
 import { AppState } from "../../../store";
-import { getSong } from "../../../store/songs";
 import Select from "@material-ui/core/Select/Select";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import Song from "../../../model/Song";
-import Artist from "../../../model/Artist";
-import { getArtist, attachSongToArtist, detachSongFromArtist } from "../../../store/artists";
 import Album from "../../../model/Album";
 import { getAlbum, detachCoverFromAlbum } from "../../../store/albums";
 import Cover from "../../../model/Cover";
@@ -57,12 +53,13 @@ class RemoveCoverAlbum extends React.Component<Props, IState> {
         const { albumID, cover } = this.state;
         if (albumID != initialState.albumID && cover != initialState.cover) {
             const { coverID } = cover;
-            detachCoverFromAlbum(coverID, albumID,
-                () => {
-                    this.setState({ ...initialState });
-                    getAlbum(albumID);
-                    alert("TODO walidacja");
-                });
+            if (coverID !== undefined && coverID !== null) {
+                detachCoverFromAlbum(coverID, albumID,
+                    () => {
+                        this.setState({ ...initialState });
+                        getAlbum(albumID);
+                    });
+            }
         }
     }
 

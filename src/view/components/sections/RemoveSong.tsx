@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
@@ -46,11 +45,13 @@ class RemoveSong extends React.Component<Props, IState> {
     }
 
     submitForm = () => {
-        deleteSong(this.state.songID,
-            () => {
-                this.setState({ ...initialState });
-                alert("Wysłano, todo walidacja");
-            });
+        const { songID } = this.state;
+        if (songID != initialState.songID) {
+            deleteSong(songID,
+                () => {
+                    this.setState({ ...initialState });
+                });
+        }
     }
 
     render = () => {

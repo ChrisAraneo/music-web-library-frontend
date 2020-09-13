@@ -3,13 +3,10 @@ import { connect } from "react-redux";
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import CardAdmin from "../basic/CardAdmin";
 import DividerGradient from "../basic/DividerGradient";
-import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
 import { AppState } from "../../../store";
-import { getSong, updateSong, deleteSong } from "../../../store/songs";
 import Select from "@material-ui/core/Select/Select";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
-import Song, { SongInPlaylist } from "../../../model/Song";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Cover from "../../../model/Cover";
@@ -47,11 +44,13 @@ class RemoveCover extends React.Component<Props, IState> {
     }
 
     submitForm = () => {
-        deleteCover(this.state.coverID,
-            () => {
-                this.setState({ ...initialState });
-                alert("Wysłano, todo walidacja");
-            });
+        const { coverID } = this.state;
+        if (coverID != initialState.coverID) {
+            deleteCover(this.state.coverID,
+                () => {
+                    this.setState({ ...initialState });
+                });
+        }
     }
 
     render = () => {
