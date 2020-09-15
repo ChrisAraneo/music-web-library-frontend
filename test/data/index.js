@@ -37,17 +37,26 @@ async function main() {
         await deleteSingleArtistType(artistTypes, token);
 
         // ARTISTS
-        await postArtists(token, 100);
+        await postArtists(artistTypes, token, 100);
         const artists = await getArtistsList();
         await getSingleArtist(artists);
+        await putSingleArtist(artists, token);
+        await deleteSingleArtist(artistTypes, token);
 
         // ARTIST URLS
         await postArtistURLs(artists, token, 200);
         const artistURLs = await getArtistURLsList();
+        await deleteSingleArtistURL(artistURLs, token);
 
+        // TODO SONGS
         await postSongs(token, 100);
 
-        await postCovers(token, 30);
+        // TODO SONG URLS
+
+        // TODO @PostMapping("/artists/{artistID}/{songID}")
+        // TODO @DeleteMapping("/artists/{artistID}/{songID}")
+
+        // await postCovers(token, 30);
     }
 
 }
@@ -125,7 +134,6 @@ async function putSingleArtistType(artisttypes, token) {
 
 async function deleteSingleArtistType(artisttypes, token) {
     const artistType = getRandomElement(artisttypes);
-    artistType.name = "MODIFIED";
     let hasError = false;
     try {
         await requestDelete(`${prefix}/artisttypes/${artistType.artistTypeID}`, token);
@@ -138,23 +146,21 @@ async function deleteSingleArtistType(artisttypes, token) {
     }
 }
 
-async function postArtists(token, number) {
-    const artistTypeIDs = [0, 1, 2, 3, 4];
-
+async function postArtists(artisttypes, token, number) {
     let hasError = false;
     for (let i = 0; i < number; ++i) {
         const firstName = getRandomElementOptionally(firstNames);
         const lastName = getRandomElementOptionally(lastNames);
         const name = (firstName ? `${firstName} ${lastName ? lastName : ""}` : (lastName ? lastName : ""));
         const artistName = `${getRandomElement(adjectives)} ${name}`;
-
+        const artistType = getRandomElementOptionally(artisttypes);
         const body = {
             artistName,
             birthDate: getRandomElementOptionally([new Date()]),
             country: getRandomElementOptionally(countries),
             firstName,
             lastName,
-            artistType: getRandomElementOptionally(artistTypeIDs),
+            artistType: artistType ? artistType.artistTypeID : undefined
         };
         try {
             await requestPost(`${prefix}/artists`, token, {
@@ -201,6 +207,37 @@ async function getSingleArtist(artists) {
     }
 }
 
+async function putSingleArtist(artists, token) {
+    const artist = getRandomElement(artists);
+    artist.artistName = "MODIFIED";
+    let hasError = false;
+    try {
+        await requestPut(`${prefix}/artists/${artist.artistID}`, token, {
+            body: JSON.stringify(artist)
+        });
+    } catch (error) {
+        printError(`Error while modifying single Artist`);
+        hasError = true;
+    }
+    if (!hasError) {
+        printSuccess(`Modified single Artist`);
+    }
+}
+
+async function deleteSingleArtist(artists, token) {
+    const artist = getRandomElement(artists);
+    let hasError = false;
+    try {
+        await requestDelete(`${prefix}/artists/${artist.artistID}`, token);
+    } catch (error) {
+        printError(`Error while removing single Artist`);
+        hasError = true;
+    }
+    if (!hasError) {
+        printSuccess(`Removed single Artist`);
+    }
+}
+
 async function postArtistURLs(artists, token, number) {
     let hasError = false;
     for (let i = 0; i < number; ++i) {
@@ -239,6 +276,20 @@ async function getArtistURLsList() {
         printSuccess(`Fetched Artist URL List`);
     }
     return urls;
+}
+
+async function deleteSingleArtistURL(urls, token) {
+    const url = getRandomElement(urls);
+    let hasError = false;
+    try {
+        await requestDelete(`${prefix}/artisturls/${url.artistUrlID}`, token);
+    } catch (error) {
+        printError(`Error while removing single Artist URL`);
+        hasError = true;
+    }
+    if (!hasError) {
+        printSuccess(`Removed single Artist URL`);
+    }
 }
 
 async function postSongs(token, number) {
