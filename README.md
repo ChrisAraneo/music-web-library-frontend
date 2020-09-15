@@ -1,5 +1,7 @@
 # Music Web Library Frontend
 
+yarn global add typescript
+
 ## TODO (12 XIX)
 
 Walidacje

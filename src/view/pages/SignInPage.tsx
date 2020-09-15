@@ -69,7 +69,7 @@ class SignInPage extends React.Component<Props, IState> {
 
         return (
             <Grid container justify="center">
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={5}>
                     <PageHeader title="Zaloguj się" />
                     <Card title="Logowanie">
                         <form className={classes.form} noValidate autoComplete="off">
