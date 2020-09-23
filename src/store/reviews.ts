@@ -2,8 +2,7 @@ import Review from "../model/Review";
 import { requestGet, requestPut, requestDelete, requestPost } from "../service/requests";
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
-import Album from "../model/Album";
-import User from "../model/User";
+import { addSuccessNotification } from "./fetching";
 
 // DEFAULT STATE
 const defaultState: Array<Review> = [];
@@ -58,37 +57,30 @@ export function getReview(reviewID: number) {
     store.dispatch(requestGet(`http://localhost:8080/api/reviews/${reviewID}`, actionSetReview));
 }
 export function postReview(albumID: number, title: string, content: string, captcha: string, successCallback?: any) {
-    const details: any = {
-        'title': title,
-        'content': content
+    const body: any = {
+        title,
+        content
     };
-
-    let formBody = [];
-    for (const property in details) {
-        const encodedKey = encodeURIComponent(property);
-        const encodedValue = encodeURIComponent(details[property]);
-        formBody.push(encodedKey + "=" + encodedValue);
-    }
 
     store.dispatch(requestPost(
         `http://localhost:8080/api/reviews/${albumID}`,
         {
             headers: {
-                "Content-Type": `application/x-www-form-urlencoded; charset=UTF-8`,
                 "Captcha-Response": captcha
             },
-            body: formBody.join("&")
+            body: JSON.stringify(body)
         },
         (result) => {
             if (typeof successCallback === "function") {
                 successCallback();
             }
+            addSuccessNotification("Opublikowano recenzję", "Pomyślnie opublikowano recenzję albumu muzycznego");
             return actionSetReview(result);
         })
     );
 }
 export function updateReview(review: Review, captcha: string, successCallback: any) {
-    const details: any = {
+    const body: any = {
         'reviewID': review?.reviewID,
         'title': review?.title,
         'content': review?.content,
@@ -96,31 +88,22 @@ export function updateReview(review: Review, captcha: string, successCallback: a
     };
 
     if (review?.user?.userID) {
-        details['user'] = review?.user?.userID;
-    }
-
-    console.log("REVIEW", details)
-
-    let formBody = [];
-    for (const property in details) {
-        const encodedKey = encodeURIComponent(property);
-        const encodedValue = encodeURIComponent(details[property]);
-        formBody.push(encodedKey + "=" + encodedValue);
+        body['user'] = review?.user?.userID;
     }
 
     store.dispatch(requestPut(
         `http://localhost:8080/api/reviews/${review?.reviewID}`,
         {
             headers: {
-                "Content-Type": `application/x-www-form-urlencoded; charset=UTF-8`,
                 "Captcha-Response": captcha
             },
-            body: formBody.join("&")
+            body: JSON.stringify(body)
         },
         (result) => {
             if (typeof successCallback === "function") {
                 successCallback();
             }
+            addSuccessNotification("Zapisano zmiany", "Pomyślnie zapisano zmiany.");
             return actionSetReview(result);
         })
     );
@@ -129,7 +112,7 @@ export function deleteReview(reviewID: number, successCallback: any) {
     store.dispatch(requestDelete(
         `http://localhost:8080/api/reviews/${reviewID}`,
         {},
-        (result) => {
+        () => {
             if (typeof successCallback === "function") {
                 successCallback();
             }
