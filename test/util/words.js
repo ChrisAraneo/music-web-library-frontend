@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.lorems = exports.nouns = exports.countries = exports.lastNames = exports.firstNames = exports.adjectives = exports.urls = void 0;
+exports.lorems = exports.nouns = exports.countries = exports.lastNames = exports.firstNames = exports.adjectives = exports.urls = exports.photos = void 0;
 
 var adjectives = ["Adorable", "Blue", "Clever", "Drums &", "Easy", "Fantastic", "Great", "Happy", "Incredible", "Kind", "Modern", "Nice", "Old", "Perfect", "The Real", "Sound Of"];
 exports.adjectives = adjectives;
@@ -23,3 +23,6 @@ exports.lorems = lorems;
 
 var urls = ["http://www.qwertyuiopfdsa11.com/", "http://www.123dddddffffffvvd.com/", "http://www.localhostexampletest890.eu/", "http://www.qwersad33fsdstyuiop.com/", "http://www.q33wertyuis333opsadea.com/"];
 exports.urls = urls;
+
+var photos = ["https://images.pexels.com/photos/807598/pexels-photo-807598.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", "https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", "https://images.pexels.com/photos/2437286/pexels-photo-2437286.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", "https://images.pexels.com/photos/3733338/pexels-photo-3733338.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", "https://images.pexels.com/photos/3428498/pexels-photo-3428498.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"];
+exports.photos = photos;
