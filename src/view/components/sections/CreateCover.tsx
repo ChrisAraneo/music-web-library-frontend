@@ -67,7 +67,7 @@ class CreateCover extends React.Component<Props, IState> {
                         onChange={this.handleChangeData}
                         value={this.state.data}
                         disabled={isPending}
-                        error={this.state.validData} />
+                        error={!this.state.validData} />
                 </form>
                 <DividerGradient />
                 <Button

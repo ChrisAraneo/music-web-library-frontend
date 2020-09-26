@@ -69,7 +69,7 @@ class CreateArtistType extends React.Component<Props, IState> {
                             onChange={this.handleChangeName}
                             value={this.state.name}
                             disabled={disabled}
-                            error={this.state.validName} />
+                            error={!this.state.validName} />
                     </form>
                     <DividerGradient />
                     <Button

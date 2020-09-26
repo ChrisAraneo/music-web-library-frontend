@@ -82,7 +82,11 @@ class CreateArtist extends React.Component<Props, IState> {
     }
 
     handleChangeArtistType = (event: any) => {
-        this.setState({ artistType: event?.target?.value });
+        const { artistTypes } = this.props;
+        const id = event?.target?.value;
+        if (artistTypes[id]) {
+            this.setState({ artistType: artistTypes[id] });
+        }
     }
 
     submitForm = () => {
@@ -161,7 +165,7 @@ class CreateArtist extends React.Component<Props, IState> {
                         onChange={this.handleChangeArtistName}
                         value={this.state.artistName}
                         disabled={disabled}
-                        error={this.state.validArtistName} />
+                        error={!this.state.validArtistName} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -169,7 +173,7 @@ class CreateArtist extends React.Component<Props, IState> {
                         onChange={this.handleChangeFirstName}
                         value={this.state.firstName}
                         disabled={disabled}
-                        error={this.state.validFirstName} />
+                        error={!this.state.validFirstName} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -177,14 +181,14 @@ class CreateArtist extends React.Component<Props, IState> {
                         onChange={this.handleChangeLastName}
                         value={this.state.lastName}
                         disabled={disabled}
-                        error={this.state.validLastName} />
+                        error={!this.state.validLastName} />
                     <div className={classes.textInput}>
                         <DatePicker
                             label={`Data rozpoczęcia działalności`}
                             value={this.state.birthDate ? this.state.birthDate : new Date()}
                             handleChangeDate={this.handleChangeBirthDate}
                             disabled={disabled}
-                            error={this.state.validBirthDate} />
+                            error={!this.state.validBirthDate} />
                     </div>
                     <TextField
                         className={classes.textInput}
@@ -193,7 +197,7 @@ class CreateArtist extends React.Component<Props, IState> {
                         onChange={this.handleChangeCountry}
                         value={this.state.country}
                         disabled={disabled}
-                        error={this.state.validCountry} />
+                        error={!this.state.validCountry} />
                     <FormControl className={classes.selectWrapper}>
                         <Select
                             id="type-select"
@@ -201,7 +205,7 @@ class CreateArtist extends React.Component<Props, IState> {
                             onChange={this.handleChangeArtistType}
                             autoWidth
                             disabled={disabled}
-                            error={this.state.validArtistType}>
+                            error={!this.state.validArtistType}>
                             {
                                 artistTypes?.map((type: ArtistType) => {
                                     if (type) {

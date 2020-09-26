@@ -53,31 +53,45 @@ class AdminArtistPage extends React.Component<Props, IState> {
                     aboveTitle="Panel administratora" />
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
-                        <CreateArtist
-                            artistTypes={artistTypes} />
-                        <RemoveArtist
-                            artists={artists} />
-                        <CreateSongArtist artists={artists} songs={songs} />
-                        <RemoveSongArtist songs={songs} />
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <CreateArtist
+                                    artistTypes={artistTypes} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <UpdateArtist
+                                    artists={artists}
+                                    artistTypes={artistTypes} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <RemoveArtist
+                                    artists={artists} />
+                            </Grid>
+                        </ Grid>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                        <UpdateArtist
-                            artists={artists}
-                            artistTypes={artistTypes} />
-                        <CreateArtistURL artists={artists} />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={6}>
-                        <CreateArtistType />
-                        <RemoveArtistType artistTypes={artistTypes} />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <UpdateArtistType artistTypes={artistTypes} />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={3}>
 
+                    <Grid item xs={12} md={6}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <CreateArtistType />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <UpdateArtistType artistTypes={artistTypes} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <RemoveArtistType artistTypes={artistTypes} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <CreateSongArtist artists={artists} songs={songs} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <RemoveSongArtist songs={songs} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <CreateArtistURL artists={artists} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </>
         );

@@ -283,7 +283,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeTitle}
                         value={this.state.title}
                         disabled={disabled}
-                        error={this.state.validTitle} />
+                        error={!this.state.validTitle} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -291,7 +291,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeBPM}
                         value={this.state.bpm}
                         disabled={disabled}
-                        error={this.state.validBPM} />
+                        error={!this.state.validBPM} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -299,7 +299,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeComment}
                         value={this.state.comment}
                         disabled={disabled}
-                        error={this.state.validComment} />
+                        error={!this.state.validComment} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -307,7 +307,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeGenre}
                         value={this.state.genre}
                         disabled={disabled}
-                        error={this.state.validGenre} />
+                        error={!this.state.validGenre} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -315,7 +315,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeLanguage}
                         value={this.state.language}
                         disabled={disabled}
-                        error={this.state.validLanguage} />
+                        error={!this.state.validLanguage} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -323,7 +323,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeLength}
                         value={this.state.length}
                         disabled={disabled}
-                        error={this.state.validLength} />
+                        error={!this.state.validLength} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -331,7 +331,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeMainKey}
                         value={this.state.mainKey}
                         disabled={disabled}
-                        error={this.state.validMainKey} />
+                        error={!this.state.validMainKey} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -339,7 +339,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangePublisher}
                         value={this.state.publisher}
                         disabled={disabled}
-                        error={this.state.validPublisher} />
+                        error={!this.state.validPublisher} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -347,7 +347,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeTerms}
                         value={this.state.terms}
                         disabled={disabled}
-                        error={this.state.validTerms} />
+                        error={!this.state.validTerms} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -355,7 +355,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeWebsite}
                         value={this.state.website}
                         disabled={disabled}
-                        error={this.state.validWebsite} />
+                        error={!this.state.validWebsite} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -363,7 +363,7 @@ class CreateSong extends React.Component<Props, IState> {
                         onChange={this.handleChangeYear}
                         value={this.state.year}
                         disabled={disabled}
-                        error={this.state.validYear} />
+                        error={!this.state.validYear} />
                 </form>
                 <DividerGradient />
                 <Button

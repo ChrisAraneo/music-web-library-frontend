@@ -111,7 +111,8 @@ class UpdateArtistType extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeName}
                         value={this.state.name}
-                        disabled={isPending || disabled} />
+                        disabled={isPending || disabled}
+                        error={!this.state.validName} />
                 </form>
                 <DividerGradient />
                 <Button

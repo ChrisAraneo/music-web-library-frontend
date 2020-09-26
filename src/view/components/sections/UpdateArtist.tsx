@@ -200,7 +200,7 @@ class UpdateArtist extends React.Component<Props, IState> {
                         onChange={this.handleChangeArtistName}
                         value={this.state.artistName}
                         disabled={isPending || disabled}
-                        error={this.state.validArtistName} />
+                        error={!this.state.validArtistName} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -208,7 +208,7 @@ class UpdateArtist extends React.Component<Props, IState> {
                         onChange={this.handleChangeFirstName}
                         value={this.state.firstName}
                         disabled={isPending || disabled}
-                        error={this.state.validFirstName} />
+                        error={!this.state.validFirstName} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -216,7 +216,7 @@ class UpdateArtist extends React.Component<Props, IState> {
                         onChange={this.handleChangeLastName}
                         value={this.state.lastName}
                         disabled={isPending || disabled}
-                        error={this.state.validLastName} />
+                        error={!this.state.validLastName} />
                     <div className={classes.textInput}>
                         <DatePicker
                             label={`Data rozpoczęcia działalności`}
@@ -231,7 +231,7 @@ class UpdateArtist extends React.Component<Props, IState> {
                         onChange={this.handleChangeCountry}
                         value={this.state.country}
                         disabled={isPending || disabled}
-                        error={this.state.validCountry} />
+                        error={!this.state.validCountry} />
                     <FormControl className={classes.selectWrapper}>
                         <Select
                             id="type-select"

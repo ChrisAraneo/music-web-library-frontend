@@ -327,77 +327,88 @@ class UpdateSong extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeTitle}
                         value={this.state.title}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validTitle} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Tempo (BPM)"
                         onChange={this.handleChangeBPM}
                         value={this.state.bpm}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validBPM} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Komentarz"
                         onChange={this.handleChangeComment}
                         value={this.state.comment}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validComment} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Gatunek muzyczny"
                         onChange={this.handleChangeGenre}
                         value={this.state.genre}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validGenre} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Język"
                         onChange={this.handleChangeLanguage}
                         value={this.state.language}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validLanguage} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Długość utworu (sekundy)"
                         onChange={this.handleChangeLength}
                         value={this.state.length}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validLength} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Tonacja"
                         onChange={this.handleChangeMainKey}
                         value={this.state.mainKey}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validMainKey} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Wydawca"
                         onChange={this.handleChangePublisher}
                         value={this.state.publisher}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validPublisher} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Licencja/warunki"
                         onChange={this.handleChangeTerms}
                         value={this.state.terms}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validTerms} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Strona internetowa"
                         onChange={this.handleChangeWebsite}
                         value={this.state.website}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validWebsite} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
                         label="Rok wydania"
                         onChange={this.handleChangeYear}
                         value={this.state.year}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validYear} />
                 </form>
                 <DividerGradient />
                 <Button

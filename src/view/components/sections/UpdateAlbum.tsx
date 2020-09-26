@@ -142,7 +142,8 @@ class UpdateAlbum extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeTitle}
                         value={this.state.title}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validTitle} />
                     <TextField
                         className={classes.textInput}
                         fullWidth={true}
@@ -150,7 +151,8 @@ class UpdateAlbum extends React.Component<Props, IState> {
                         required
                         onChange={this.handleChangeYear}
                         value={this.state.year}
-                        disabled={disabled} />
+                        disabled={disabled}
+                        error={!this.state.validYear} />
                 </form>
                 <DividerGradient />
                 <Button

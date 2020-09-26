@@ -29,8 +29,7 @@ import {
     GoogleReCaptcha
 } from 'react-google-recaptcha-v3';
 import { RECAPTCHA_SITE_KEY } from "../../keys";
-
-import signUpImage from '../../images/sign-up.png';
+import { validateUserName, validateUserUsername, validateUserEmail, validateUserPassword } from "../../model/User";
 
 interface IProps {
     classes: any
@@ -38,12 +37,30 @@ interface IProps {
 
 interface IState {
     name: string,
+    validName: boolean,
     username: string,
+    validUsername: boolean,
     email: string,
+    validEmail: boolean,
     password1: string,
     password2: string,
+    validPassword: boolean,
     captcha: string,
     isVerified: boolean
+}
+
+const initialState = {
+    name: "",
+    validName: true,
+    username: "",
+    validUsername: true,
+    email: "",
+    validEmail: true,
+    password1: "",
+    password2: "",
+    validPassword: true,
+    captcha: "",
+    isVerified: false
 }
 
 type Props = IProps & LinkStateProps;
@@ -52,16 +69,7 @@ class SignUpPage extends React.Component<Props, IState> {
 
     constructor(props: Props) {
         super(props);
-
-        this.state = {
-            name: "",
-            username: "",
-            email: "",
-            password1: "",
-            password2: "",
-            captcha: "",
-            isVerified: false
-        }
+        this.state = { ...initialState }
     }
 
     componentDidMount = () => {
@@ -105,11 +113,34 @@ class SignUpPage extends React.Component<Props, IState> {
         });
     }
 
-    submitForm = (event: any) => {
-        const { name, username, email, password1, captcha, isVerified } = this.state;
+    submitForm = () => {
+        const { name, username, email, password1, password2, isVerified, captcha } = this.state;
+
         if (isVerified) {
-            signUp(name, username, email, password1, captcha);
-            this.setState({ name: "", username: "", email: "", password1: "", password2: "" });
+            const validUserName = validateUserName(name,
+                () => this.setState({ validName: true }),
+                () => this.setState({ validName: false })
+            );
+
+            const validUserUsername = validateUserUsername(username,
+                () => this.setState({ validUsername: true }),
+                () => this.setState({ validUsername: false })
+            );
+
+            const validUserEmail = validateUserEmail(email,
+                () => this.setState({ validEmail: true }),
+                () => this.setState({ validEmail: false })
+            );
+
+            const validUserPassword = validateUserPassword(password1, password2,
+                () => this.setState({ validPassword: true }),
+                () => this.setState({ validPassword: false })
+            );
+
+            if (validUserName && validUserUsername && validUserEmail && validUserPassword) {
+                signUp(name, username, email, password1, captcha);
+                this.setState({ ...initialState }, () => history.push("/signin"));
+            }
         } else {
             alert("Test captcha nie został spełniony!");
         }
@@ -162,33 +193,38 @@ class SignUpPage extends React.Component<Props, IState> {
                                         label="Login"
                                         required
                                         onChange={this.handleChangeUsername}
-                                        value={this.state.username} />
+                                        value={this.state.username}
+                                        error={!this.state.validUsername} />
                                     <TextField
                                         fullWidth={true}
                                         label="Wyświetlana nazwa"
                                         required
                                         onChange={this.handleChangeName}
-                                        value={this.state.name} />
+                                        value={this.state.name}
+                                        error={!this.state.validName} />
                                     <TextField
                                         fullWidth={true}
                                         label="E-mail"
                                         required
                                         onChange={this.handleChangeEmail}
-                                        value={this.state.email} />
+                                        value={this.state.email}
+                                        error={!this.state.validEmail} />
                                     <TextField
                                         fullWidth={true}
                                         label="Hasło"
                                         required
                                         type="password"
                                         onChange={this.handleChangePassword1}
-                                        value={this.state.password1} />
+                                        value={this.state.password1}
+                                        error={!this.state.validPassword} />
                                     <TextField
                                         fullWidth={true}
                                         label="Powtórz hasło"
                                         required
                                         type="password"
                                         onChange={this.handleChangePassword2}
-                                        value={this.state.password2} />
+                                        value={this.state.password2}
+                                        error={!this.state.validPassword} />
                                 </form>
                                 <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
                                     <GoogleReCaptcha onVerify={this.handleVerifyCaptcha} />

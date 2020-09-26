@@ -107,7 +107,7 @@ class CreateSongURL extends React.Component<Props, IState> {
                         onChange={this.handleChangeURL}
                         value={this.state.url}
                         disabled={isPending || disabled}
-                        error={this.state.validURL} />
+                        error={!this.state.validURL} />
                 </form>
                 <DividerGradient />
                 <Button
