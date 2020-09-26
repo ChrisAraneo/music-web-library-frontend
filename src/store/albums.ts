@@ -133,7 +133,7 @@ export function deleteSongFromAlbum(
         if (typeof successCallback === "function") {
             successCallback(result);
         }
-        addSuccessNotification("Dodano utwór do albumu", "Pomyślnie dodano utwór muzyczny do albumu");
+        addSuccessNotification("Usunięto utwór z albumu", "Pomyślnie usunięto utwór muzyczny z albumu");
         return actionSetAlbum(result);
     }));
 }

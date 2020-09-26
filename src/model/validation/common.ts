@@ -35,6 +35,25 @@ export const isURL = (input: any): boolean => {
     }
 }
 
+export const isEmail = (input: any): boolean => {
+    // https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
+    if (input && typeof input == "string") {
+        var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return !!pattern.test(input);
+    } else {
+        return false;
+    }
+}
+
+export const isPassword = (input: any): boolean => {
+    const minLength = 6;
+    return Boolean(isString(input) && input.length >= minLength);
+}
+
+export const identicalPasswords = (input1: any, input2: any): boolean => {
+    return Boolean(isString(input1) && isString(input1) && input1 === input2);
+}
+
 export interface Condition {
     result: boolean,
     title: string,

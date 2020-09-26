@@ -78,7 +78,7 @@ export function postArtist(
         country,
         firstName,
         lastName,
-        artistType: artistType?.artistTypeID
+        artistType
     };
 
     store.dispatch(requestPost(`http://localhost:8080/api/artists`, {

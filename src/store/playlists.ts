@@ -99,8 +99,17 @@ export function deletePlaylist(id: number, successCallback?: any) {
         }));
 }
 export function addRecordToPlaylist(playlistID: number, songID: number) {
-    store.dispatch(requestPost(`http://localhost:8080/api/playlists/${playlistID}/${songID}`, {}, (playlist: Playlist) => actionSetPlaylist(playlist)));
+    store.dispatch(requestPost(`http://localhost:8080/api/playlists/${playlistID}/${songID}`, {},
+        (playlist: Playlist) => {
+            addSuccessNotification("Dodano utwór do listy", "Pomyślnie dodano utwór do listy.");
+            return actionSetPlaylist(playlist);
+        })
+    );
 }
 export function deleteRecordFromPlaylist(playlistID: number, track: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${playlistID}/${track}`, {}, (playlist: Playlist) => actionSetPlaylist(playlist)));
+    store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${playlistID}/${track}`, {},
+        (playlist: Playlist) => {
+            addSuccessNotification("Usunięto utwór z listy", "Pomyślnie usunięto utwór z listy utworów.");
+            return actionSetPlaylist(playlist);
+        }));
 }
