@@ -1,28 +1,35 @@
-const fetch = require("../../node-fetch");
+"use strict";
 
-async function request(
-    url,
-    options,
-    token
-) {
-    const headers = { "Content-Type": "application/json;" };
+exports.__esModule = true;
+exports.requestGet = requestGet;
+exports.requestPost = requestPost;
+exports.requestPut = requestPut;
+exports.requestDelete = requestDelete;
 
-    if (token && options && options.method && options.method != "GET") {
-        headers["Authorization"] = `Bearer ${token}`;
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var fetch = require("node-fetch");
+
+async function request(url, options, token) {
+    var headers = {
+        "Content-Type": "application/json;"
+    };
+
+    if (token && options && options.method) {
+        headers["Authorization"] = "Bearer " + token;
     }
 
-    let response;
-    let data;
+    var response;
+    var data;
+
     try {
-        response = await fetch(url,
-            {
-                ...options,
-                headers: {
-                    ...headers,
-                    ...options.headers
-                }
-            }
-        );
+        response = await fetch(url, _objectSpread(_objectSpread({}, options), {}, {
+            headers: _objectSpread(_objectSpread({}, headers), options.headers)
+        }));
         data = await response.json();
     } catch (error) {
         throw error;
@@ -31,54 +38,58 @@ async function request(
     return data;
 }
 
-export async function requestGet(url) {
-    let result;
+async function requestGet(url, token) {
+    var result;
+
     try {
-        result = await request(url, { method: "GET" }, null);
+        result = await request(url, {
+            method: "GET"
+        }, token);
     } catch (error) {
         throw error;
     }
+
     return result;
 }
 
-export async function requestPost(
-    url,
-    token,
-    options
-) {
-    let result;
+async function requestPost(url, token, options) {
+    var result;
+
     try {
-        result = await request(url, { ...options, method: "POST" }, token);
+        result = await request(url, _objectSpread(_objectSpread({}, options), {}, {
+            method: "POST"
+        }), token);
     } catch (error) {
         throw error;
     }
+
     return result;
 }
 
-export async function requestPut(
-    url,
-    token,
-    options
-) {
-    let result;
+async function requestPut(url, token, options) {
+    var result;
+
     try {
-        result = await request(url, { ...options, method: "PUT" }, token);
+        result = await request(url, _objectSpread(_objectSpread({}, options), {}, {
+            method: "PUT"
+        }), token);
     } catch (error) {
         throw error;
     }
+
     return result;
 }
 
-export async function requestDelete(
-    url,
-    token,
-    options
-) {
-    let result;
+async function requestDelete(url, token, options) {
+    var result;
+
     try {
-        result = await request(url, { ...options, method: "DELETE" }, token);
+        result = await request(url, _objectSpread(_objectSpread({}, options), {}, {
+            method: "DELETE"
+        }), token);
     } catch (error) {
         throw error;
     }
+
     return result;
 }

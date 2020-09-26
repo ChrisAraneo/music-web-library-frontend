@@ -3,13 +3,13 @@
 exports.__esModule = true;
 exports.lorems = exports.nouns = exports.countries = exports.lastNames = exports.firstNames = exports.adjectives = exports.urls = exports.photos = void 0;
 
-var adjectives = ["Adorable", "Blue", "Clever", "Drums &", "Easy", "Fantastic", "Great", "Happy", "Incredible", "Kind", "Modern", "Nice", "Old", "Perfect", "The Real", "Sound Of"];
+var adjectives = ["Adorable", "Blue", "Clever", "Drums &", "Easy", "Fantastic", "Great", "Happy", "Incredible", "Kind", "Modern", "Nice", "Old", "Perfect", "The Real", "Sound Of", "Great", "Fun", "Green", "Red", "Fast", "Sweet", "Musical", "Melodic", "Tuneful", "Mellow", "Melodious", "Jazzy", "Favourite"];
 exports.adjectives = adjectives;
 
-var firstNames = ["Adam", "Beata", "Cezary", "Damian", "Ewa", "Filip", "Grzegorz", "Henryk", "Iza", "Jan", "Kacper", "Laura"];
+var firstNames = ["Adam", "Beata", "Cezary", "Damian", "Ewa", "Filip", "Grzegorz", "Henryk", "Iza", "Jan", "Kacper", "Laura", "Łukasz", "Mateusz", "Nikodem", "Olaf", "Peter", "Robert", "Stanisław", "Thomas", "Urszula", "Wiktor", "Zenon"];
 exports.firstNames = firstNames;
 
-var lastNames = ["Smith", "Kowal", "Muzyk", "Meloman", "Grajek", "Iks", "Igrek", "Nowek", "Gitara", "Ton"];
+var lastNames = ["Smith", "Kowal", "Muzyk", "Meloman", "Grajek", "Iks", "Igrek", "Nowek", "Gitara", "Ton", "Kowalski", "Nowak", "Iksiński", "Zet", "Adamek", "Wójcik", "Woźniak", "Mazur", "Krawczyk", "Kaczmarek", "Zając", "Król", "Wróbel", "Stępień", "Pawlak", "Walczak"];
 exports.lastNames = lastNames;
 
 var countries = ["Polska", "Niemcy", "Hiszpania", "Stany Zjednoczone", "Rosja", "Australia", "Rumunia", "Czechy", "Portugalia", "Włochy", "Norwegia", "Finlandia"];

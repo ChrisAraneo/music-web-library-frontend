@@ -1,5 +1,5 @@
 const process = require("process");
-const requests = require("./util/requests.es5");
+const requests = require("./util/requests");
 const requestGet = requests.requestGet;
 const requestPost = requests.requestPost;
 const requestPut = requests.requestPut;
@@ -23,7 +23,7 @@ const N_SONGS = 2000;
 const N_SONG_URLS = N_SONGS * 3;
 const N_COVERS = 10;
 const N_ALBUMS = 500;
-const N_PLAYLISTS = 25;
+const N_PLAYLISTS = Math.floor(N_ALBUMS / 10);
 
 async function main() {
     let lastAlbumID;
@@ -31,6 +31,7 @@ async function main() {
     let lastCoverID;
     let lastPlaylistID;
     let lastSongID;
+    let lastTrack;
     let result;
 
     const usernameOrEmail = "admin";
@@ -51,7 +52,7 @@ async function main() {
         await getSingleArtistType(artistTypes)
         await putSingleArtistType(artistTypes, token);
         const delT = await deleteSingleArtistType(artistTypes, token);
-        artistTypes = artistTypes.filter(item => item.artistTypeID == delT);
+        artistTypes = artistTypes.filter(item => item.artistTypeID != delT);
 
         // ARTISTS
         await postArtists(artistTypes, token, N_ARTISTS);
@@ -118,9 +119,9 @@ async function main() {
 
         // PLAYLISTS
         await postPlaylists(token, N_PLAYLISTS);
-        let playlists = await getPlaylistsList();
-        await getSinglePlaylist(playlists);
-        await putSinglePlaylist(playlists);
+        let playlists = await getPlaylistsList(token);
+        await getSinglePlaylist(playlists, token);
+        await putSinglePlaylist(playlists, token);
         const delP = await deleteSinglePlaylist(playlists, token);
         playlists = playlists.filter(item => item.playlistID != delP);
 
@@ -128,7 +129,8 @@ async function main() {
         result = await attachSongsToPlaylists(songs, playlists, token);
         lastSongID = result.lastSongID;
         lastPlaylistID = result.lastPlaylistID;
-        await detachSongFromPlaylist(lastSongID, lastPlaylistID, token);
+        lastTrack = result.lastTrack
+        await detachSongFromPlaylist(lastPlaylistID, lastTrack, token);
 
         // REVIEWS -- have to be tested manually, because they require Captcha
 
@@ -138,7 +140,7 @@ async function main() {
 }
 
 async function postArtistTypes(token) {
-    const names = ["Główny wykonawca", "Wokalista", "Gitarzysta", "Perkusista", "Multiinstrumentalista"];
+    const names = ["Główny wykonawca", "Wokalista", "Gitarzysta", "Perkusista", "Multiinstrumentalista", "Pianista", "Saksofonista", "Inżynier dźwięku", "Kompozytor", "Basista"];
 
     let hasError = false;
     for (const name of names) {
@@ -224,22 +226,27 @@ async function deleteSingleArtistType(artisttypes, token) {
     return deletedArtistTypeID;
 }
 
-async function postArtists(artisttypes, token, number) {
+async function postArtists(artistTypes, token, number) {
     let hasError = false;
     for (let i = 0; i < number; ++i) {
         const firstName = getRandomElementOptionally(firstNames);
         const lastName = getRandomElementOptionally(lastNames);
         const name = (firstName ? `${firstName} ${lastName ? lastName : ""}` : (lastName ? lastName : ""));
-        const artistName = `${getRandomElement(adjectives)} ${name}`;
-        const artistType = getRandomElementOptionally(artisttypes);
+        let artistName = `${getRandomElement(adjectives)} ${name}`;
+        if (artistName.slice(-1) == " ") {
+            artistName = artistName.slice(0, -1);
+        }
+        const artistType = getRandomElementOptionally(artistTypes);
         const body = {
             artistName,
             birthDate: getRandomElementOptionally([new Date()]),
             country: getRandomElementOptionally(countries),
             firstName,
-            lastName,
-            artistType: artistType ? artistType.artistTypeID : undefined
+            lastName
         };
+        if (artistType) {
+            body.artistType = artistType;
+        }
         try {
             await requestPost(`${prefix}/artists`, token, {
                 body: JSON.stringify(body)
@@ -823,11 +830,11 @@ async function postPlaylists(token, number) {
     }
 }
 
-async function getPlaylistsList() {
+async function getPlaylistsList(token) {
     let playlists;
     let hasError = false;
     try {
-        playlists = await requestGet(`${prefix}/playlists`);
+        playlists = await requestGet(`${prefix}/playlists`, token);
     } catch (error) {
         printError("Playlists", `Error while getting Playlists`);
         hasError = true;
@@ -838,11 +845,11 @@ async function getPlaylistsList() {
     return playlists;
 }
 
-async function getSinglePlaylist(playlists) {
+async function getSinglePlaylist(playlists, token) {
     const playlistID = getRandomElement(playlists).playlistID;
     let hasError = false;
     try {
-        await requestGet(`${prefix}/playlists/${playlistID}`);
+        await requestGet(`${prefix}/playlists/${playlistID}`, token);
     } catch (error) {
         printError("Playlists", `Error while getting single Playlist`);
         hasError = true;
@@ -890,15 +897,18 @@ async function attachSongsToAlbums(_songs, albums, token) {
     let hasError = false;
     let lastSongID;
     let lastAlbumID;
+    let lastTrack;
     for (let i = 0; i < albums.length; ++i) {
         const album = albums[i];
         const songs = shuffleArray(_songs);
-        for (let j = 0; j < songs.length / 5; ++j) {
+        for (let j = 0; j < Math.min(songs.length, 10); ++j) {
             const song = songs[j];
+            const track = j + 1;
             try {
-                await requestPost(`${prefix}/albums/${album.albumID}/${song.songID}`, token, {});
+                await requestPost(`${prefix}/albums/${album.albumID}/${song.songID}/${track}`, token, {});
                 lastAlbumID = album.albumID;
                 lastSongID = song.songID;
+                lastTrack = track;
             }
             catch (error) {
                 printError("Albums", `Error while attaching Song to Album`);
@@ -913,13 +923,13 @@ async function attachSongsToAlbums(_songs, albums, token) {
     if (!hasError) {
         printSuccess("Albums", `Songs successfully attached to Albums`);
     }
-    return { lastSongID, lastAlbumID };
+    return { lastSongID, lastAlbumID, lastTrack };
 }
 
-async function detachSongFromAlbum(songID, albumID, token) {
+async function detachSongFromAlbum(songID, albumID, track, token) {
     let hasError = false;
     try {
-        await requestDelete(`${prefix}/albums/${albumID}/${songID}`, token);
+        await requestDelete(`${prefix}/albums/${albumID}/${songID}/${track}`, token);
     } catch (error) {
         printError("Albums", `Error while detaching Song from single Album`);
         hasError = true;
@@ -933,15 +943,17 @@ async function attachSongsToPlaylists(_songs, playlists, token) {
     let hasError = false;
     let lastSongID;
     let lastPlaylistID;
+    let lastTrack;
     for (let i = 0; i < playlists.length; ++i) {
         const playlist = playlists[i];
         const songs = shuffleArray(_songs);
-        for (let j = 0; j < songs.length / 5; ++j) {
+        for (let j = 0; j < Math.min(songs.length / 5, 10); ++j) {
             const song = songs[j];
             try {
                 await requestPost(`${prefix}/playlists/${playlist.playlistID}/${song.songID}`, token, {});
                 lastPlaylistID = playlist.playlistID;
                 lastSongID = song.songID;
+                lastTrack = j + 1;
             }
             catch (error) {
                 printError("Playlists", `Error while attaching Song to Playlist`);
@@ -956,13 +968,13 @@ async function attachSongsToPlaylists(_songs, playlists, token) {
     if (!hasError) {
         printSuccess("Playlists", `Songs successfully attached to Playlists`);
     }
-    return { lastSongID, lastPlaylistID };
+    return { lastSongID, lastPlaylistID, lastTrack };
 }
 
-async function detachSongFromPlaylist(songID, playlistID, token) {
+async function detachSongFromPlaylist(playlistID, lastTrack, token) {
     let hasError = false;
     try {
-        await requestDelete(`${prefix}/playlists/${playlistID}/${songID}`, token);
+        await requestDelete(`${prefix}/playlists/${playlistID}/${lastTrack}`, token);
     } catch (error) {
         printError("Playlists", `Error while detaching Song from single Playlist`);
         hasError = true;
