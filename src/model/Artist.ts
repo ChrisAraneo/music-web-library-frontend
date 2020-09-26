@@ -110,18 +110,15 @@ export const validateArtistType = (
     successCallback?: () => any,
     errorCallback?: () => any
 ): boolean => {
-    if (artistType) {
-        return validate(
-            [
-                {
-                    result: isString(artistType?.name),
-                    title: "Niepoprawny typ",
-                    message: "Wybierz poprawny typ działalności muzycznej wykonawcy",
-                    errorCallback
-                }
-            ],
-            successCallback
-        );
-    }
-    return false;
+    return validate(
+        [
+            {
+                result: artistType !== null && artistType !== undefined,
+                title: "Niepoprawny typ",
+                message: "Wybierz poprawny typ działalności muzycznej wykonawcy",
+                errorCallback
+            }
+        ],
+        successCallback
+    );
 }
