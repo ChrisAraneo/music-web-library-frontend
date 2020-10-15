@@ -199,7 +199,9 @@ const localization = {
         labelRowsSelect: 'wierszy'
     },
     toolbar: {
-        nRowsSelected: '{0} zaznaczonych wierszy'
+        nRowsSelected: '{0} zaznaczonych wierszy',
+        searchTooltip: "Szukaj",
+        searchPlaceholder: "Szukaj"
     },
     header: {
         actions: 'Akcje'
