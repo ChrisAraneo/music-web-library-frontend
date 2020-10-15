@@ -48,11 +48,9 @@ function request(
                             }
                         });
                     } else {
-                        console.log("erroriks", error);
+                        console.error("ERROR", error);
                     }
                 }
-
-
             });
     }
 }

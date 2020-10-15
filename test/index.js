@@ -766,15 +766,15 @@ async function detachCoverFromAlbum(coverID, albumID, token) {
 }
 
 async function attachSongsToArtists(_songs, _artists, token) {
-    const artists = shuffleArray(_artists);
     let hasError = false;
     let lastSongID;
     let lastArtistID;
-    for (let i = 0; i < artists.length; ++i) {
-        const artist = artists[i];
-        const songs = shuffleArray(_songs);
-        for (let j = 0; j < songs.length / 15; ++j) {
-            const song = songs[j];
+    const songs = shuffleArray(_songs);
+    for (let j = 0; j < songs.length * 0.8; ++j) {
+        const song = songs[j];
+        for (let i = 0; i < Math.min(Math.floor(random() * 2), _artists.length); ++i) {
+            const artists = shuffleArray(_artists);
+            const artist = artists[i];
             try {
                 await requestPost(`${prefix}/artists/${artist.artistID}/${song.songID}`, token, {});
                 lastArtistID = artist.artistID;
