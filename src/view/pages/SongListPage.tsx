@@ -50,12 +50,10 @@ class SongListPage extends React.Component<Props, IState> {
         if (!this.state.open) {
             const link = data["Nazwa utworu"];
             if (link) {
-                console.log("SONG DATA", data);
                 const { props } = link;
                 const { to } = props;
                 const parts = to.split("/");
                 const songID = parts[parts.length - 1];
-                console.log("SONG ID", songID);
                 this.setState({
                     open: true,
                     selectedSongID: songID
@@ -131,7 +129,7 @@ class SongListPage extends React.Component<Props, IState> {
             <>
                 <DialogAddSongToPlaylist
                     playlists={playlists}
-                    open={!isPending && open}
+                    open={open}
                     selectedPlaylistID={selectedPlaylistID}
                     selectedSongID={selectedSongID}
                     handleClose={() => this.setState({ open: false })}

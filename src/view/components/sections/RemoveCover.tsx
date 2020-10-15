@@ -11,6 +11,7 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Cover from "../../../model/Cover";
 import { getCover, deleteCover } from "../../../store/covers";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -69,7 +70,7 @@ class RemoveCover extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                covers?.map((cover: Cover) => {
+                                [...covers].sort((a: Cover, b: Cover) => compareByProperty(a, b, "data")).map((cover: Cover) => {
                                     if (cover && cover?.coverID) {
                                         return (<MenuItem key={cover?.coverID} value={cover?.coverID}>{cover?.data}</MenuItem>);
                                     } else {

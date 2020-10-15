@@ -13,6 +13,7 @@ import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Song from "../../../model/Song";
 import Artist from "../../../model/Artist";
 import { getArtist, attachSongToArtist, detachSongFromArtist } from "../../../store/artists";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -75,7 +76,8 @@ class RemoveSongArtist extends React.Component<Props, IState> {
     render = () => {
         const { classes, fetching, songs } = this.props;
         const { isPending } = fetching;
-        const disabled = isPending || this.state.artistID == initialState.artistID || this.state.songID == initialState.songID;
+        const { artists, artistID, songID } = this.state;
+        const disabled = isPending || artistID == initialState.artistID || songID == initialState.songID;
 
         return (
             <CardAdmin title="Usuń powiązanie utwór-wykonawca">
@@ -88,7 +90,7 @@ class RemoveSongArtist extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                songs?.map((song: Song) => {
+                                [...songs].sort((a: Song, b: Song) => compareByProperty(a, b, "title")).map((song: Song) => {
                                     if (song) {
                                         return (<MenuItem key={song.songID} value={song.songID}>{song.title}</MenuItem>);
                                     } else {
@@ -105,16 +107,21 @@ class RemoveSongArtist extends React.Component<Props, IState> {
                             value={undefined}
                             onChange={this.handleChangeArtist}
                             required
-                            disabled={this.state.artists === undefined || this.state.artists?.length < 1}
+                            disabled={artists === undefined || artists?.length < 1}
                             autoWidth>
                             {
-                                this.state.artists?.map((artist: Artist) => {
-                                    if (artist) {
-                                        return (<MenuItem key={artist.artistID} value={artist.artistID}>{artist.artistName}</MenuItem>);
-                                    } else {
-                                        return null;
-                                    }
-                                })
+                                artists !== undefined ?
+                                    (
+                                        [...artists].sort((a: Artist, b: Artist) => compareByProperty(a, b, "artistName")).map((artist: Artist) => {
+                                            if (artist) {
+                                                return (<MenuItem key={artist.artistID} value={artist.artistID}>{artist.artistName}</MenuItem>);
+                                            } else {
+                                                return null;
+                                            }
+                                        })
+                                    )
+                                    :
+                                    null
                             }
                         </Select>
                         <FormHelperText>Wybierz wykonawcę</FormHelperText>

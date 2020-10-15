@@ -16,6 +16,7 @@ import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import { postArtist } from "../../../store/artists";
 import { AppState } from "../../../store";
 import Artist, { validateArtistName, validateArtistFirstName, validateArtistCountry, validateArtistLastName, validateArtistBirthDate, validateArtistType } from "../../../model/Artist";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     artistTypes: ArtistType[],
@@ -207,7 +208,7 @@ class CreateArtist extends React.Component<Props, IState> {
                             disabled={disabled}
                             error={!this.state.validArtistType}>
                             {
-                                artistTypes?.map((type: ArtistType) => {
+                                [...artistTypes].sort((a: ArtistType, b: ArtistType) => compareByProperty(a, b, "name")).map((type: ArtistType) => {
                                     if (type) {
                                         return (<MenuItem key={type?.artistTypeID} value={type?.artistTypeID}>{type?.name}</MenuItem>);
                                     } else {

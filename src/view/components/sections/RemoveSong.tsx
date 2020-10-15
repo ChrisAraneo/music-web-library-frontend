@@ -12,6 +12,7 @@ import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import Song, { SongInPlaylist } from "../../../model/Song";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -70,7 +71,7 @@ class RemoveSong extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                songs?.map((song: Song) => {
+                                [...songs].sort((a: Song, b: Song) => compareByProperty(a, b, "title")).map((song: Song) => {
                                     if (song) {
                                         return (<MenuItem key={song?.songID} value={song?.songID}>{song?.title}</MenuItem>);
                                     } else {

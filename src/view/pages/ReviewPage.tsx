@@ -112,6 +112,7 @@ class ReviewPage extends React.Component<Props, IState> {
                                             Powyższa recenzja jest napisana przez ciebie.
                                         </Typography>
                                         <Button
+                                            className={classes.buttonMR}
                                             variant="contained"
                                             color="primary"
                                             startIcon={<ReviewIcon />}
@@ -139,6 +140,9 @@ class ReviewPage extends React.Component<Props, IState> {
 };
 
 const styles = (theme: Theme) => createStyles({
+    buttonMR: {
+        margin: theme.spacing(0, 2, 0, 0)
+    },
     spanWithMargin: {
         margin: theme.spacing(0, 1, 0, 0)
     },

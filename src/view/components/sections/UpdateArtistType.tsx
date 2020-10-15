@@ -12,6 +12,7 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import { AppState } from "../../../store";
 import { getArtistType, updateArtistType } from "../../../store/artistTypes";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -90,7 +91,7 @@ class UpdateArtistType extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                artistTypes?.map((type: ArtistType) => {
+                                [...artistTypes].sort((a: ArtistType, b: ArtistType) => compareByProperty(a, b, "name")).map((type: ArtistType) => {
                                     if (type) {
                                         return (<MenuItem key={type?.artistTypeID} value={type?.artistTypeID}>{type?.name}</MenuItem>);
                                     } else {

@@ -22,7 +22,7 @@ import {
     GoogleReCaptchaProvider,
     GoogleReCaptcha
 } from 'react-google-recaptcha-v3';
-import { RECAPTCHA_SITE_KEY } from "../../keys";
+import { RECAPTCHA_SITE_KEY } from "../../config";
 
 
 interface IState {
@@ -60,7 +60,7 @@ class WriteReviewPage extends React.Component<Props, IState> {
 
     componentDidUpdate = () => {
         const { reviews, match } = this.props;
-        const { albumID, reviewID } = match?.params;
+        const { reviewID } = match?.params;
         const review = reviews?.find((review: Review) => review?.reviewID == reviewID);
 
         if (review) {

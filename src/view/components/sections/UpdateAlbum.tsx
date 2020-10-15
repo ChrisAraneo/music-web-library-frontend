@@ -12,6 +12,7 @@ import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import { AppState } from "../../../store";
 import Album, { validateAlbumTitle, validateAlbumYear } from "../../../model/Album";
 import { getAlbum, updateAlbum } from "../../../store/albums";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -121,7 +122,7 @@ class UpdateAlbum extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                albums?.map((album: Album) => {
+                                [...albums].sort((a: Album, b: Album) => compareByProperty(a, b, "title")).map((album: Album) => {
                                     if (album) {
                                         return (<MenuItem key={album?.albumID} value={album?.albumID}>{album?.title}</MenuItem>);
                                     } else {

@@ -12,6 +12,7 @@ import { getArtist } from "../../../store/artists";
 import { AppState } from "../../../store";
 import Artist from "../../../model/Artist";
 import { deleteArtist } from "../../../store/artists";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -68,7 +69,7 @@ class RemoveArtist extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                artists?.map((artist: Artist) => {
+                                [...artists].sort((a: Artist, b: Artist) => compareByProperty(a, b, "artistName")).map((artist: Artist) => {
                                     if (artist) {
                                         return (<MenuItem key={artist?.artistID} value={artist?.artistID}>{artist?.artistName}</MenuItem>);
                                     } else {

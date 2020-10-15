@@ -11,6 +11,8 @@ import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Album from "../../../model/Album";
+import { deleteAlbum } from "../../../store/albums";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -44,7 +46,7 @@ class RemoveAlbum extends React.Component<Props, IState> {
     submitForm = () => {
         const { albumID } = this.state;
         if (albumID != initialState.albumID) {
-            deleteSong(albumID,
+            deleteAlbum(albumID,
                 () => {
                     this.setState({ ...initialState });
                 });
@@ -67,7 +69,7 @@ class RemoveAlbum extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                albums?.map((album: Album) => {
+                                [...albums].sort((a: Album, b: Album) => compareByProperty(a, b, "title")).map((album: Album) => {
                                     if (album) {
                                         return (<MenuItem key={album?.albumID} value={album?.albumID}>{album?.title}</MenuItem>);
                                     } else {

@@ -10,9 +10,10 @@ import Select from "@material-ui/core/Select/Select";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import Song from "../../../model/Song";
 import Artist from "../../../model/Artist";
 import { getArtist, attachSongToArtist } from "../../../store/artists";
+import { compareByProperty } from "../../../model/common/functions";
+import Song from "../../../model/Song";
 
 
 interface IProps {
@@ -81,7 +82,7 @@ class CreateSongArtist extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                artists?.map((artist: Artist) => {
+                                [...artists]?.sort((a: Artist, b: Artist) => compareByProperty(a, b, "artistName")).map((artist: Artist) => {
                                     if (artist) {
                                         return (<MenuItem key={artist.artistID} value={artist.artistID}>{artist.artistName}</MenuItem>);
                                     } else {
@@ -100,7 +101,7 @@ class CreateSongArtist extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                songs?.map((song: Song) => {
+                                [...songs]?.sort((a: Song, b: Song) => compareByProperty(a, b, "title")).map((song: Song) => {
                                     if (song) {
                                         return (<MenuItem key={song?.songID} value={song?.songID}>{song?.title}</MenuItem>);
                                     } else {

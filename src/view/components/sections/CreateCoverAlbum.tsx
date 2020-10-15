@@ -13,6 +13,7 @@ import Album from "../../../model/Album";
 import { getAlbum, attachCoverToAlbum } from "../../../store/albums";
 import Cover from "../../../model/Cover";
 import { getCover } from "../../../store/covers";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -81,7 +82,7 @@ class CreateCoverAlbum extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                albums?.map((album: Album) => {
+                                [...albums].sort((a: Album, b: Album) => compareByProperty(a, b, "title")).map((album: Album) => {
                                     if (album) {
                                         return (<MenuItem key={album?.albumID} value={album?.albumID}>{album?.title}</MenuItem>);
                                     } else {
@@ -100,7 +101,7 @@ class CreateCoverAlbum extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                covers?.map((cover: Cover) => {
+                                [...covers].sort((a: Cover, b: Cover) => compareByProperty(a, b, "data")).map((cover: Cover) => {
                                     if (cover) {
                                         return (<MenuItem key={cover?.coverID} value={cover?.coverID}>{cover?.data}</MenuItem>);
                                     } else {

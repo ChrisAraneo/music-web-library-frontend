@@ -117,7 +117,7 @@ class SongPage extends React.Component<Props, IState> {
             <>
                 <DialogAddSongToPlaylist
                     playlists={playlists}
-                    open={!isPending && open}
+                    open={open}
                     selectedPlaylistID={selectedPlaylistID}
                     selectedSongID={songID}
                     handleClose={() => this.setState({ open: false })}

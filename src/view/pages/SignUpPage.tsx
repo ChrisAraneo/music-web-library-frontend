@@ -28,7 +28,7 @@ import {
     GoogleReCaptchaProvider,
     GoogleReCaptcha
 } from 'react-google-recaptcha-v3';
-import { RECAPTCHA_SITE_KEY } from "../../keys";
+import { RECAPTCHA_SITE_KEY } from "../../config";
 import { validateUserName, validateUserUsername, validateUserEmail, validateUserPassword } from "../../model/User";
 
 interface IProps {
@@ -184,7 +184,7 @@ class SignUpPage extends React.Component<Props, IState> {
             return (
                 <div className={classes.wrapper}>
                     <Grid container justify="center">
-                        <Grid item xs={12} md={5}>
+                        <Grid item xs={12} md={6}>
                             <PageHeader title="Zakładanie konta" />
                             <Card title="Tworzenie nowego konta">
                                 <form className={classes.form} noValidate autoComplete="off">

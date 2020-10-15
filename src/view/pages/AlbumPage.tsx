@@ -16,7 +16,7 @@ import PageHeader from "../components/basic/PageHeader";
 import Review from "../../model/Review";
 import { Theme, withStyles, createStyles } from "@material-ui/core/styles";
 import { getPlaylistsList, addRecordToPlaylist } from "../../store/playlists";
-import { getSongsList } from "../../store/songs";
+import { getSong } from "../../store/songs";
 import DialogAddSongToPlaylist from "../components/basic/DialogAddSongToPlaylist";
 import Playlist from "../../model/Playlist";
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
@@ -24,10 +24,6 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import ReviewIcon from '@material-ui/icons/RateReview';
 import Button from "@material-ui/core/Button/Button";
 import Role, { ROLE_ADMIN } from "../../model/Role";
-import { table } from "console";
-import Image from 'material-ui-image';
-import Card from "../components/basic/Card";
-import Paper from "@material-ui/core/Paper/Paper";
 import Cover from "../components/basic/Cover";
 
 interface IProps {
@@ -56,7 +52,11 @@ class AlbumPage extends React.Component<Props, IState> {
 
     componentDidMount() {
         const { albumID } = this.props.match.params;
-        getAlbum(albumID);
+        getAlbum(albumID, (album: Album) => {
+            album.songs?.forEach((sia: SongInAlbum) => {
+                getSong(sia?.song?.songID);
+            });
+        });
 
         const { token } = this.props?.auth;
         if (token) {
@@ -105,15 +105,18 @@ class AlbumPage extends React.Component<Props, IState> {
         });
     }
 
-    handleRemoveSongFromAlbum = (albumID: number, songRowData: any) => {
-        console.log("songRowData", songRowData);
-        const { tableData } = songRowData;
-        if (tableData) {
-            const { id } = tableData;
-            const track = songRowData['#'];
-            if (typeof id === "number" && typeof track === "number") {
-                console.log(tableData);
-                deleteSongFromAlbum(albumID, id, track);
+    handleRemoveSongFromAlbum = (albumID: number, data: any) => {
+        const link = data["Tytuł"];
+        if (link) {
+            const { props } = link;
+            const { to } = props;
+            const parts = to.split("/");
+            const songID = Number(parts[parts.length - 1]);
+            if (songID) {
+                const track = Number(data['#']);
+                if (typeof songID === "number" && typeof track === "number") {
+                    deleteSongFromAlbum(albumID, songID, track);
+                }
             }
         }
     }
@@ -223,7 +226,7 @@ class AlbumPage extends React.Component<Props, IState> {
             <>
                 <DialogAddSongToPlaylist
                     playlists={playlists}
-                    open={!isPending && open}
+                    open={open}
                     selectedPlaylistID={selectedPlaylistID}
                     selectedSongID={selectedSongID}
                     handleClose={() => this.setState({ open: false })}

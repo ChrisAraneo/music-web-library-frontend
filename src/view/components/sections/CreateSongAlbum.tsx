@@ -14,6 +14,7 @@ import Album from "../../../model/Album";
 import { getAlbum, postSongToAlbum } from "../../../store/albums";
 import Song from "../../../model/Song";
 import TextField from "@material-ui/core/TextField/TextField";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -109,7 +110,7 @@ class CreateSongAlbum extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                albums?.map((album: Album) => {
+                                [...albums]?.sort((a: Album, b: Album) => compareByProperty(a, b, "title")).map((album: Album) => {
                                     if (album) {
                                         return (<MenuItem key={album?.albumID} value={album?.albumID}>{album?.title}</MenuItem>);
                                     } else {
@@ -128,7 +129,7 @@ class CreateSongAlbum extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                songs?.map((song: Song) => {
+                                [...songs]?.sort((a: Song, b: Song) => compareByProperty(a, b, "title")).map((song: Song) => {
                                     if (song) {
                                         return (<MenuItem key={song?.songID} value={song?.songID}>{song?.title}</MenuItem>);
                                     } else {

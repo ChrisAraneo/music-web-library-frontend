@@ -79,7 +79,6 @@ class PlaylistPage extends React.Component<Props, IState> {
     }
 
     handleRemoveSong = (data: any, playlistID: number) => {
-        console.log("DATA REMOVING", data);
         const track = data["#"];
         deleteRecordFromPlaylist(playlistID, track);
     }

@@ -13,6 +13,7 @@ import { AppState } from "../../../store";
 import Song from "../../../model/Song";
 import { getSong, postSongURL } from "../../../store/songs";
 import { validateSongURL } from "../../../model/SongURL";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -85,7 +86,7 @@ class CreateSongURL extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                songs?.map((song: Song) => {
+                                [...songs]?.sort((a: Song, b: Song) => compareByProperty(a, b, "title")).map((song: Song) => {
                                     if (song) {
                                         return (<MenuItem key={song.songID} value={song.songID}>{song.title}</MenuItem>);
                                     } else {

@@ -12,6 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Album from "../../../model/Album";
 import { getAlbum, detachCoverFromAlbum } from "../../../store/albums";
 import Cover from "../../../model/Cover";
+import { compareByProperty } from "../../../model/common/functions";
 
 interface IProps {
     classes: any,
@@ -79,7 +80,7 @@ class RemoveCoverAlbum extends React.Component<Props, IState> {
                             required
                             autoWidth>
                             {
-                                albums?.map((album: Album) => {
+                                [...albums].sort((a: Album, b: Album) => compareByProperty(a, b, "title")).map((album: Album) => {
                                     if (album && album?.albumID) {
                                         return (<MenuItem key={album.albumID} value={album.albumID}>{album.title}</MenuItem>);
                                     } else {

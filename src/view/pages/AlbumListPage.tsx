@@ -32,7 +32,15 @@ class AlbumListPage extends React.Component<Props, IState> {
             if (album) {
                 const title = (<Link component={RouterLink} to={`/albums/${album.albumID}`}>{album.title}</Link>);
 
-                const artists = album.artists?.map((artist: Artist, index: number, array: Array<any>) => <><Link component={RouterLink} to={`/artists/${artist.artistID}`}>{artist.artistName}</Link>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>);
+                const uniques: any = new Map<number, boolean>();
+                const artists = album.artists?.map((artist: Artist, index: number, array: Array<any>) => {
+                    if (!uniques.has(artist.artistID)) {
+                        uniques.set(artist.artistID, true);
+                        return <><Link component={RouterLink} to={`/artists/${artist.artistID}`}>{artist.artistName}</Link>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>
+                    } else {
+                        return null;
+                    }
+                });
 
                 const year = album.year;
 
