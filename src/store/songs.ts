@@ -3,6 +3,7 @@ import { requestGet, requestPut, requestDelete, requestPost } from "../service/r
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import { addSuccessNotification } from "./fetching";
+import { API_URI } from "../config";
 
 // DEFAULT STATE
 const defaultState: Array<Song> = [];
@@ -51,10 +52,10 @@ export default function reducer(
 
 // PUBLIC ASYNC FUNCTIONS TO USE
 export function getSongsList() {
-    store.dispatch(requestGet(`http://localhost:8080/api/songs`, actionSetSongs));
+    store.dispatch(requestGet(`${API_URI}/songs`, actionSetSongs));
 }
 export function getSong(id: number, successCallback?: any) {
-    store.dispatch(requestGet(`http://localhost:8080/api/songs/${id}`,
+    store.dispatch(requestGet(`${API_URI}/songs/${id}`,
         (result: Song) => {
             if (typeof successCallback === "function") {
                 successCallback(result);
@@ -90,7 +91,7 @@ export function postSong(
         year
     };
 
-    store.dispatch(requestPost(`http://localhost:8080/api/songs`, {
+    store.dispatch(requestPost(`${API_URI}/songs`, {
         body: JSON.stringify(body)
     }, (result: Song) => {
         if (typeof successCallback === "function") {
@@ -116,7 +117,7 @@ export function updateSong(song: Song, successCallback?: any) {
         year: song?.year
     };
 
-    store.dispatch(requestPut(`http://localhost:8080/api/songs/${song?.songID}`, {
+    store.dispatch(requestPut(`${API_URI}/songs/${song?.songID}`, {
         body: JSON.stringify(body)
     }, (result: Song) => {
         if (typeof successCallback === "function") {
@@ -127,7 +128,7 @@ export function updateSong(song: Song, successCallback?: any) {
     }));
 }
 export function deleteSong(id: number, successCallback?: any) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/songs/${id}`, {},
+    store.dispatch(requestDelete(`${API_URI}/songs/${id}`, {},
         () => {
             if (typeof successCallback === "function") {
                 successCallback();
@@ -148,7 +149,7 @@ export function postSongURL(
         url
     };
 
-    store.dispatch(requestPost(`http://localhost:8080/api/songurls`, {
+    store.dispatch(requestPost(`${API_URI}/songurls`, {
         body: JSON.stringify(body)
     }, (result: Song) => {
         if (typeof successCallback === "function") {
@@ -162,7 +163,7 @@ export function deleteSongURL(
     songURLID: number,
     successCallback?: any
 ) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/songurls/${songURLID}`, {}, (result: Song) => {
+    store.dispatch(requestDelete(`${API_URI}/songurls/${songURLID}`, {}, (result: Song) => {
         if (typeof successCallback === "function") {
             successCallback(result);
         }

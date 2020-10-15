@@ -3,6 +3,7 @@ import { requestGet, requestPut, requestDelete, requestPost } from "../service/r
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import { addSuccessNotification } from "./fetching";
+import { API_URI } from "../config";
 
 // DEFAULT STATE
 const defaultState: Array<Review> = [];
@@ -51,10 +52,10 @@ export default function reducer(
 
 // PUBLIC ASYNC FUNCTIONS TO USE 
 export function getReviewList() {
-    store.dispatch(requestGet(`http://localhost:8080/api/reviews`, actionSetReviews));
+    store.dispatch(requestGet(`${API_URI}/reviews`, actionSetReviews));
 }
 export function getReview(reviewID: number) {
-    store.dispatch(requestGet(`http://localhost:8080/api/reviews/${reviewID}`, actionSetReview));
+    store.dispatch(requestGet(`${API_URI}/reviews/${reviewID}`, actionSetReview));
 }
 export function postReview(albumID: number, title: string, content: string, captcha: string, successCallback?: any) {
     const body: any = {
@@ -63,7 +64,7 @@ export function postReview(albumID: number, title: string, content: string, capt
     };
 
     store.dispatch(requestPost(
-        `http://localhost:8080/api/reviews/${albumID}`,
+        `${API_URI}/reviews/${albumID}`,
         {
             headers: {
                 "Captcha-Response": captcha
@@ -84,7 +85,7 @@ export function updateReview(review: Review, captcha: string, successCallback: a
         'reviewID': review?.reviewID,
         'title': review?.title,
         'content': review?.content,
-        'album': review?.album?.albumID
+        'album': review?.album
     };
 
     if (review?.user?.userID) {
@@ -92,7 +93,7 @@ export function updateReview(review: Review, captcha: string, successCallback: a
     }
 
     store.dispatch(requestPut(
-        `http://localhost:8080/api/reviews/${review?.reviewID}`,
+        `${API_URI}/reviews/${review?.reviewID}`,
         {
             headers: {
                 "Captcha-Response": captcha
@@ -110,7 +111,7 @@ export function updateReview(review: Review, captcha: string, successCallback: a
 }
 export function deleteReview(reviewID: number, successCallback: any) {
     store.dispatch(requestDelete(
-        `http://localhost:8080/api/reviews/${reviewID}`,
+        `${API_URI}/reviews/${reviewID}`,
         {},
         () => {
             if (typeof successCallback === "function") {

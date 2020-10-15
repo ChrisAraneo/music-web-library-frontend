@@ -17,8 +17,8 @@
 .env.production.local
 
 npm-debug.log*
-yarn-debug.log*
+yarn-debug.log*keys
 yarn-error.log*
 
-# keys
-src/keys.ts
+# config (with secret api keys)
+src/config.ts

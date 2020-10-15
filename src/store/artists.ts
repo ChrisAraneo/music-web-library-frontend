@@ -4,6 +4,7 @@ import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import ArtistType from "../model/ArtistType";
 import { addSuccessNotification } from "./fetching";
+import { API_URI } from "../config";
 
 // DEFAULT STATE
 const defaultState: Array<Artist> = [];
@@ -52,10 +53,10 @@ export default function reducer(
 
 // PUBLIC ASYNC FUNCTIONS TO USE
 export function getArtistsList() {
-    store.dispatch(requestGet(`http://localhost:8080/api/artists`, actionSetArtists));
+    store.dispatch(requestGet(`${API_URI}/artists`, actionSetArtists));
 }
 export function getArtist(id: number, successCallback?: any) {
-    store.dispatch(requestGet(`http://localhost:8080/api/artists/${id}`,
+    store.dispatch(requestGet(`${API_URI}/artists/${id}`,
         (result: Artist) => {
             if (typeof successCallback === "function") {
                 successCallback(result);
@@ -81,7 +82,7 @@ export function postArtist(
         artistType
     };
 
-    store.dispatch(requestPost(`http://localhost:8080/api/artists`, {
+    store.dispatch(requestPost(`${API_URI}/artists`, {
         body: JSON.stringify(body)
     }, (result: Artist) => {
         if (typeof successCallback === "function") {
@@ -102,7 +103,7 @@ export function updateArtist(artist: Artist, successCallback?: any) {
         artistType: artist.artistType?.artistTypeID
     };
 
-    store.dispatch(requestPut(`http://localhost:8080/api/artists/${artist.artistID}`, {
+    store.dispatch(requestPut(`${API_URI}/artists/${artist.artistID}`, {
         body: JSON.stringify(body)
     }, (result: Artist) => {
         if (typeof successCallback === "function") {
@@ -113,7 +114,7 @@ export function updateArtist(artist: Artist, successCallback?: any) {
     }));
 }
 export function deleteArtist(id: number, successCallback?: any) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/artists/${id}`, {},
+    store.dispatch(requestDelete(`${API_URI}/artists/${id}`, {},
         () => {
             if (typeof successCallback === "function") {
                 successCallback();
@@ -134,7 +135,7 @@ export function postArtistURL(
         url
     };
 
-    store.dispatch(requestPost(`http://localhost:8080/api/artisturls`, {
+    store.dispatch(requestPost(`${API_URI}/artisturls`, {
         body: JSON.stringify(body)
     }, (result: Artist) => {
         if (typeof successCallback === "function") {
@@ -148,7 +149,7 @@ export function deleteArtistURL(
     artistURLID: number,
     successCallback?: any
 ) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/artisturls/${artistURLID}`, {}, (result: Artist) => {
+    store.dispatch(requestDelete(`${API_URI}/artisturls/${artistURLID}`, {}, (result: Artist) => {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
@@ -161,7 +162,7 @@ export function attachSongToArtist(
     songID: number,
     successCallback?: any
 ) {
-    store.dispatch(requestPost(`http://localhost:8080/api/artists/${artistID}/${songID}`, {}, (result: Artist) => {
+    store.dispatch(requestPost(`${API_URI}/artists/${artistID}/${songID}`, {}, (result: Artist) => {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
@@ -174,7 +175,7 @@ export function detachSongFromArtist(
     songID: number,
     successCallback?: any
 ) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/artists/${artistID}/${songID}`, {}, (result: Artist) => {
+    store.dispatch(requestDelete(`${API_URI}/artists/${artistID}/${songID}`, {}, (result: Artist) => {
         if (typeof successCallback === "function") {
             successCallback(result);
         }

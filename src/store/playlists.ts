@@ -3,6 +3,7 @@ import { requestGet, requestPut, requestDelete, requestPost } from "../service/r
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import { addSuccessNotification } from "./fetching";
+import { API_URI } from "../config";
 
 // DEFAULT STATE
 const defaultState: Array<Playlist> = [];
@@ -51,16 +52,22 @@ export default function reducer(
 
 // PUBLIC ASYNC FUNCTIONS TO USE 
 export function getPlaylistsList() {
-    store.dispatch(requestGet(`http://localhost:8080/api/playlists`, actionSetPlaylists));
+    store.dispatch(requestGet(`${API_URI}/playlists`, actionSetPlaylists));
 }
-export function getPlaylist(id: number) {
-    store.dispatch(requestGet(`http://localhost:8080/api/playlists/${id}`, actionSetPlaylist));
+export function getPlaylist(id: number, successCallback?: any) {
+    store.dispatch(requestGet(`${API_URI}/playlists/${id}`,
+        (result: Playlist) => {
+            if (typeof successCallback === "function") {
+                successCallback(result);
+            }
+            return actionSetPlaylist(result);
+        }));
 }
 export function postPlaylist(title: string, successCallback?: any) {
     const body: any = { title };
 
     store.dispatch(requestPost(
-        `http://localhost:8080/api/playlists`, {
+        `${API_URI}/playlists`, {
         body: JSON.stringify(body)
     },
         (result) => {
@@ -78,7 +85,7 @@ export function updatePlaylist(playlist: Playlist, successCallback?: any) {
         title: playlist.title
     };
 
-    store.dispatch(requestPut(`http://localhost:8080/api/playlists/${playlist.playlistID}`, {
+    store.dispatch(requestPut(`${API_URI}/playlists/${playlist.playlistID}`, {
         body: JSON.stringify(body)
     }, (result: Playlist) => {
         if (typeof successCallback === "function") {
@@ -89,7 +96,7 @@ export function updatePlaylist(playlist: Playlist, successCallback?: any) {
     }));
 }
 export function deletePlaylist(id: number, successCallback?: any) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${id}`, {},
+    store.dispatch(requestDelete(`${API_URI}/playlists/${id}`, {},
         () => {
             if (typeof successCallback === "function") {
                 successCallback();
@@ -99,7 +106,7 @@ export function deletePlaylist(id: number, successCallback?: any) {
         }));
 }
 export function addRecordToPlaylist(playlistID: number, songID: number) {
-    store.dispatch(requestPost(`http://localhost:8080/api/playlists/${playlistID}/${songID}`, {},
+    store.dispatch(requestPost(`${API_URI}/playlists/${playlistID}/${songID}`, {},
         (playlist: Playlist) => {
             addSuccessNotification("Dodano utwór do listy", "Pomyślnie dodano utwór do listy.");
             return actionSetPlaylist(playlist);
@@ -107,7 +114,7 @@ export function addRecordToPlaylist(playlistID: number, songID: number) {
     );
 }
 export function deleteRecordFromPlaylist(playlistID: number, track: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/playlists/${playlistID}/${track}`, {},
+    store.dispatch(requestDelete(`${API_URI}/playlists/${playlistID}/${track}`, {},
         (playlist: Playlist) => {
             addSuccessNotification("Usunięto utwór z listy", "Pomyślnie usunięto utwór z listy utworów.");
             return actionSetPlaylist(playlist);

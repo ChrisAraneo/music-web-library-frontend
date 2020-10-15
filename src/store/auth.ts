@@ -3,6 +3,7 @@ import { requestPost } from '../service/requests';
 import Role from '../model/Role';
 import User from '../model/User';
 import { addSuccessNotification } from './fetching';
+import { API_URI } from '../config';
 
 // DEFAULT STATE
 const defaultState: {
@@ -113,7 +114,7 @@ export function signUp(
     password: string,
     captcha: string
 ) {
-    store.dispatch(requestPost(`http://localhost:8080/api/signup`,
+    store.dispatch(requestPost(`${API_URI}/signup`,
         {
             headers: {
                 "Captcha-Response": captcha
@@ -128,7 +129,7 @@ export function signUp(
 }
 
 export function signIn(usernameOrEmail: string, password: string, successCallback?: any) {
-    store.dispatch(requestPost(`http://localhost:8080/api/signin`, {
+    store.dispatch(requestPost(`${API_URI}/signin`, {
         body: JSON.stringify({ usernameOrEmail, password })
     }, (result) => {
         if (typeof successCallback === "function") {

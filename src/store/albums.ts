@@ -3,6 +3,7 @@ import { requestGet, requestPut, requestDelete, requestPost } from "../service/r
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import { addSuccessNotification } from "./fetching";
+import { API_URI } from "../config";
 
 // DEFAULT STATE
 const defaultState: Array<Album> = [];
@@ -51,10 +52,10 @@ export default function reducer(
 
 // PUBLIC ASYNC FUNCTIONS TO USE
 export function getAlbumsList() {
-    store.dispatch(requestGet(`http://localhost:8080/api/albums`, actionSetAlbums));
+    store.dispatch(requestGet(`${API_URI}/albums`, actionSetAlbums));
 }
 export function getAlbum(id: number, successCallback?: any) {
-    store.dispatch(requestGet(`http://localhost:8080/api/albums/${id}`,
+    store.dispatch(requestGet(`${API_URI}/albums/${id}`,
         (result: Album) => {
             if (typeof successCallback === "function") {
                 successCallback(result);
@@ -72,7 +73,7 @@ export function postAlbum(
         year
     };
 
-    store.dispatch(requestPost(`http://localhost:8080/api/albums`, {
+    store.dispatch(requestPost(`${API_URI}/albums`, {
         body: JSON.stringify(body)
     }, (result: Album) => {
         if (typeof successCallback === "function") {
@@ -89,7 +90,7 @@ export function updateAlbum(album: Album, successCallback?: any) {
         year: album.year
     };
 
-    store.dispatch(requestPut(`http://localhost:8080/api/albums/${album.albumID}`, {
+    store.dispatch(requestPut(`${API_URI}/albums/${album.albumID}`, {
         body: JSON.stringify(body)
     }, (result: Album) => {
         if (typeof successCallback === "function") {
@@ -100,7 +101,7 @@ export function updateAlbum(album: Album, successCallback?: any) {
     }));
 }
 export function deleteAlbum(id: number, successCallback?: any) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/albums/${id}`, {},
+    store.dispatch(requestDelete(`${API_URI}/albums/${id}`, {},
         () => {
             if (typeof successCallback === "function") {
                 successCallback();
@@ -115,7 +116,7 @@ export function postSongToAlbum(
     track: number,
     successCallback?: any
 ) {
-    store.dispatch(requestPost(`http://localhost:8080/api/albums/${albumID}/${songID}/${track}`, {}, (result: Album) => {
+    store.dispatch(requestPost(`${API_URI}/albums/${albumID}/${songID}/${track}`, {}, (result: Album) => {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
@@ -129,7 +130,7 @@ export function deleteSongFromAlbum(
     track: number,
     successCallback?: any
 ) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/albums/${albumID}/${songID}/${track}`, {}, (result: Album) => {
+    store.dispatch(requestDelete(`${API_URI}/albums/${albumID}/${songID}/${track}`, {}, (result: Album) => {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
@@ -142,7 +143,7 @@ export function attachCoverToAlbum(
     coverID: number,
     successCallback?: any
 ) {
-    store.dispatch(requestPost(`http://localhost:8080/api/covers/${coverID}/${albumID}`, {}, (result: Album) => {
+    store.dispatch(requestPost(`${API_URI}/covers/${coverID}/${albumID}`, {}, (result: Album) => {
         if (typeof successCallback === "function") {
             successCallback(result);
         }
@@ -155,7 +156,7 @@ export function detachCoverFromAlbum(
     albumID: number,
     successCallback?: any
 ) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/covers/${coverID}/${albumID}`, {}, (result: Album) => {
+    store.dispatch(requestDelete(`${API_URI}/covers/${coverID}/${albumID}`, {}, (result: Album) => {
         if (typeof successCallback === "function") {
             successCallback(result);
         }

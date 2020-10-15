@@ -3,6 +3,7 @@ import { requestGet, requestPut, requestDelete, requestPost } from "../service/r
 import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import { addSuccessNotification } from "./fetching";
+import { API_URI } from "../config";
 
 // DEFAULT STATE
 const defaultState: Array<ArtistType> = [];
@@ -51,10 +52,10 @@ export default function reducer(
 
 // PUBLIC ASYNC FUNCTIONS TO USE
 export function getArtistTypesList() {
-    store.dispatch(requestGet(`http://localhost:8080/api/artisttypes`, actionSetArtistTypes));
+    store.dispatch(requestGet(`${API_URI}/artisttypes`, actionSetArtistTypes));
 }
 export function getArtistType(id: number, successCallback?: any) {
-    store.dispatch(requestGet(`http://localhost:8080/api/artisttypes/${id}`,
+    store.dispatch(requestGet(`${API_URI}/artisttypes/${id}`,
         (result: ArtistType) => {
             if (typeof successCallback === "function") {
                 successCallback(result);
@@ -71,7 +72,7 @@ export function postArtistType(
         name,
     };
 
-    store.dispatch(requestPost(`http://localhost:8080/api/artisttypes`, {
+    store.dispatch(requestPost(`${API_URI}/artisttypes`, {
         body: JSON.stringify(body)
     }, (result: ArtistType) => {
         if (typeof successCallback === "function") {
@@ -87,7 +88,7 @@ export function updateArtistType(type: ArtistType, successCallback?: any) {
         name: type.name
     };
 
-    store.dispatch(requestPut(`http://localhost:8080/api/artisttypes/${type.artistTypeID}`, {
+    store.dispatch(requestPut(`${API_URI}/artisttypes/${type.artistTypeID}`, {
         body: JSON.stringify(body)
     }, (result: ArtistType) => {
         if (typeof successCallback === "function") {
@@ -98,7 +99,7 @@ export function updateArtistType(type: ArtistType, successCallback?: any) {
     }));
 }
 export function deleteArtistType(id: number) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/artisttypes/${id}`, {},
+    store.dispatch(requestDelete(`${API_URI}/artisttypes/${id}`, {},
         () => {
             addSuccessNotification("Usunięto", "Pomyślnie usunięto rodzaj działalności muzycznej");
             return actionDeleteArtistType(id);

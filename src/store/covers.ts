@@ -4,6 +4,7 @@ import { store } from './index';
 import { setSingleObject, setMultipleObjects, deleteSingleObject } from "./functions";
 import { actionFetchSuccess, addSuccessNotification } from "./fetching";
 import Cover from "../model/Cover";
+import { API_URI } from "../config";
 
 // DEFAULT STATE
 const defaultState: Array<Cover> = [];
@@ -52,10 +53,10 @@ export default function reducer(
 
 // PUBLIC ASYNC FUNCTIONS TO USE
 export function getCoversList() {
-    store.dispatch(requestGet(`http://localhost:8080/api/covers`, actionSetCovers));
+    store.dispatch(requestGet(`${API_URI}/covers`, actionSetCovers));
 }
 export function getCover(id: number, successCallback?: any) {
-    store.dispatch(requestGet(`http://localhost:8080/api/covers/${id}`,
+    store.dispatch(requestGet(`${API_URI}/covers/${id}`,
         (result: Cover) => {
             if (typeof successCallback === "function") {
                 successCallback(result);
@@ -71,7 +72,7 @@ export function postCover(
         data
     };
 
-    store.dispatch(requestPost(`http://localhost:8080/api/covers`, {
+    store.dispatch(requestPost(`${API_URI}/covers`, {
         body: JSON.stringify(body)
     }, (result: Cover) => {
         if (typeof successCallback === "function") {
@@ -82,7 +83,7 @@ export function postCover(
     }));
 }
 export function deleteCover(id: number, successCallback?: any) {
-    store.dispatch(requestDelete(`http://localhost:8080/api/albums/${id}`, {},
+    store.dispatch(requestDelete(`${API_URI}/albums/${id}`, {},
         () => {
             if (typeof successCallback === "function") {
                 successCallback();
