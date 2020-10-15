@@ -1,4 +1,4 @@
-import { isString, validate } from "./validation/common";
+import { isString, validate } from "./common/validation";
 
 export const ROLE_USER = "ROLE_USER";
 export const ROLE_ADMIN = "ROLE_ADMIN";

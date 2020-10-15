@@ -1,6 +1,6 @@
 import Album from "./Album";
 import User from "./User";
-import { validate, isString, isStringShorterThan } from "./validation/common";
+import { validate, isString, isStringShorterThan } from "./common/validation";
 import { isUser } from "./User";
 
 export default interface Review {

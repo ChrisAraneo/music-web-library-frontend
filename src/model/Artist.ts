@@ -1,7 +1,7 @@
 import ArtistType from "./ArtistType";
 import ArtistURL from "./ArtistURL";
 import Album from "./Album";
-import { isString, validate, isDate, isCountry } from "./validation/common";
+import { isString, validate, isDate, isCountry } from "./common/validation";
 
 export default interface Artist {
     artistID: number,

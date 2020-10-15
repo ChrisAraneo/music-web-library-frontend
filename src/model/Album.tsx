@@ -2,7 +2,7 @@ import Cover from "./Cover";
 import Review from "./Review";
 import Song, { SongInAlbum } from "./Song";
 import Artist from "./Artist";
-import { isNumber, isString, validate } from "./validation/common";
+import { isNumber, isString, validate } from "./common/validation";
 
 export default interface Album {
     albumID: number,

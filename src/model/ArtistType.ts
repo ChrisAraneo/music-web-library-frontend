@@ -1,4 +1,4 @@
-import { validate, isString } from "./validation/common";
+import { validate, isString } from "./common/validation";
 
 export default interface ArtistType {
     artistTypeID: number,

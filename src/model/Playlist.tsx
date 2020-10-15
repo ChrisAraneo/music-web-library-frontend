@@ -1,6 +1,6 @@
 import User, { isUser } from "./User";
 import { SongInPlaylist } from "./Song";
-import { validate, isString } from "./validation/common";
+import { validate, isString } from "./common/validation";
 
 export default interface Artist {
     playlistID: number,

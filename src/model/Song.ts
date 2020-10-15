@@ -1,6 +1,6 @@
 import Artist from "./Artist";
 import SongURL from "./SongURL";
-import { isString, validate, isStringShorterThan, isURL } from "./validation/common";
+import { isString, validate, isStringShorterThan, isURL } from "./common/validation";
 import { isNumber } from "util";
 
 export default interface Song {

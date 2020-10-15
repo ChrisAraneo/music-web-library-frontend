@@ -1,4 +1,4 @@
-import { isURL, validate } from "./validation/common";
+import { isURL, validate } from "./common/validation";
 
 export default interface SongURL {
     songURLID: number,

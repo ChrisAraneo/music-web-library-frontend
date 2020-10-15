@@ -1,4 +1,4 @@
-import { isNumber, validate, isEmail, isPassword, identicalPasswords } from "./validation/common"
+import { isNumber, validate, isEmail, isPassword, identicalPasswords } from "./common/validation"
 import { isString } from "util"
 
 export default interface User {
