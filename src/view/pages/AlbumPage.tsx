@@ -10,7 +10,7 @@ import Table from "../components/basic/Table";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Album from "../../model/Album";
-import { SongInAlbum } from "../../model/Song";
+import Song, { SongInAlbum } from "../../model/Song";
 import { getAlbum, deleteSongFromAlbum } from "../../store/albums";
 import PageHeader from "../components/basic/PageHeader";
 import Review from "../../model/Review";
@@ -54,6 +54,7 @@ class AlbumPage extends React.Component<Props, IState> {
         const { albumID } = this.props.match.params;
         getAlbum(albumID, (album: Album) => {
             album.songs?.forEach((sia: SongInAlbum) => {
+                console.log("AHOY", sia);
                 getSong(sia?.song?.songID);
             });
         });
@@ -131,14 +132,17 @@ class AlbumPage extends React.Component<Props, IState> {
         return undefined;
     }
 
-    processLength = (length: number) => {
-        const minutes = Math.floor(length / 60);
-        const seconds = length - (minutes * 60);
-        if (seconds >= 10) {
-            return `${minutes}:${seconds}`;
-        } else {
-            return `${minutes}:0${seconds}`;
+    processLength = (length: number | undefined) => {
+        if (length !== undefined && length > 0) {
+            const minutes = Math.floor(length / 60);
+            const seconds = length - (minutes * 60);
+            if (seconds >= 10) {
+                return `${minutes}:${seconds}`;
+            } else {
+                return `${minutes}:0${seconds}`;
+            }
         }
+        return "";
     }
 
     processSongs = (songs: Array<SongInAlbum> | undefined) => {
@@ -153,7 +157,7 @@ class AlbumPage extends React.Component<Props, IState> {
 
                 const artists = song.artists?.map((artist: Artist, index: number, array: Array<any>) => <><Link component={RouterLink} to={`/artists/${artist.artistID}`}>{artist.artistName}</Link>{index < array.length - 1 ? (<span>{`, `}</span>) : null}</>);
 
-                const length = (song.length ? this.processLength : '');
+                const length = (this.props.songs && this.props.songs[song.songID]) ? this.processLength(this.props.songs[song.songID]?.length) : "";
 
                 data.push({
                     "#": track,
@@ -295,6 +299,7 @@ interface LinkStateProps {
     fetching: any,
     albums: Album[],
     playlists: Playlist[],
+    songs: Song[],
     auth: any
 }
 const mapStateToProps = (
@@ -302,6 +307,7 @@ const mapStateToProps = (
         fetching: state.fetching,
         albums: state.albums,
         playlists: state.playlists,
+        songs: state.songs,
         auth: state.auth
     });
 

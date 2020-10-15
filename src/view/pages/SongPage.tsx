@@ -64,7 +64,7 @@ class SongPage extends React.Component<Props, IState> {
                 "Komentarz": song.comment,
                 "Gatunek": song.genre,
                 "Język": song.language,
-                "Długość": song.length,
+                "Długość (sekundy)": song.length,
                 "Tonacja": song.mainKey,
                 "Wydawca": song.publisher,
                 "Licencja": song.terms,
