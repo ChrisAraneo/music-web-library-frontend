@@ -1,78 +1,19 @@
 # Music Web Library Frontend
 
-yarn global add typescript
+I. URUCHAMIANIE ŚRODOWISKA DEVELOPERSKIEGO I TESTOWEGO
+W celu instalacji i przygotowania aplikacji internetowej do rozwoju i testowania proszę wykonać po kolei I.I, I.II, I.II
 
-## TODO (12 XIX)
+I.I BAZA DANYCH
+1) Utworzyć nową bazę danych MySQL
+2) Zainicjalizować bazę danych danymi początkowymi używając skryptu SQL music-web-library-backend/sql/dump-music-db-init.sql
 
-Walidacje
+I.II SERWER
+1) Utworzyć i odpowiednio skonfigurować application.properties (music-web-library-backend/src/main/resources/) wzorując się na ustawieniach application.properties.example
+2) Skonfigurować w zależności od potrzeb ustawienia w pakiecie com.chrisaraneo.mwl.config
+3) Pobrać wszystkie potrzebne zależności i przygotować projekt maven (music-web-library-backend)
+4) Uruchomić MusicWebLibraryApplication
 
-Testy API
-
-Błędy:
-* ~~Lepsze przechowywanie błędów w postaci stosu~~
-
-Menu po lewej stronie:
-* ~~Zmiana ikon~~
-
-Strona powitalna:
-* ~~Wizualna zmiana strony powitalnej~~
-* Poprawa części wizualnej strony powitalnej
-
-SignUp:
-* ~~Captcha na SignUp~~
-* Hasła niewidoczne
-* Obsługa błędów
-
-SignIn:
-* Hasła niewidoczne
-
-Wykonawcy:
-* ~~Dodawanie wykonawców~~
-* ~~Modyfikacja wykonawców~~
-* ~~Usuwanie wykonawców~~
-
-* ~~Dodawanie typów wykonawców~~
-* ~~Modyfikowanie typów wykonawców~~
-* ~~Usuwanie typów wykonawców~~
-
-* ~~Dodawanie URL wykonawców~~
-* ~~Usuwanie URL wykonawców~~
-
-* ~~Łączenie wykonawcy z piosenką~~
-* ~~Usunięcie połączenia wykonawcy z piosenką~~
-
-Piosenki:
-* ~~Dodawanie piosenek~~
-* ~~Modyfikowanie piosenek~~
-* ~~Usuwanie piosenek~~
-
-* ~~Dodawanie URL piosenek~~
-* ~~Usuwanie URL piosenek~~
-
-Albumy:
-* ~~Dodawanie albumów~~
-* ~~Modyfikowanie albumów~~
-* ~~Usuwanie albumów~~
-
-* ~~Dodawanie piosenek do albumów~~
-* ~~Usuwanie piosenek z albumów~~
-
-Okładki:
-* ~~Dodawanie okładek albumów~~
-* ~~Dodawanie powiązania okładka-album~~
-* ~~Usuwanie powiązania okładka-album~~
-* ~~Usuwanie okładek albumów~~
-* ~~Wyświetlanie okładek na stronach albumów~~
-
-Search:
-* Wyszukiwarka (?)
-
-Panel administratora:
-* ~~Przyciski~~
-
-Motyw interfejsu:
-* ~~Zmiana kolorystyki interfejsu~~
-* ~~Tła~~
-
-Tłumaczenie:
-* Internacjonalizacja, słownik w pliku
+I.III INTERNETOWY INTERFEJS
+1) Utworzyć i odpowiednio skonfigurować config.ts (music-web-library-frontend/src/) wzorując się na ustawieniach config.example.ts
+2) Pobrać wszystkie potrzebne zależności i przygotować projekt yarn (music-web-library-frontend)
+3) Po instalacji zależności uruchomić projekt yarn (yarn start)
